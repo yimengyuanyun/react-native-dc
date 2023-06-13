@@ -1,0 +1,40 @@
+{
+  "name": "react-native-dc",
+  "title": "React Native Dc",
+  "version": "1.0.0",
+  "description": "TODO",
+  "main": "lib/index.js",
+  "files": [
+    "lib",
+    "README.md",
+    "android",
+    "ios",
+    "react-native-dc.podspec"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/github_account/react-native-dc.git",
+    "baseUrl": "https://github.com/github_account/react-native-dc"
+  },
+  "keywords": [
+    "react-native"
+  ],
+  "author": {
+    "name": "Your Name",
+    "email": "yourname@email.com"
+  },
+  "license": "MIT",
+  "licenseFilename": "LICENSE",
+  "readmeFilename": "README.md",
+  "peerDependencies": {
+    "react": "18.0.0",
+    "react-native": "0.69.4"
+  },
+  "devDependencies": {
+    "react": "18.0.0",
+    "react-native": "0.69.4"
+  }
+}
