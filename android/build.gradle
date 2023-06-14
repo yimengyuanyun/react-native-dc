@@ -39,5 +39,5 @@ dependencies {
 
 
 repositories {
-    maven { url "https://github.com/yimengyuanyun/maven" }
+    maven { url "https://raw.github.com/yimengyuanyun/maven/main" }
 }
