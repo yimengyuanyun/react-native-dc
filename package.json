@@ -22,7 +22,7 @@
   "keywords": [
     "react-native"
   ],
-  "author": "Your Name <yourname@email.com>",
+  "author": "wangqin",
   "license": "MIT",
   "licenseFilename": "LICENSE",
   "peerDependencies": {
@@ -39,9 +39,6 @@
   "homepage": "https://github.com/yimengyuanyun/react-native-dc#readme",
   "directories": {
     "lib": "lib"
-  },
-  "publishConfig": {
-    "@yimengyuanyun:registry": "https://npm.pkg.github.com"
   },
   "dependencies": {
     "abort-controller": "^3.0.0",
