@@ -17,7 +17,7 @@ Pod::Spec.new do |s|
   # optional - use expanded license entry instead:
   # s.license    = { :type => "MIT", :file => "LICENSE" }
   s.authors      = { "Your Name" => "yourname@email.com" }
-  s.platforms    = { :ios => "9.0" }
+  s.platforms    = { :ios => "12.4" }
   s.source       = { :git => "https://github.com/github_account/react-native-dc.git", :tag => "#{s.version}" }
 
   s.source_files = "ios/**/*.{h,c,cc,cpp,m,mm,swift}"
@@ -26,5 +26,14 @@ Pod::Spec.new do |s|
   s.dependency "React"
   # ...
   # s.dependency "..."
+
+  # 内置frameworks路径
+  s.vendored_frameworks = 'Dcapi.xcframework'
+  # s.preserve_path = '${PODS_ROOT}/..'
+
+  # 设置framework的查找路径
+  s.pod_target_xcconfig = {
+    'FRAMEWORK_SEARCH_PATHS' => "$(PODS_ROOT)/**",
+  }
 end
 
