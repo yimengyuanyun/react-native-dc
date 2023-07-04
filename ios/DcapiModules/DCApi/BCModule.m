@@ -79,7 +79,7 @@ RCT_EXPORT_METHOD(bc_SubscribeStorage:(int)pricetype successCallback:(RCTRespons
   RCTLogInfo(@"bc_SubscribeStorage");
   BOOL success = [dcapi bc_SubscribeStorage:pricetype];
   if(success){
-    successCallback(@[]);
+    successCallback(@[@true]);
   }else {
     NSString *lastError = [dcapi dc_GetLastErr];
     errorCallback(@[lastError]);

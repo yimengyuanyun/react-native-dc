@@ -205,6 +205,13 @@ RCT_EXPORT_METHOD(dc_SwitchDcServer:(NSString*)multiaddr  successCallback:(RCTRe
   }
 }
 
+//获取当前接入的DC服务节点
+RCT_EXPORT_METHOD(dc_GetConnectedDcNetInfo:(RCTResponseSenderBlock)successCallback) {
+  RCTLogInfo(@"dc_GetConnectedDcNetInfo");
+  NSString *dcNetInfo = [dcapi dc_GetConnectedDcNetInfo];
+  successCallback(@[dcNetInfo]);
+}
+
 //获取当前生效的私钥（返回16进制字符串）
 RCT_EXPORT_METHOD(dc_GetEd25519AppPrivateKey:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
   RCTLogInfo(@"dc_GetEd25519AppPrivateKey");
@@ -251,7 +258,7 @@ RCT_EXPORT_METHOD(dc_ImportMnemonic:(NSString*)mnemonic successCallback:(RCTResp
 //给账户添加余额
 RCT_EXPORT_METHOD(dc_AddBalanceForTest:(NSString*)balance successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
   RCTLogInfo(@"dc_AddBalanceForTest");
-  BOOL success = [dcapi dc_AddBalanceForTest:balance];
+  BOOL success = [dcapi dc_AddBalanceForTest:[balance longLongValue]];
   if(success){
     successCallback(@[@true]);
   }else {
@@ -265,7 +272,7 @@ RCT_EXPORT_METHOD(dc_GetUserInfo:(RCTResponseSenderBlock)successCallback errorCa
   RCTLogInfo(@"dc_GetUserInfo");
   NSString *jsonUserInfo = [dcapi dc_GetUserInfo];
   if(jsonUserInfo.length > 0){
-    successCallback(@[@true]);
+    successCallback(@[jsonUserInfo]);
   }else {
     NSString *lastError = [dcapi dc_GetLastErr];
     errorCallback(@[lastError]);
