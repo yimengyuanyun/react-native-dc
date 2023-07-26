@@ -140,7 +140,7 @@ public class FileModule extends ReactContextBaseJavaModule {
                     System.out.println(lastError);
                     errorCallback.invoke(lastError);
                 }else {
-                    successCallback.invoke();
+                    successCallback.invoke(true);
                 }
             }
         }).start();

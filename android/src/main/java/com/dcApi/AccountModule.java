@@ -91,7 +91,21 @@ public class AccountModule extends ReactContextBaseJavaModule {
             }
         }).start();
     }
-
+    // 应用账号是否与用户公钥绑定成功
+    @ReactMethod
+    public void account_IfAppNftAccountBindSuccess(
+            String account,
+            Callback successCallback) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Boolean bindFlag = dcClass.ifAppNftAccountBindSuccess(account);
+                System.out.println("--------------------------------ifAppNftAccountBindSuccess" + bindFlag);
+                successCallback.invoke(bindFlag);
+            }
+        }).start();
+    }
+    
     // NFT账号登录
     @ReactMethod
     public void account_NFTAccountLogin(

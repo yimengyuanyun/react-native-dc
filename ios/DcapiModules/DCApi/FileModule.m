@@ -62,7 +62,7 @@ RCT_EXPORT_METHOD(file_CleanFile:(RCTResponseSenderBlock)successCallback errorCa
   RCTLogInfo(@"file_CleanFile");
   BOOL success = [dcapi file_CleanFile];
   if(success){
-    successCallback(@[]);
+    successCallback(@[@true]);
   }else {
     NSString *lastError = [dcapi dc_GetLastErr];
     errorCallback(@[lastError]);

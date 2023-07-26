@@ -62,6 +62,13 @@ RCT_EXPORT_METHOD(account_IfNftAccountBindSuccess:(NSString*)account  successCal
     successCallback(@[@(bindFlag)]);
 }
 
+//应用账号是否与用户公钥绑定成功
+RCT_EXPORT_METHOD(account_IfAppNftAccountBindSuccess:(NSString*)account  successCallback:(RCTResponseSenderBlock)successCallback) {
+    RCTLogInfo(@"account_IfAppNftAccountBindSuccess");
+    BOOL bindFlag = [dcapi ifAppNftAccountBindSuccess:account];
+    successCallback(@[@(bindFlag)]);
+}
+
 //NFT账号登录
 RCT_EXPORT_METHOD(account_NFTAccountLogin:(NSString*)account password:(NSString*)password  successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
     RCTLogInfo(@"account_NFTAccountLogin");

@@ -7,7 +7,7 @@ export const DCgetBlockHeight = () => {
   return new Promise((resolve, reject) => {
     const successCallback = (blockHeight: string) => {
       console.log('bc_GetBlockHeight success', blockHeight);
-      resolve({blockHeight});
+      resolve({blockHeight: blockHeight ? Number(blockHeight) : 0});
     };
     const errorCallback = (error: any) => {
       console.log('bc_GetBlockHeight error', error);
