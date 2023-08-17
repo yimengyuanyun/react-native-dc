@@ -6,10 +6,13 @@
 //
 
 #import "DcapiModules.h"
+#import <Dcapi/Dcapi.h>
+#import "CustomEventsEmitter.h"
 
-DcapiDcapi *dcapi = nil;
+DcapiDcapi *dcapi = NULL;
 
 @implementation DcapiModules
+CustomEventsEmitter *customEventsEmitter = NULL;
 
 -(id) init
  {
@@ -17,24 +20,9 @@ DcapiDcapi *dcapi = nil;
   if(self)
   {
     dcapi = [[DcapiDcapi alloc] init];
+    customEventsEmitter = [CustomEventsEmitter allocWithZone: nil];
     NSLog(@"000000---------init---------========");
   }
   return self;
  }
-//const DcapiDcapi *dcapi = [[DcapiDcapi alloc] init];
-//@synthesize dcapi;
-//
-//+ (DcapiModules *)sharedSingleton
-//{
-//  static DcapiModules *sharedSingleton;
-//
-//  @synchronized(self)
-//  {
-//    if (!sharedSingleton)
-//      sharedSingleton = [[DcapiModules alloc] init];
-//
-//    return sharedSingleton;
-//  }
-//}
-//
 @end

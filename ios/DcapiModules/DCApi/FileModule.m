@@ -10,11 +10,13 @@
 #import "DcapiModules.h"
 
 
-@interface FileModule ()
-@end
+
+//@interface FileModule ()
+//@end
 
 
 @implementation FileModule
+
 /**
  *为了实现RCTBridgeModule协议，你的类需要包含RCT_EXPORT_MODULE()宏。这个宏也可以添加一个参数用来指定在 JavaScript 中访问这个模块的名字。如果你不指定，默认就会使用这个 Objective-C 类的名字。如果类名以 RCT 开头，则 JavaScript 端引入的模块名会自动移除这个前缀。
  */
@@ -32,9 +34,10 @@ RCT_EXPORT_MODULE()
 
 // 添加文件
 //添加文件AddParams 应该包含是否加密选项，以及密钥
-RCT_EXPORT_METHOD(file_AddFile:(NSString*)readPath enkey:(NSString*)enkey  successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
+RCT_EXPORT_METHOD(file_AddFile:(NSString*)readPath enkey:(NSString*)enkey successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
   RCTLogInfo(@"file_AddFile");
-  NSString *cid = [dcapi file_AddFile:readPath enkey:enkey fileTransmit:[DcapiIf_FileTransmit alloc]];
+  FileModuleFile *addfile = [[FileModuleFile alloc] initWithType:@"addFile"];
+  NSString *cid = [dcapi file_AddFile:readPath enkey:enkey fileTransmit:addfile];
   if(cid.length > 0){
     successCallback(@[cid]);
   }else {
@@ -46,9 +49,10 @@ RCT_EXPORT_METHOD(file_AddFile:(NSString*)readPath enkey:(NSString*)enkey  succe
 //获取文件应该指定获取文件存放目录，以及密钥（如果密钥是空，就表示不用解密）
 // GetFile returns a reader to a file as identified by its root CID. The file
 // must have been added as a UnixFS DAG (default for IPFS).
-RCT_EXPORT_METHOD(file_GetFile:(NSString*)fid savePath:(NSString*)savePath dkey:(NSString*)dkey  successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
+RCT_EXPORT_METHOD(file_GetFile:(NSString*)fid savePath:(NSString*)savePath dkey:(NSString*)dkey successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
   RCTLogInfo(@"file_GetFile");
-  BOOL success = [dcapi file_GetFile:fid savePath:savePath dkey:dkey fileTransmit:[DcapiIf_FileTransmit alloc]];
+  FileModuleFile *getfile = [[FileModuleFile alloc] initWithType:@"getFile"];
+  BOOL success = [dcapi file_GetFile:fid savePath:savePath dkey:dkey fileTransmit:getfile];
   if(success > 0){
     successCallback(@[]);
   }else {
@@ -74,11 +78,10 @@ RCT_EXPORT_METHOD(file_CleanFile:(RCTResponseSenderBlock)successCallback errorCa
 {
   return @[@"EventReminder"];
 }
-- (void)calendarEventReminderReceived:(NSNotification *)notification
-{
-  NSString *eventName = notification.userInfo[@"name"];
-  [self sendEventWithName:@"EventReminder" body:@{@"name": eventName}];
-}
+//- (void)sendEventWithName:(NSString *)name body:(id)body
+//{
+//  [self sendEventWithName:@"EventReminder" body:body];
+//}
 - (dispatch_queue_t)methodQueue
 {
   return dispatch_queue_create("com.facebook.React.AsyncLocalStorageQueue", DISPATCH_QUEUE_SERIAL);
@@ -96,12 +99,38 @@ RCT_EXPORT_METHOD(file_CleanFile:(RCTResponseSenderBlock)successCallback errorCa
     return self;
 }
 
+@end
+
+
+
+
+@implementation FileModuleFile
+/**
+ *为了实现RCTBridgeModule协议，你的类需要包含RCT_EXPORT_MODULE()宏。这个宏也可以添加一个参数用来指定在 JavaScript 中访问这个模块的名字。如果你不指定，默认就会使用这个 Objective-C 类的名字。如果类名以 RCT 开头，则 JavaScript 端引入的模块名会自动移除这个前缀。
+ */
+RCT_EXPORT_MODULE()
+
+- (NSArray<NSString *> *)supportedEvents
+{
+  return @[@"EventReminder"];
+}
+-(id) initWithType:(NSString *)type
+{
+    self = [super init];
+    if(self)
+    {
+        self.filehandleType = type;
+    }
+    return self;
+}
 /**
  * 单个文件传输反馈 status 0:成功 1:转化为ipfs对象操作中 2:文件传输中 3:传输失败 4:异常
  */
 - (void)updateTransmitSize:(long)status size:(int64_t)size {
-    NSLog(@"-------updateTransmitSize");
+    NSLog(@"-------updateTransmitSize11111");
+    if(self.filehandleType != nil){
+        NSLog(@"-------updateTransmitSize22222");
+        [customEventsEmitter sendEventName:@"EventFile" body:@{@"type": self.filehandleType ,@"status": [NSString stringWithFormat: @"%ld", status], @"size": [NSString stringWithFormat: @"%lld", size]}];
+    }
 }
 @end
-
-

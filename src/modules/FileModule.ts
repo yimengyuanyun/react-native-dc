@@ -8,7 +8,7 @@ const {FileModule} = NativeModules;
 export const DCaddFile = (readPath: string, enkey: string) => {
   return new Promise(resolve => {
     const listenCallback = (info: any) => {
-      console.log('file_AddFile listenCallback', info);
+      console.log('file_AddFile listenCallback1111', info);
     };
     const successCallback = (cid: any) => {
       console.log('file_AddFile success', cid);
@@ -21,9 +21,9 @@ export const DCaddFile = (readPath: string, enkey: string) => {
     FileModule.file_AddFile(
       readPath,
       enkey,
-      // listenCallback,
       successCallback,
       errorCallback,
+      listenCallback,
     );
   });
 };
@@ -31,9 +31,9 @@ export const DCaddFile = (readPath: string, enkey: string) => {
 // 获取文件
 export const DCgetFile = (cid: string, savePath: string, enkey: string) => {
   return new Promise((resolve, reject) => {
-    // const listenCallback = (status: string, size: string) => {
-    //   console.log('addFile listenCallback', status, size);
-    // };
+    const listenCallback = (status: string) => {
+      console.log('file_GetFile listenCallback22222', status);
+    };
     const successCallback = () => {
       console.log('file_GetFile success');
       resolve({});
@@ -46,9 +46,9 @@ export const DCgetFile = (cid: string, savePath: string, enkey: string) => {
       cid,
       savePath,
       enkey,
-      // listenCallback,
       successCallback,
       errorCallback,
+      listenCallback,
     );
   });
 };
