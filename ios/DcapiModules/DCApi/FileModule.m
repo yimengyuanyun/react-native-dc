@@ -36,7 +36,7 @@ RCT_EXPORT_MODULE()
 //添加文件AddParams 应该包含是否加密选项，以及密钥
 RCT_EXPORT_METHOD(file_AddFile:(NSString*)readPath enkey:(NSString*)enkey successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
   RCTLogInfo(@"file_AddFile");
-  FileModuleFile *addfile = [[FileModuleFile alloc] initWithType:@"addFile"];
+  FileModuleFile *addfile = [[FileModuleFile alloc] initWithInfo:@"addFile" url:readPath];
   NSString *cid = [dcapi file_AddFile:readPath enkey:enkey fileTransmit:addfile];
   if(cid.length > 0){
     successCallback(@[cid]);
@@ -51,7 +51,7 @@ RCT_EXPORT_METHOD(file_AddFile:(NSString*)readPath enkey:(NSString*)enkey succes
 // must have been added as a UnixFS DAG (default for IPFS).
 RCT_EXPORT_METHOD(file_GetFile:(NSString*)fid savePath:(NSString*)savePath dkey:(NSString*)dkey successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
   RCTLogInfo(@"file_GetFile");
-  FileModuleFile *getfile = [[FileModuleFile alloc] initWithType:@"getFile"];
+    FileModuleFile *getfile = [[FileModuleFile alloc] initWithInfo:@"getFile" url:fid];
   BOOL success = [dcapi file_GetFile:fid savePath:savePath dkey:dkey fileTransmit:getfile];
   if(success > 0){
     successCallback(@[]);
@@ -114,12 +114,13 @@ RCT_EXPORT_MODULE()
 {
   return @[@"EventReminder"];
 }
--(id) initWithType:(NSString *)type
+-(id) initWithInfo:(NSString *)type url:(NSString *)url
 {
     self = [super init];
     if(self)
     {
         self.filehandleType = type;
+        self.fileUrl = url;
     }
     return self;
 }
@@ -130,7 +131,7 @@ RCT_EXPORT_MODULE()
     NSLog(@"-------updateTransmitSize11111");
     if(self.filehandleType != nil){
         NSLog(@"-------updateTransmitSize22222");
-        [customEventsEmitter sendEventName:@"EventFile" body:@{@"type": self.filehandleType ,@"status": [NSString stringWithFormat: @"%ld", status], @"size": [NSString stringWithFormat: @"%lld", size]}];
+        [customEventsEmitter sendEventName:@"EventFile" body:@{@"type": self.filehandleType , @"url": self.fileUrl, @"status": [NSString stringWithFormat: @"%ld", status], @"size": [NSString stringWithFormat: @"%lld", size]}];
     }
 }
 @end

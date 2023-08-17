@@ -22,7 +22,8 @@ extern CustomEventsEmitter *customEventsEmitter;
 @interface FileModuleFile : RCTEventEmitter<RCTBridgeModule, DcapiIf_FileTransmit>
 
 @property (nonatomic, strong) NSString *filehandleType;
--(id)initWithType:(NSString *)type;   //带参数的构造函数
+@property (nonatomic, strong) NSString *fileUrl;
+-(id)initWithInfo:(NSString *)type url:(NSString *)url;   //带参数的构造函数
 
 @end
 

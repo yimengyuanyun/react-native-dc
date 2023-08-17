@@ -10,10 +10,9 @@ import com.facebook.react.bridge.ReactMethod;
 import dcapi.Dcapi_;
 import dcapi.If_FileTransmit;
 
-
 /**
-* 文件相关接口
-*/
+ * 文件相关接口
+ */
 public class FileModule extends ReactContextBaseJavaModule {
 
     private static ReactApplicationContext reactContext;
@@ -25,7 +24,6 @@ public class FileModule extends ReactContextBaseJavaModule {
         dcClass = dc;
     }
 
-
     @NonNull
     @Override
     public String getName() {
@@ -33,7 +31,7 @@ public class FileModule extends ReactContextBaseJavaModule {
     }
 
     // 添加文件
-    //添加文件AddParams 应该包含是否加密选项，以及密钥
+    // 添加文件AddParams 应该包含是否加密选项，以及密钥
     @ReactMethod
     public void file_AddFile(
             String readPath,
@@ -50,6 +48,17 @@ public class FileModule extends ReactContextBaseJavaModule {
                         //FileDealStatus 0:成功 1:转化为ipfs对象操作中 2:文件传输中 3:传输失败 4:异常
                         System.out.println("---------------------------------addFile inform: " + status + "; " + size);
                         //                    listenCallback.invoke();
+                        if (reactContext == null){
+                            return;
+                        }
+                        JSONObject json = new JSONObject();
+                        //向JSON对象中添加键值对
+                        json.put("type", "addFile");
+                        json.put("url", readPath);
+                        json.put("status", status);
+                        json.put("size", size);
+                        reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                                .emit("EventFile", json);
                     }
                 });
                 System.out.println("---------------------------------addFile: " + cid);
@@ -66,7 +75,7 @@ public class FileModule extends ReactContextBaseJavaModule {
 
     }
 
-    //获取文件应该指定获取文件存放目录，以及密钥（如果密钥是空，就表示不用解密）
+    // 获取文件应该指定获取文件存放目录，以及密钥（如果密钥是空，就表示不用解密）
     // GetFile returns a reader to a file as identified by its root CID. The file
     // must have been added as a UnixFS DAG (default for IPFS).
     @ReactMethod
@@ -74,27 +83,38 @@ public class FileModule extends ReactContextBaseJavaModule {
             String fid,
             String savePath,
             String enkey,
-//            Callback listenCallback,
+            // Callback listenCallback,
             Callback successCallback,
-            Callback errorCallback){
+            Callback errorCallback) {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 Boolean bool = dcClass.file_GetFile(fid, savePath, enkey, new If_FileTransmit() {
                     @Override
                     public void updateTransmitSize(long status, long size) {
-                        //FileDealStatus 0:成功 1:转化为ipfs对象操作中 2:文件传输中 3:传输失败 4:异常
+                        // FileDealStatus 0:成功 1:转化为ipfs对象操作中 2:文件传输中 3:传输失败 4:异常
                         System.out.println("---------------------------------getFile inform: " + status + "; " + size);
-                        //                    listenCallback.invoke(Long.toString(status), Long.toString(size));
+                        // listenCallback.invoke(Long.toString(status), Long.toString(size));
+                        if (reactContext == null){
+                            return;
+                        }
+                        JSONObject json = new JSONObject();
+                        //向JSON对象中添加键值对
+                        json.put("type", "getFile");
+                        json.put("url", fid);
+                        json.put("status", status);
+                        json.put("size", size);
+                        reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                                .emit("EventFile", json);
                     }
                 });
                 System.out.println("---------------------------------getFile: " + bool);
-                if(!bool){
+                if (!bool) {
                     String lastError = dcClass.dc_GetLastErr();
                     System.out.println("---------------------------------getFile: err");
                     System.out.println(lastError);
                     errorCallback.invoke(lastError);
-                }else {
+                } else {
                     successCallback.invoke();
                 }
             }
@@ -106,7 +126,7 @@ public class FileModule extends ReactContextBaseJavaModule {
     public void file_DeleteFile(
             String fid,
             Callback successCallback,
-            Callback errorCallback){
+            Callback errorCallback) {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -127,24 +147,22 @@ public class FileModule extends ReactContextBaseJavaModule {
     // 清除文件缓存
     @ReactMethod
     public void file_CleanFile(
-        Callback successCallback,
-        Callback errorCallback){
+            Callback successCallback,
+            Callback errorCallback) {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 Boolean bool = dcClass.file_CleanFile();
                 System.out.println("---------------------------------cleanFile: " + bool);
-                if(!bool){
+                if (!bool) {
                     String lastError = dcClass.dc_GetLastErr();
                     System.out.println("---------------------------------cleanFile: err");
                     System.out.println(lastError);
                     errorCallback.invoke(lastError);
-                }else {
+                } else {
                     successCallback.invoke(true);
                 }
             }
         }).start();
     }
 }
-
-
