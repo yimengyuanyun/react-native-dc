@@ -131,7 +131,7 @@ RCT_EXPORT_MODULE()
     NSLog(@"-------updateTransmitSize11111");
     if(self.filehandleType != nil){
         NSLog(@"-------updateTransmitSize22222");
-        [customEventsEmitter sendEventName:@"EventFile" body:@{@"type": self.filehandleType , @"url": self.fileUrl, @"status": [NSString stringWithFormat: @"%ld", status], @"size": [NSString stringWithFormat: @"%lld", size]}];
+        [customEventsEmitter sendEventName:@"EventFile" body: [NSString stringWithFormat:@"{\"type\":\"%@\",\"url\": \"%@\",\"status\": \"%@\",\"size\": \"%@\"}", self.filehandleType, self.fileUrl, [NSString stringWithFormat: @"%ld", status], [NSString stringWithFormat: @"%lld", size]]];
     }
 }
 @end

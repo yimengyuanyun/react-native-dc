@@ -5,11 +5,11 @@ import androidx.annotation.NonNull;
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
+import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.facebook.react.bridge.ReactMethod;
 
 import dcapi.Dcapi_;
 import dcapi.If_FileTransmit;
-
 /**
  * 文件相关接口
  */
@@ -51,14 +51,9 @@ public class FileModule extends ReactContextBaseJavaModule {
                         if (reactContext == null){
                             return;
                         }
-                        JSONObject json = new JSONObject();
-                        //向JSON对象中添加键值对
-                        json.put("type", "addFile");
-                        json.put("url", readPath);
-                        json.put("status", status);
-                        json.put("size", size);
+                        String jsonStr = "{\"type\":\"addFile\", \"url\":\"" + readPath + "\", \"status\":\""+ status +"\", \"size\":\""+ size + "\"}";
                         reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                                .emit("EventFile", json);
+                                .emit("EventFile", jsonStr);
                     }
                 });
                 System.out.println("---------------------------------addFile: " + cid);
@@ -98,14 +93,9 @@ public class FileModule extends ReactContextBaseJavaModule {
                         if (reactContext == null){
                             return;
                         }
-                        JSONObject json = new JSONObject();
-                        //向JSON对象中添加键值对
-                        json.put("type", "getFile");
-                        json.put("url", fid);
-                        json.put("status", status);
-                        json.put("size", size);
+                        String jsonStr = "{\"type\":\"getFile\", \"url\":\"" + fid + "\", \"status\":\""+ status +"\", \"size\":\""+ size + "\"}";
                         reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                                .emit("EventFile", json);
+                                .emit("EventFile", jsonStr);
                     }
                 });
                 System.out.println("---------------------------------getFile: " + bool);
