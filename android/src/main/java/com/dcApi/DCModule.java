@@ -509,29 +509,6 @@ public class DCModule extends ReactContextBaseJavaModule {
         }).start();
     }
 
-    // 添加/生成应用账号
-    @ReactMethod
-    public void dc_GenerateAppAccount(
-            String appId,
-            Callback successCallback,
-            Callback errorCallback) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                String basePrivKey = dcClass.dc_GenerateAppAccount(appId);
-                System.out.println("--------------------------------generateAppAccount success：" + basePrivKey);
-                if (basePrivKey.equals("")) {
-                    String lastError = dcClass.dc_GetLastErr();
-                    System.out.println("---------------------------------generateAppAccount: err");
-                    System.out.println(lastError);
-                    errorCallback.invoke(lastError);
-                } else {
-                    successCallback.invoke(basePrivKey);
-                }
-            }
-        }).start();
-    }
-
     // 释放资源
     @ReactMethod
     public void dc_ReleaseDc(
@@ -557,6 +534,52 @@ public class DCModule extends ReactContextBaseJavaModule {
                 String userpath = apppath + "/" + dir;
                 Boolean delete = new File(userpath).delete();
                 successCallback.invoke(delete);
+            }
+        }).start();
+    }
+
+    // 添加/生成应用账号
+    @ReactMethod
+    public void dc_GenerateAppAccount(
+            String appId,
+            Callback successCallback,
+            Callback errorCallback) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String basePrivKey = dcClass.dc_GenerateAppAccount(appId);
+                System.out.println("--------------------------------generateAppAccount success：" + basePrivKey);
+                if (basePrivKey.equals("")) {
+                    String lastError = dcClass.dc_GetLastErr();
+                    System.out.println("---------------------------------generateAppAccount: err");
+                    System.out.println(lastError);
+                    errorCallback.invoke(lastError);
+                } else {
+                    successCallback.invoke(basePrivKey);
+                }
+            }
+        }).start();
+    }
+
+    // base32公钥转换为16进制Account
+    @ReactMethod
+    public void dc_PubkeyToAccount(
+            String basePubkey,
+            Callback successCallback,
+            Callback errorCallback) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String account = dcClass.dc_PubkeyToAccount(basePubkey);
+                System.out.println("--------------------------------dc_PubkeyToAccount success：" + account);
+                if (account.equals("")) {
+                    String lastError = dcClass.dc_GetLastErr();
+                    System.out.println("---------------------------------dc_PubkeyToAccount: err");
+                    System.out.println(lastError);
+                    errorCallback.invoke(lastError);
+                } else {
+                    successCallback.invoke(account);
+                }
             }
         }).start();
     }

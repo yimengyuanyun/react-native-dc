@@ -291,18 +291,6 @@ RCT_EXPORT_METHOD(dc_IfAppAcountExist:(RCTResponseSenderBlock)successCallback er
   }
 }
 
-//添加/生成应用账号
-RCT_EXPORT_METHOD(dc_GenerateAppAccount:(NSString*)appId successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
-  RCTLogInfo(@"dc_GenerateAppAccount");
-  NSString *basePrivKey = [dcapi dc_GenerateAppAccount:appId];
-  if(basePrivKey.length > 0){
-    successCallback(@[@true]);
-  }else {
-    NSString *lastError = [dcapi dc_GetLastErr];
-    errorCallback(@[lastError]);
-  }
-}
-
 //释放资源
 RCT_EXPORT_METHOD(dc_ReleaseDc:(RCTResponseSenderBlock)successCallback) {
   RCTLogInfo(@"dc_ReleaseDc");
@@ -323,6 +311,30 @@ RCT_EXPORT_METHOD(deleteDir:(NSString*)dir successCallback:(RCTResponseSenderBlo
   successCallback(@[@(success)]);
 }
 
+//添加/生成应用账号
+RCT_EXPORT_METHOD(dc_GenerateAppAccount:(NSString*)appId successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
+  RCTLogInfo(@"dc_GenerateAppAccount");
+  NSString *basePrivKey = [dcapi dc_GenerateAppAccount:appId];
+  if(basePrivKey.length > 0){
+    successCallback(@[basePrivKey]);
+  }else {
+    NSString *lastError = [dcapi dc_GetLastErr];
+    errorCallback(@[lastError]);
+  }
+}
+
+
+// base32公钥转换为16进制Account
+RCT_EXPORT_METHOD(dc_PubkeyToAccount:(NSString*)basePubkey successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
+  RCTLogInfo(@"dc_PubkeyToAccount");
+  NSString *account = [dcapi dc_PubkeyToAccount:basePubkey];
+  if(account.length > 0){
+    successCallback(@[account]);
+  }else {
+    NSString *lastError = [dcapi dc_GetLastErr];
+    errorCallback(@[lastError]);
+  }
+}
 
 #pragma mark - 向react-natvie 传递消息
 - (NSArray<NSString *> *)supportedEvents
