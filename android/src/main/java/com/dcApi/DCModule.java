@@ -561,29 +561,28 @@ public class DCModule extends ReactContextBaseJavaModule {
         }).start();
     }
 
-    // base32公钥转换为16进制Account
+    // account转address
     @ReactMethod
-    public void dc_PubkeyToAccount(
-            String basePubkey,
+    public void dc_GetSS58AddressForAccount(
+            String account,
             Callback successCallback,
             Callback errorCallback) {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                String account = dcClass.dc_PubkeyToAccount(basePubkey);
-                System.out.println("--------------------------------dc_PubkeyToAccount success：" + account);
-                if (account.equals("")) {
+                String address = dcClass.dc_GetSS58AddressForAccount(account);
+                System.out.println("--------------------------------dc_GetSS58AddressForAccount success：" + address);
+                if (address.equals("")) {
                     String lastError = dcClass.dc_GetLastErr();
-                    System.out.println("---------------------------------dc_PubkeyToAccount: err");
+                    System.out.println("---------------------------------dc_GetSS58AddressForAccount: err");
                     System.out.println(lastError);
                     errorCallback.invoke(lastError);
                 } else {
-                    successCallback.invoke(account);
+                    successCallback.invoke(address);
                 }
             }
         }).start();
     }
-
 }
 
 

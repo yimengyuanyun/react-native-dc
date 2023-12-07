@@ -323,13 +323,12 @@ RCT_EXPORT_METHOD(dc_GenerateAppAccount:(NSString*)appId successCallback:(RCTRes
   }
 }
 
-
-// base32公钥转换为16进制Account
-RCT_EXPORT_METHOD(dc_PubkeyToAccount:(NSString*)basePubkey successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
-  RCTLogInfo(@"dc_PubkeyToAccount");
-  NSString *account = [dcapi dc_PubkeyToAccount:basePubkey];
-  if(account.length > 0){
-    successCallback(@[account]);
+//account转address
+RCT_EXPORT_METHOD(dc_GetSS58AddressForAccount:(NSString*)account successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
+  RCTLogInfo(@"dc_GetSS58AddressForAccount");
+  NSString *address = [dcapi dc_GetSS58AddressForAccount:account];
+  if(address.length > 0){
+    successCallback(@[address]);
   }else {
     NSString *lastError = [dcapi dc_GetLastErr];
     errorCallback(@[lastError]);
