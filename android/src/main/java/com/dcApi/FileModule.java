@@ -7,6 +7,8 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.facebook.react.bridge.ReactMethod;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 import dcapi.Dcapi_;
 import dcapi.If_FileTransmit;
@@ -29,6 +31,24 @@ public class FileModule extends ReactContextBaseJavaModule {
     public String getName() {
         return "FileModule";
     }
+    public static String encrypt(String input) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            byte[] bytes = md.digest(input.getBytes());
+            StringBuilder sb = new StringBuilder();
+            for (byte b : bytes) {
+                String hex = Integer.toHexString(b & 0xFF);
+                if (hex.length() == 1) {
+                    sb.append("0");
+                }
+                sb.append(hex);
+            }
+            return sb.toString();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
     // 添加文件
     // 添加文件AddParams 应该包含是否加密选项，以及密钥
@@ -42,6 +62,10 @@ public class FileModule extends ReactContextBaseJavaModule {
         new Thread(new Runnable() {
             @Override
             public void run() {
+                // 获取md5加密
+                // 此 MessageDigest 类为应用程序提供信息摘要算法的功能
+                String str = readPath + "_" + enkey;
+                String md5Str = encrypt(str);
                 String cid = dcClass.file_AddFile(readPath, enkey, new If_FileTransmit() {
                     @Override
                     public void updateTransmitSize(long status, long size) {
@@ -51,9 +75,9 @@ public class FileModule extends ReactContextBaseJavaModule {
                         if (reactContext == null){
                             return;
                         }
-                        String jsonStr = "{\"type\":\"addFile\", \"url\":\"" + readPath + "\", \"status\":\""+ status +"\", \"size\":\""+ size + "\"}";
+                        String jsonStr = "{\"type\":\"addFile\", \"md5Str\":\"" + md5Str + "\", \"status\":\""+ status +"\", \"size\":\""+ size + "\"}";
                         reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                                .emit("EventFile", jsonStr);
+                                .emit("EventFile_" + md5Str, jsonStr);
                     }
                 });
                 System.out.println("---------------------------------addFile: " + cid);
