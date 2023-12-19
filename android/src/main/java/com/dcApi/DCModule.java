@@ -119,7 +119,7 @@ public class DCModule extends ReactContextBaseJavaModule {
                     System.out.println("---------------------------------userpath : " + userpath);
                     System.out.println("---------------------------------region : " + region);
                     System.out.println("---------------------------------key : " + key);
-                    String webport = dcClass.dc_ApiInit(DCAPPName, region, key, apppath, userpath, true, true);
+                    String webport = dcClass.dc_ApiInit(DCAPPName, region, key, apppath, dir, true, true);
                     System.out.println("---------------------------------init: " + webport);
                     if (webport.equals("")) {
                         String lastError = dcClass.dc_GetLastErr();

@@ -84,7 +84,7 @@ RCT_EXPORT_METHOD(dc_ApiInit:(NSString*)DCAPPName dir:(NSString*)dir region:(NSS
   }
   RCTLogInfo(@"是否创建成功: %d，%@", success, error);
   if(success){
-    NSString *webport = [dcapi dc_ApiInit:DCAPPName region:region encryptkey:key apppath:apppath userdir:userpath webflag:true debugflag:true];
+    NSString *webport = [dcapi dc_ApiInit:DCAPPName region:region encryptkey:key apppath:apppath userdir:dir webflag:true debugflag:true];
     RCTLogInfo(@"返回webport: %@", webport);
     if(webport.length > 0){
       successCallback(@[webport]);
