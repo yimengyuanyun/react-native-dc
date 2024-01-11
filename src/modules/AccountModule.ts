@@ -18,18 +18,18 @@ export const DCgetNFTAccount = () => {
 };
 
 // 绑定当前私钥绑定的NFT账号
-export const DCbindNFTAccount = (account: string, password: string) => {
+export const DCbindNFTAccount = (account: string, password: string, code: string) => {
   return new Promise(resolve => {
     const successCallback = (bind: string) => {
       console.log('account_BindNFTAccount success', bind);
       resolve({bind});
     };
-    AccountModule.account_BindNFTAccount(account, password, successCallback);
+    AccountModule.account_BindNFTAccount(account, password, code, successCallback);
   });
 };
 
 // 绑定当前私钥绑定的NFT账号
-export const DCbindAppNFTAccount = (account: string, password: string) => {
+export const DCbindAppNFTAccount = (account: string, password: string, code: string) => {
   return new Promise(resolve => {
     const successCallback = (bind: string) => {
       console.log('account_BindNFTAccountWithAppBcAccount success', bind);
@@ -38,6 +38,7 @@ export const DCbindAppNFTAccount = (account: string, password: string) => {
     AccountModule.account_BindNFTAccountWithAppBcAccount(
       account,
       password,
+      code,
       successCallback,
     );
   });
@@ -54,7 +55,7 @@ export const DCifNftAccountBindSuccess = (account: string) => {
 };
 
 // NFT账号登录
-export const DCnftAccountLogin = (account: string, password: string) => {
+export const DCnftAccountLogin = (account: string, password: string, code: string) => {
   return new Promise(resolve => {
     const successCallback = (login: string) => {
       console.log('account_NFTAccountLogin success', login);
@@ -67,6 +68,7 @@ export const DCnftAccountLogin = (account: string, password: string) => {
     AccountModule.account_NFTAccountLogin(
       account,
       password,
+      code,
       successCallback,
       errorCallback,
     );
@@ -82,6 +84,7 @@ export const DCloginOut = () => {
 export const DCnftAcountPasswordModify = (
   account: string,
   password: string,
+  code: string,
 ) => {
   return new Promise(resolve => {
     const successCallback = (modify: string) => {
@@ -91,6 +94,7 @@ export const DCnftAcountPasswordModify = (
     AccountModule.account_NFTAccountPasswordModify(
       account,
       password,
+      code,
       successCallback,
     );
   });
@@ -100,6 +104,7 @@ export const DCnftAcountPasswordModify = (
 export const DCappNftAcountPasswordModify = (
   account: string,
   password: string,
+  code: string,
 ) => {
   return new Promise(resolve => {
     const successCallback = (modify: string) => {
@@ -109,6 +114,7 @@ export const DCappNftAcountPasswordModify = (
     AccountModule.account_AppNFTAccountPasswordModify(
       account,
       password,
+      code,
       successCallback,
     );
   });

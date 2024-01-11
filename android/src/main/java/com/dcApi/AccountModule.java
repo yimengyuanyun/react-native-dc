@@ -47,12 +47,13 @@ public class AccountModule extends ReactContextBaseJavaModule {
     public void account_BindNFTAccount(
             String account,
             String password,
+            String code,
             Callback successCallback) {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 System.out.println("--------------------------------bindNFTAccount：" + account + "，" + password);
-                long sdkStatus = dcClass.account_BindNFTAccount(account, password);
+                long sdkStatus = dcClass.account_BindNFTAccount(account, password, code);
                 System.out.println("--------------------------------bindNFTAccount：" + sdkStatus);
                 successCallback.invoke(Long.toString(sdkStatus));
             }
@@ -66,12 +67,13 @@ public class AccountModule extends ReactContextBaseJavaModule {
     public void account_BindNFTAccountWithAppBcAccount(
             String account,
             String password,
+            String code,
             Callback successCallback) {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 System.out.println("--------------------------------account_BindNFTAccountWithAppBcAccount" + account + "，" + password);
-                long sdkStatus = dcClass.account_BindNFTAccountWithAppBcAccount(account, password);
+                long sdkStatus = dcClass.account_BindNFTAccountWithAppBcAccount(account, password, code);
                 System.out.println("--------------------------------account_BindNFTAccountWithAppBcAccount" + sdkStatus);
                 successCallback.invoke(Long.toString(sdkStatus));
             }
@@ -111,13 +113,14 @@ public class AccountModule extends ReactContextBaseJavaModule {
     public void account_NFTAccountLogin(
             String account,
             String password,
+            String code,
             Callback successCallback,
             Callback errorCallback) {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 System.out.println("--------------------------------nftAccountLogin：" + account + "， " + password);
-                long login = dcClass.account_NFTAccountLogin(account, password);
+                long login = dcClass.account_NFTAccountLogin(account, password, code);
                 System.out.println("---------------------------------nftAccountLogin:  " + login);
                 if (login != 0) {
                     String lastError = dcClass.dc_GetLastErr();
@@ -140,11 +143,12 @@ public class AccountModule extends ReactContextBaseJavaModule {
     public void account_NFTAccountPasswordModify(
             String account,
             String password,
+            String code,
             Callback successCallback) {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                long sdkStatus = dcClass.account_NFTAccountPasswordModify(account, password);
+                long sdkStatus = dcClass.account_NFTAccountPasswordModify(account, password, code);
                 successCallback.invoke(Long.toString(sdkStatus));
                 System.out.println("--------------------------------nftAcountPasswordModify：" + sdkStatus);
             };
@@ -156,11 +160,12 @@ public class AccountModule extends ReactContextBaseJavaModule {
     public void account_AppNFTAccountPasswordModify(
             String account,
             String password,
+            String code,
             Callback successCallback) {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                long sdkStatus = dcClass.account_AppNFTAccountPasswordModify(account, password);
+                long sdkStatus = dcClass.account_AppNFTAccountPasswordModify(account, password, code);
                 successCallback.invoke(Long.toString(sdkStatus));
                 System.out.println("--------------------------------Account_AppNFTAccountPasswordModify" + sdkStatus);
             };
