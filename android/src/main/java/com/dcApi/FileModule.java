@@ -12,6 +12,7 @@ import java.security.NoSuchAlgorithmException;
 
 import dcapi.Dcapi_;
 import dcapi.If_FileTransmit;
+
 /**
  * 文件相关接口
  */
@@ -31,6 +32,7 @@ public class FileModule extends ReactContextBaseJavaModule {
     public String getName() {
         return "FileModule";
     }
+
     public static String encrypt(String input) {
         try {
             MessageDigest md = MessageDigest.getInstance("MD5");
@@ -50,15 +52,37 @@ public class FileModule extends ReactContextBaseJavaModule {
         return null;
     }
 
+    @ReactMethod
+    public void file_GetFileInfo(
+        String fid,
+        Callback successCallback,
+        Callback errorCallback) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String fileInfo = dcClass.file_GetFileInfo(fid);
+                System.out.println("---------------------------------GetFileInfo: " + fileInfo);
+                if (fileInfo.equals("")) {
+                    String lastError = dcClass.dc_GetLastErr();
+                    System.out.println("---------------------------------GetFileInfo: err");
+                    System.out.println(lastError);
+                    errorCallback.invoke(lastError);
+                } else {
+                    successCallback.invoke(fileInfo);
+                }
+            }
+        }).start();
+    }
+
     // 添加文件
     // 添加文件AddParams 应该包含是否加密选项，以及密钥
     @ReactMethod
     public void file_AddFile(
             String readPath,
             String enkey,
-            //            Callback listenCallback,
+            // Callback listenCallback,
             Callback successCallback,
-            Callback errorCallback){
+            Callback errorCallback) {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -69,13 +93,14 @@ public class FileModule extends ReactContextBaseJavaModule {
                 String cid = dcClass.file_AddFile(readPath, enkey, new If_FileTransmit() {
                     @Override
                     public void updateTransmitSize(long status, long size) {
-                        //FileDealStatus 0:成功 1:转化为ipfs对象操作中 2:文件传输中 3:传输失败 4:异常
+                        // FileDealStatus 0:成功 1:转化为ipfs对象操作中 2:文件传输中 3:传输失败 4:异常
                         System.out.println("---------------------------------addFile inform: " + status + "; " + size);
-                        //                    listenCallback.invoke();
-                        if (reactContext == null){
+                        // listenCallback.invoke();
+                        if (reactContext == null) {
                             return;
                         }
-                        String jsonStr = "{\"type\":\"addFile\", \"md5Str\":\"" + md5Str + "\", \"status\":\""+ status +"\", \"size\":\""+ size + "\"}";
+                        String jsonStr = "{\"type\":\"addFile\", \"md5Str\":\"" + md5Str + "\", \"status\":\"" + status
+                                + "\", \"size\":\"" + size + "\"}";
                         reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
                                 .emit("EventFile_" + md5Str, jsonStr);
                     }
@@ -114,10 +139,11 @@ public class FileModule extends ReactContextBaseJavaModule {
                         // FileDealStatus 0:成功 1:转化为ipfs对象操作中 2:文件传输中 3:传输失败 4:异常
                         System.out.println("---------------------------------getFile inform: " + status + "; " + size);
                         // listenCallback.invoke(Long.toString(status), Long.toString(size));
-                        if (reactContext == null){
+                        if (reactContext == null) {
                             return;
                         }
-                        String jsonStr = "{\"type\":\"getFile\", \"url\":\"" + fid + "\", \"status\":\""+ status +"\", \"size\":\""+ size + "\"}";
+                        String jsonStr = "{\"type\":\"getFile\", \"url\":\"" + fid + "\", \"status\":\"" + status
+                                + "\", \"size\":\"" + size + "\"}";
                         reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
                                 .emit("EventFile_" + fid, jsonStr);
                     }

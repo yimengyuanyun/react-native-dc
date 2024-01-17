@@ -61,12 +61,35 @@ RCT_EXPORT_METHOD(file_GetFile:(NSString*)fid savePath:(NSString*)savePath dkey:
   }
 }
 
-// 清除文件缓存
+// 删除文件
 RCT_EXPORT_METHOD(file_CleanFile:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
   RCTLogInfo(@"file_CleanFile");
   BOOL success = [dcapi file_CleanFile];
   if(success){
     successCallback(@[@true]);
+  }else {
+    NSString *lastError = [dcapi dc_GetLastErr];
+    errorCallback(@[lastError]);
+  }
+}
+// 获取文件信息
+RCT_EXPORT_METHOD(file_GetFileInfo:(NSString)fid successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
+  RCTLogInfo(@"file_GetFileInfo");
+  String fileInfo = [dcapi file_GetFileInfo:fid];
+  if(fileInfo.length > 0){
+    successCallback(@[fileInfo]);
+  }else {
+    NSString *lastError = [dcapi dc_GetLastErr];
+    errorCallback(@[lastError]);
+  }
+}
+
+// 删除文件
+RCT_EXPORT_METHOD(file_DeleteFile:(NSString)fid successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
+  RCTLogInfo(@"file_DeleteFile");
+  BOOL success = [dcapi file_DeleteFile:fid];
+  if(success){
+    successCallback(@[]);
   }else {
     NSString *lastError = [dcapi dc_GetLastErr];
     errorCallback(@[lastError]);
