@@ -325,14 +325,14 @@ RCT_EXPORT_METHOD(dc_GenerateAppAccount:(NSString*)appId successCallback:(RCTRes
 
 //account转address
 RCT_EXPORT_METHOD(dc_GetSS58AddressForAccount:(NSString*)account successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
-  RCTLogInfo(@"dc_GetSS58AddressForAccount");
-  NSString *address = [dcapi dc_GetSS58AddressForAccount:account];
-  if(address.length > 0){
-    successCallback(@[address]);
-  }else {
-    NSString *lastError = [dcapi dc_GetLastErr];
-    errorCallback(@[lastError]);
-  }
+ RCTLogInfo(@"dc_GetSS58AddressForAccount");
+ NSString *address = [dcapi dc_GetSS58AddressForAccount:account];
+ if(address.length > 0){
+   successCallback(@[address]);
+ }else {
+   NSString *lastError = [dcapi dc_GetLastErr];
+   errorCallback(@[lastError]);
+ }
 }
 
 #pragma mark - 向react-natvie 传递消息

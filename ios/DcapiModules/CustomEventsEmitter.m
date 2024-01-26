@@ -25,7 +25,7 @@ RCT_EXPORT_MODULE(CustomEventsEmitter);
 
 
 - (NSArray<NSString *> *)supportedEvents {
-  return @[@"EventFile", @"pushTapped"];
+  return @[@"addFile", @"getFile"];
 }
 
 // Will be called when this module's first listener is added.
@@ -45,7 +45,7 @@ RCT_EXPORT_MODULE(CustomEventsEmitter);
 }
 
 
-- (void)sendEventName:(NSString *)eventName body:(id)body {
+- (void)sendEventName:(NSString*)eventName body:(NSString*)body {
   if (hasListeners) {
     NSLog(@"CustomEventsEmitter sendEventName emitting event: %@", eventName);
     [self sendEventWithName:eventName body:body];

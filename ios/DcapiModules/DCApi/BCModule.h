@@ -9,14 +9,12 @@
 #import <React/RCTBridgeModule.h>
 #import <React/RCTEventEmitter.h>
 #import <Dcapi/Dcapi.h>
-#import "CustomEventsEmitter.h";
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface BCModule : RCTEventEmitter<RCTBridgeModule>
 
 extern DcapiDcapi *dcapi;
-extern CustomEventsEmitter *customEventsEmitter;
 
 @end
 

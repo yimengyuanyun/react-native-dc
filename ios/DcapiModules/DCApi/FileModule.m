@@ -8,8 +8,7 @@
 #import <React/RCTLog.h>//调用输出的方法
 #import <React/RCTConvert.h>
 #import "DcapiModules.h"
-
-
+#import <CommonCrypto/CommonDigest.h>
 
 //@interface FileModule ()
 //@end
@@ -17,10 +16,25 @@
 
 @implementation FileModule
 
+- (NSString *)md5:(NSString *)input {
+    const char *cStr = [input UTF8String];
+    unsigned char digest[CC_MD5_DIGEST_LENGTH];
+
+    CC_MD5(cStr, strlen(cStr), digest);
+
+    NSMutableString *output = [NSMutableString stringWithCapacity:CC_MD5_DIGEST_LENGTH * 2];
+
+    for(int i = 0; i < CC_MD5_DIGEST_LENGTH; i++) {
+        [output appendFormat:@"%02x", digest[i]];
+    }
+
+    return output;
+}
 /**
  *为了实现RCTBridgeModule协议，你的类需要包含RCT_EXPORT_MODULE()宏。这个宏也可以添加一个参数用来指定在 JavaScript 中访问这个模块的名字。如果你不指定，默认就会使用这个 Objective-C 类的名字。如果类名以 RCT 开头，则 JavaScript 端引入的模块名会自动移除这个前缀。
  */
 RCT_EXPORT_MODULE()
+
 
 
 
@@ -36,7 +50,9 @@ RCT_EXPORT_MODULE()
 //添加文件AddParams 应该包含是否加密选项，以及密钥
 RCT_EXPORT_METHOD(file_AddFile:(NSString*)readPath enkey:(NSString*)enkey successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
   RCTLogInfo(@"file_AddFile");
-  FileModuleFile *addfile = [[FileModuleFile alloc] initWithInfo:@"addFile" url:readPath];
+  NSString *str = [NSString stringWithFormat:@"%@_%@", readPath, enkey];
+  NSString *md5Str = [self md5:str];
+  FileModuleFile *addfile = [[FileModuleFile alloc] initWithInfo:@"addFile" url:readPath md5Str:md5Str];
   NSString *cid = [dcapi file_AddFile:readPath enkey:enkey fileTransmit:addfile];
   if(cid.length > 0){
     successCallback(@[cid]);
@@ -51,7 +67,7 @@ RCT_EXPORT_METHOD(file_AddFile:(NSString*)readPath enkey:(NSString*)enkey succes
 // must have been added as a UnixFS DAG (default for IPFS).
 RCT_EXPORT_METHOD(file_GetFile:(NSString*)fid savePath:(NSString*)savePath dkey:(NSString*)dkey successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
   RCTLogInfo(@"file_GetFile");
-    FileModuleFile *getfile = [[FileModuleFile alloc] initWithInfo:@"getFile" url:fid];
+  FileModuleFile *getfile = [[FileModuleFile alloc] initWithInfo:@"getFile" url:fid md5Str:@""];
   BOOL success = [dcapi file_GetFile:fid savePath:savePath dkey:dkey fileTransmit:getfile];
   if(success > 0){
     successCallback(@[]);
@@ -61,7 +77,7 @@ RCT_EXPORT_METHOD(file_GetFile:(NSString*)fid savePath:(NSString*)savePath dkey:
   }
 }
 
-// 删除文件
+// 清理文件缓存文件
 RCT_EXPORT_METHOD(file_CleanFile:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
   RCTLogInfo(@"file_CleanFile");
   BOOL success = [dcapi file_CleanFile];
@@ -73,9 +89,9 @@ RCT_EXPORT_METHOD(file_CleanFile:(RCTResponseSenderBlock)successCallback errorCa
   }
 }
 // 获取文件信息
-RCT_EXPORT_METHOD(file_GetFileInfo:(NSString)fid successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
+RCT_EXPORT_METHOD(file_GetFileInfo:(NSString*)fid successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
   RCTLogInfo(@"file_GetFileInfo");
-  String fileInfo = [dcapi file_GetFileInfo:fid];
+  NSString *fileInfo = [dcapi file_GetFileInfo:fid];
   if(fileInfo.length > 0){
     successCallback(@[fileInfo]);
   }else {
@@ -85,8 +101,9 @@ RCT_EXPORT_METHOD(file_GetFileInfo:(NSString)fid successCallback:(RCTResponseSen
 }
 
 // 删除文件
-RCT_EXPORT_METHOD(file_DeleteFile:(NSString)fid successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
+RCT_EXPORT_METHOD(file_DeleteFile:(NSString*)fid successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
   RCTLogInfo(@"file_DeleteFile");
+  RCTLogInfo(fid);
   BOOL success = [dcapi file_DeleteFile:fid];
   if(success){
     successCallback(@[]);
@@ -96,7 +113,7 @@ RCT_EXPORT_METHOD(file_DeleteFile:(NSString)fid successCallback:(RCTResponseSend
   }
 }
 
-#pragma mark - 向react-natvie 传递消息
+//#pragma mark - 向react-natvie 传递消息
 - (NSArray<NSString *> *)supportedEvents
 {
   return @[@"EventReminder"];
@@ -135,15 +152,18 @@ RCT_EXPORT_MODULE()
 
 - (NSArray<NSString *> *)supportedEvents
 {
-  return @[@"EventReminder"];
+    return @[@"addFile", @"getFile"];
 }
--(id) initWithInfo:(NSString *)type url:(NSString *)url
+
+
+-(id) initWithInfo:(NSString *)type url:(NSString *)url md5Str:(NSString *)md5Str
 {
     self = [super init];
     if(self)
     {
         self.filehandleType = type;
         self.fileUrl = url;
+        self.md5Str = md5Str;
     }
     return self;
 }
@@ -152,9 +172,12 @@ RCT_EXPORT_MODULE()
  */
 - (void)updateTransmitSize:(long)status size:(int64_t)size {
     NSLog(@"-------updateTransmitSize11111");
-    if(self.filehandleType != nil){
-        NSLog(@"-------updateTransmitSize22222");
-        [customEventsEmitter sendEventName:@"EventFile" body: [NSString stringWithFormat:@"{\"type\":\"%@\",\"url\": \"%@\",\"status\": \"%@\",\"size\": \"%@\"}", self.filehandleType, self.fileUrl, [NSString stringWithFormat: @"%ld", status], [NSString stringWithFormat: @"%lld", size]]];
+    if([self.filehandleType isEqualToString:@"getFile"]){
+        NSLog(@"-------getFile updateTransmitSize");
+        [customEventsEmitter sendEventName:@"getFile" body:[NSString stringWithFormat:@"{\"type\":\"%@\",\"fid\": \"%@\",\"status\": \"%@\",\"size\": \"%@\"}", self.filehandleType, self.fileUrl, [NSString stringWithFormat: @"%ld", status], [NSString stringWithFormat: @"%lld", size]]];
+    }else if([self.filehandleType isEqualToString:@"addFile"]){
+        NSLog(@"-------addFile updateTransmitSize");
+        [customEventsEmitter sendEventName:@"addFile" body:[NSString stringWithFormat:@"{\"type\":\"%@\",\"md5Str\": \"%@\",\"status\": \"%@\",\"size\": \"%@\"}", self.filehandleType, self.md5Str, [NSString stringWithFormat: @"%ld", status], [NSString stringWithFormat: @"%lld", size]]];
     }
 }
 @end

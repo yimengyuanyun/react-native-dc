@@ -40,18 +40,18 @@ RCT_EXPORT_METHOD(account_Logout) {
 // 将私钥绑定NFT账号(NFT账号+密码) //0:绑定成功 1:用户已绑定其他nft账号 2:nft账号已经被其他用户绑定 3:区块链账号不存在
 // 99:其他异常
 // 4:还没有建立到存储节点的连接 5:加密数据过程出错 6:区块链相关错误 7:签名错误 8:用户有效期已过
-RCT_EXPORT_METHOD(account_BindNFTAccount:(NSString*)account password:(NSString*)password code:(NSString*)code  successCallback:(RCTResponseSenderBlock)successCallback) {
+RCT_EXPORT_METHOD(account_BindNFTAccount:(NSString*)account password:(NSString*)password seccode:(NSString*)seccode  successCallback:(RCTResponseSenderBlock)successCallback) {
     RCTLogInfo(@"account_BindNFTAccount");
-    long sdkStatus = [dcapi account_BindNFTAccount:account password:password code:code];
+    long sdkStatus = [dcapi account_BindNFTAccount:account password:password seccode:seccode];
     successCallback(@[@(sdkStatus)]);
 }
 
 // 将私钥绑定NFT账号(NFT账号+密码) //0:绑定成功 1:用户已绑定其他nft账号 2:nft账号已经被其他用户绑定 3:区块链账号不存在
 // 99:其他异常
 // 4:还没有建立到存储节点的连接 5:加密数据过程出错 6:区块链相关错误 7:签名错误 8:用户有效期已过
-RCT_EXPORT_METHOD(account_BindNFTAccountWithAppBcAccount:(NSString*)account password:(NSString*)password  code:(NSString*)code  successCallback:(RCTResponseSenderBlock)successCallback) {
+RCT_EXPORT_METHOD(account_BindNFTAccountWithAppBcAccount:(NSString*)account password:(NSString*)password  seccode:(NSString*)seccode  successCallback:(RCTResponseSenderBlock)successCallback) {
     RCTLogInfo(@"account_BindNFTAccountWithAppBcAccount");
-    long sdkStatus = [dcapi account_BindNFTAccountWithAppBcAccount:account password:password code:code];
+    long sdkStatus = [dcapi account_BindNFTAccountWithAppBcAccount:account password:password seccode:seccode];
     successCallback(@[@(sdkStatus)]);
 }
 
@@ -70,9 +70,9 @@ RCT_EXPORT_METHOD(account_IfAppNftAccountBindSuccess:(NSString*)account  success
 }
 
 //NFT账号登录
-RCT_EXPORT_METHOD(account_NFTAccountLogin:(NSString*)account password:(NSString*)password code:(NSString*)code  successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
+RCT_EXPORT_METHOD(account_NFTAccountLogin:(NSString*)account password:(NSString*)password seccode:(NSString*)seccode  successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
     RCTLogInfo(@"account_NFTAccountLogin");
-    long login = [dcapi account_NFTAccountLogin:account password:password code:code];
+    long login = [dcapi account_NFTAccountLogin:account password:password seccode:seccode];
     if(login == 0){
         successCallback(@[@(login)]);
     }else {
@@ -86,16 +86,16 @@ RCT_EXPORT_METHOD(account_NFTAccountLogin:(NSString*)account password:(NSString*
 }
 
 //NFT账号密码修改
-RCT_EXPORT_METHOD(account_NFTAccountPasswordModify:(NSString*)account password:(NSString*)password  code:(NSString*)code  successCallback:(RCTResponseSenderBlock)successCallback) {
+RCT_EXPORT_METHOD(account_NFTAccountPasswordModify:(NSString*)account password:(NSString*)password  seccode:(NSString*)seccode  successCallback:(RCTResponseSenderBlock)successCallback) {
     RCTLogInfo(@"account_NFTAccountPasswordModify");
-    long sdkStatus = [dcapi account_NFTAccountPasswordModify:account password:password code:code];
+    long sdkStatus = [dcapi account_NFTAccountPasswordModify:account password:password seccode:seccode];
     successCallback(@[@(sdkStatus)]);
 }
 
 //子账号NFT账号密码修改
-RCT_EXPORT_METHOD(account_AppNFTAccountPasswordModify:(NSString*)account password:(NSString*)password  code:(NSString*)code  successCallback:(RCTResponseSenderBlock)successCallback) {
+RCT_EXPORT_METHOD(account_AppNFTAccountPasswordModify:(NSString*)account password:(NSString*)password  seccode:(NSString*)seccode  successCallback:(RCTResponseSenderBlock)successCallback) {
     RCTLogInfo(@"account_AppNFTAccountPasswordModify");
-    long sdkStatus = [dcapi account_AppNFTAccountPasswordModify:account password:password code:code];
+    long sdkStatus = [dcapi account_AppNFTAccountPasswordModify:account password:password seccode:seccode];
     successCallback(@[@(sdkStatus)]);
 }
 

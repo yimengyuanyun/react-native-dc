@@ -23,7 +23,8 @@ extern CustomEventsEmitter *customEventsEmitter;
 
 @property (nonatomic, strong) NSString *filehandleType;
 @property (nonatomic, strong) NSString *fileUrl;
--(id)initWithInfo:(NSString *)type url:(NSString *)url;   //带参数的构造函数
+@property (nonatomic, strong) NSString *md5Str;
+-(id)initWithInfo:(NSString *)type url:(NSString *)url md5Str:(NSString *)md5Str;   //带参数的构造函数
 
 @end
 

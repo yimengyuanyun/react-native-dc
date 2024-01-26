@@ -102,7 +102,7 @@ public class FileModule extends ReactContextBaseJavaModule {
                         String jsonStr = "{\"type\":\"addFile\", \"md5Str\":\"" + md5Str + "\", \"status\":\"" + status
                                 + "\", \"size\":\"" + size + "\"}";
                         reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                                .emit("EventFile_" + md5Str, jsonStr);
+                                .emit("addFile", jsonStr);
                     }
                 });
                 System.out.println("---------------------------------addFile: " + cid);
@@ -145,7 +145,7 @@ public class FileModule extends ReactContextBaseJavaModule {
                         String jsonStr = "{\"type\":\"getFile\", \"url\":\"" + fid + "\", \"status\":\"" + status
                                 + "\", \"size\":\"" + size + "\"}";
                         reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                                .emit("EventFile_" + fid, jsonStr);
+                                .emit("getFile", jsonStr);
                     }
                 });
                 System.out.println("---------------------------------getFile: " + bool);
