@@ -1,7 +1,7 @@
 {
   "name": "react-native-dc",
   "title": "React Native Dc",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "TODO",
   "main": "lib/index.js",
   "files": [
@@ -26,12 +26,12 @@
   "license": "MIT",
   "licenseFilename": "LICENSE",
   "peerDependencies": {
-    "react": "^18.0.0",
-    "react-native": "^0.69.4"
+    "react": ">=18.0.0",
+    "react-native": ">=0.69.4"
   },
   "devDependencies": {
-    "react": "^18.0.0",
-    "react-native": "^0.69.4"
+    "react": ">=18.0.0",
+    "react-native": ">=0.69.4"
   },
   "bugs": {
     "url": "https://github.com/yimengyuanyun/react-native-dc/issues"
