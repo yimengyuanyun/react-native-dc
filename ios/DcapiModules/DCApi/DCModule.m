@@ -74,7 +74,7 @@ RCT_EXPORT_METHOD(dc_DecryptData:(NSString*)baseData pin:(NSString*)pin successC
 
 // 初始化
 RCT_EXPORT_METHOD(dc_ApiInit:(NSString*)DCAPPName dir:(NSString*)dir region:(NSString*)region  key:(NSString*)key successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback){
-  NSString *apppath = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES).firstObject;
+  NSString *apppath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).firstObject;
   NSString *userpath = [apppath stringByAppendingPathComponent:dir];
   NSError *error = nil;
   BOOL success = YES;
@@ -301,7 +301,7 @@ RCT_EXPORT_METHOD(dc_ReleaseDc:(RCTResponseSenderBlock)successCallback) {
 //删除文件夹
 RCT_EXPORT_METHOD(deleteDir:(NSString*)dir successCallback:(RCTResponseSenderBlock)successCallback) {
   RCTLogInfo(@"deleteDir");
-  NSString *apppath = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES).firstObject;
+  NSString *apppath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).firstObject;
   NSString *userpath = [apppath stringByAppendingPathComponent:dir];
   NSError *error = nil;
   BOOL success = YES;
