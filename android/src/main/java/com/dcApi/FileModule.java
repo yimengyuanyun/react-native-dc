@@ -142,7 +142,7 @@ public class FileModule extends ReactContextBaseJavaModule {
                         if (reactContext == null) {
                             return;
                         }
-                        String jsonStr = "{\"type\":\"getFile\", \"url\":\"" + fid + "\", \"status\":\"" + status
+                        String jsonStr = "{\"type\":\"getFile\", \"fid\":\"" + fid + "\", \"status\":\"" + status
                                 + "\", \"size\":\"" + size + "\"}";
                         reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
                                 .emit("getFile", jsonStr);
