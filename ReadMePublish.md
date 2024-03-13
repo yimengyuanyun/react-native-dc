@@ -21,3 +21,4 @@ npm publish
 0.1.4 - file调整
 0.1.6 - 允许react，react-native的版本高于默认版本
 0.1.9 - file下载bug调整
+0.1.12 - targetSdk compileSdk 改成34
