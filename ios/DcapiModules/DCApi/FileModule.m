@@ -49,68 +49,97 @@ RCT_EXPORT_MODULE()
 // 添加文件
 //添加文件AddParams 应该包含是否加密选项，以及密钥
 RCT_EXPORT_METHOD(file_AddFile:(NSString*)readPath enkey:(NSString*)enkey successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
-  RCTLogInfo(@"file_AddFile");
-  NSString *str = [NSString stringWithFormat:@"%@_%@", readPath, enkey];
-  NSString *md5Str = [self md5:str];
-  FileModuleFile *addfile = [[FileModuleFile alloc] initWithInfo:@"addFile" url:readPath md5Str:md5Str];
-  NSString *cid = [dcapi file_AddFile:readPath enkey:enkey fileTransmit:addfile];
-  if(cid.length > 0){
-    successCallback(@[cid]);
-  }else {
-    NSString *lastError = [dcapi dc_GetLastErr];
-    errorCallback(@[lastError]);
-  }
+    RCTLogInfo(@"file_AddFile");
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        NSString *str = [NSString stringWithFormat:@"%@_%@", readPath, enkey];
+        NSString *md5Str = [self md5:str];
+        FileModuleFile *addfile = [[FileModuleFile alloc] initWithInfo:@"addFile" url:readPath md5Str:md5Str];
+        NSString *cid = [dcapi file_AddFile:readPath enkey:enkey fileTransmit:addfile];
+        if(cid.length > 0){
+            dispatch_async(dispatch_get_main_queue(), ^{
+                successCallback(@[cid]);
+            });
+        }else {
+            NSString *lastError = [dcapi dc_GetLastErr];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                errorCallback(@[lastError]);
+            });
+        }
+    });
 }
 
 //获取文件应该指定获取文件存放目录，以及密钥（如果密钥是空，就表示不用解密）
 // GetFile returns a reader to a file as identified by its root CID. The file
 // must have been added as a UnixFS DAG (default for IPFS).
 RCT_EXPORT_METHOD(file_GetFile:(NSString*)fid savePath:(NSString*)savePath dkey:(NSString*)dkey successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
-  RCTLogInfo(@"file_GetFile");
-  FileModuleFile *getfile = [[FileModuleFile alloc] initWithInfo:@"getFile" url:fid md5Str:@""];
-  BOOL success = [dcapi file_GetFile:fid savePath:savePath dkey:dkey fileTransmit:getfile];
-  if(success > 0){
-    successCallback(@[]);
-  }else {
-    NSString *lastError = [dcapi dc_GetLastErr];
-    errorCallback(@[lastError]);
-  }
+    RCTLogInfo(@"file_GetFile");
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        FileModuleFile *getfile = [[FileModuleFile alloc] initWithInfo:@"getFile" url:fid md5Str:@""];
+        BOOL success = [dcapi file_GetFile:fid savePath:savePath dkey:dkey fileTransmit:getfile];
+        if(success > 0){
+            dispatch_async(dispatch_get_main_queue(), ^{
+                successCallback(@[]);
+            });
+        }else {
+            NSString *lastError = [dcapi dc_GetLastErr];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                errorCallback(@[lastError]);
+            });
+        }
+    });
 }
 
 // 清理文件缓存文件
 RCT_EXPORT_METHOD(file_CleanFile:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
-  RCTLogInfo(@"file_CleanFile");
-  BOOL success = [dcapi file_CleanFile];
-  if(success){
-    successCallback(@[@true]);
-  }else {
-    NSString *lastError = [dcapi dc_GetLastErr];
-    errorCallback(@[lastError]);
-  }
+    RCTLogInfo(@"file_CleanFile");
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        BOOL success = [dcapi file_CleanFile];
+        if(success > 0){
+            dispatch_async(dispatch_get_main_queue(), ^{
+                successCallback(@[@true]);
+            });
+        }else {
+            NSString *lastError = [dcapi dc_GetLastErr];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                errorCallback(@[lastError]);
+            });
+        }
+    });
 }
 // 获取文件信息
 RCT_EXPORT_METHOD(file_GetFileInfo:(NSString*)fid successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
-  RCTLogInfo(@"file_GetFileInfo");
-  NSString *fileInfo = [dcapi file_GetFileInfo:fid];
-  if(fileInfo.length > 0){
-    successCallback(@[fileInfo]);
-  }else {
-    NSString *lastError = [dcapi dc_GetLastErr];
-    errorCallback(@[lastError]);
-  }
+    RCTLogInfo(@"file_GetFileInfo");
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        NSString *fileInfo = [dcapi file_GetFileInfo:fid];
+        if(fileInfo.length > 0){
+            dispatch_async(dispatch_get_main_queue(), ^{
+                successCallback(@[fileInfo]);
+            });
+        }else {
+            NSString *lastError = [dcapi dc_GetLastErr];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                errorCallback(@[lastError]);
+            });
+        }
+    });
 }
 
 // 删除文件
 RCT_EXPORT_METHOD(file_DeleteFile:(NSString*)fid successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
-  RCTLogInfo(@"file_DeleteFile");
-  RCTLogInfo(fid);
-  BOOL success = [dcapi file_DeleteFile:fid];
-  if(success){
-    successCallback(@[]);
-  }else {
-    NSString *lastError = [dcapi dc_GetLastErr];
-    errorCallback(@[lastError]);
-  }
+    RCTLogInfo(@"file_DeleteFile");
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        BOOL success = [dcapi file_DeleteFile:fid];
+        if(success){
+            dispatch_async(dispatch_get_main_queue(), ^{
+                successCallback(@[]);
+            });
+        }else {
+            NSString *lastError = [dcapi dc_GetLastErr];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                errorCallback(@[lastError]);
+            });
+        }
+    });
 }
 
 //#pragma mark - 向react-natvie 传递消息

@@ -42,8 +42,12 @@ RCT_EXPORT_METHOD(account_Logout) {
 // 4:还没有建立到存储节点的连接 5:加密数据过程出错 6:区块链相关错误 7:签名错误 8:用户有效期已过
 RCT_EXPORT_METHOD(account_BindNFTAccount:(NSString*)account password:(NSString*)password seccode:(NSString*)seccode  successCallback:(RCTResponseSenderBlock)successCallback) {
     RCTLogInfo(@"account_BindNFTAccount");
-    long sdkStatus = [dcapi account_BindNFTAccount:account password:password seccode:seccode];
-    successCallback(@[@(sdkStatus)]);
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        long sdkStatus = [dcapi account_BindNFTAccount:account password:password seccode:seccode];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            successCallback(@[@(sdkStatus)]);
+        });
+    });
 }
 
 // 将私钥绑定NFT账号(NFT账号+密码) //0:绑定成功 1:用户已绑定其他nft账号 2:nft账号已经被其他用户绑定 3:区块链账号不存在
@@ -51,59 +55,89 @@ RCT_EXPORT_METHOD(account_BindNFTAccount:(NSString*)account password:(NSString*)
 // 4:还没有建立到存储节点的连接 5:加密数据过程出错 6:区块链相关错误 7:签名错误 8:用户有效期已过
 RCT_EXPORT_METHOD(account_BindNFTAccountWithAppBcAccount:(NSString*)account password:(NSString*)password  seccode:(NSString*)seccode  successCallback:(RCTResponseSenderBlock)successCallback) {
     RCTLogInfo(@"account_BindNFTAccountWithAppBcAccount");
-    long sdkStatus = [dcapi account_BindNFTAccountWithAppBcAccount:account password:password seccode:seccode];
-    successCallback(@[@(sdkStatus)]);
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        long sdkStatus = [dcapi account_BindNFTAccountWithAppBcAccount:account password:password seccode:seccode];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            successCallback(@[@(sdkStatus)]);
+        });
+    });
 }
 
 //账号是否与用户公钥绑定成功
 RCT_EXPORT_METHOD(account_IfNftAccountBindSuccess:(NSString*)account  successCallback:(RCTResponseSenderBlock)successCallback) {
     RCTLogInfo(@"account_IfNftAccountBindSuccess");
-    BOOL bindFlag = [dcapi ifNftAccountBindSuccess:account];
-    successCallback(@[@(bindFlag)]);
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        BOOL bindFlag = [dcapi ifNftAccountBindSuccess:account];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            successCallback(@[@(bindFlag)]);
+        });
+    });
 }
 
 //应用账号是否与用户公钥绑定成功
 RCT_EXPORT_METHOD(account_IfAppNftAccountBindSuccess:(NSString*)account  successCallback:(RCTResponseSenderBlock)successCallback) {
     RCTLogInfo(@"account_IfAppNftAccountBindSuccess");
-    BOOL bindFlag = [dcapi ifAppNftAccountBindSuccess:account];
-    successCallback(@[@(bindFlag)]);
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        BOOL bindFlag = [dcapi ifAppNftAccountBindSuccess:account];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            successCallback(@[@(bindFlag)]);
+        });
+    });
 }
 
 //NFT账号登录
 RCT_EXPORT_METHOD(account_NFTAccountLogin:(NSString*)account password:(NSString*)password seccode:(NSString*)seccode  successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
     RCTLogInfo(@"account_NFTAccountLogin");
-    long login = [dcapi account_NFTAccountLogin:account password:password seccode:seccode];
-    if(login == 0){
-        successCallback(@[@(login)]);
-    }else {
-        NSString *lastError = [dcapi dc_GetLastErr];
-        if(lastError.length > 0){
-            errorCallback(@[lastError]);
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        long login = [dcapi account_NFTAccountLogin:account password:password seccode:seccode];
+        if(login == 0){
+            dispatch_async(dispatch_get_main_queue(), ^{
+                successCallback(@[@(login)]);
+            });
         }else {
-            successCallback(@[@(login)]);
+            NSString *lastError = [dcapi dc_GetLastErr];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if(lastError.length > 0){
+                    errorCallback(@[lastError]);
+                }else {
+                    successCallback(@[@(login)]);
+                }
+            });
         }
-    }
+    });
 }
 
 //NFT账号密码修改
 RCT_EXPORT_METHOD(account_NFTAccountPasswordModify:(NSString*)account password:(NSString*)password  seccode:(NSString*)seccode  successCallback:(RCTResponseSenderBlock)successCallback) {
     RCTLogInfo(@"account_NFTAccountPasswordModify");
-    long sdkStatus = [dcapi account_NFTAccountPasswordModify:account password:password seccode:seccode];
-    successCallback(@[@(sdkStatus)]);
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        long sdkStatus = [dcapi account_NFTAccountPasswordModify:account password:password seccode:seccode];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            successCallback(@[@(sdkStatus)]);
+        });
+    });
 }
 
 //子账号NFT账号密码修改
 RCT_EXPORT_METHOD(account_AppNFTAccountPasswordModify:(NSString*)account password:(NSString*)password  seccode:(NSString*)seccode  successCallback:(RCTResponseSenderBlock)successCallback) {
     RCTLogInfo(@"account_AppNFTAccountPasswordModify");
-    long sdkStatus = [dcapi account_AppNFTAccountPasswordModify:account password:password seccode:seccode];
-    successCallback(@[@(sdkStatus)]);
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        long sdkStatus = [dcapi account_AppNFTAccountPasswordModify:account password:password seccode:seccode];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            successCallback(@[@(sdkStatus)]);
+        });
+    });
 }
 
 //NFT账号转让
 RCT_EXPORT_METHOD(account_NFTAccountTransfer:(NSString*)tpubkey   successCallback:(RCTResponseSenderBlock)successCallback) {
     RCTLogInfo(@"account_NFTAccountTransfer");
-    long transfer = [dcapi account_NFTAccountTransfer:tpubkey];
-    successCallback(@[@(transfer)]);
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        long transfer = [dcapi account_NFTAccountTransfer:tpubkey];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            successCallback(@[@(transfer)]);
+        });
+    });
 }
 
 #pragma mark - 向react-natvie 传递消息

@@ -33,57 +33,85 @@ RCT_EXPORT_MODULE()
 
 //获取当前区块高度
 RCT_EXPORT_METHOD(bc_GetBlockHeight:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
-  RCTLogInfo(@"bc_GetBlockHeight");
-  long blockHeight = [dcapi bc_GetBlockHeight];
-  if(blockHeight > 0){
-    successCallback(@[@true]);
-  }else {
-    NSString *lastError = [dcapi dc_GetLastErr];
-    errorCallback(@[lastError]);
-  }
+    RCTLogInfo(@"bc_GetBlockHeight");
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        long blockHeight = [dcapi bc_GetBlockHeight];
+        if(blockHeight > 0){
+            dispatch_async(dispatch_get_main_queue(), ^{
+                successCallback(@[@true]);
+            });
+        }else {
+            NSString *lastError = [dcapi dc_GetLastErr];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                errorCallback(@[lastError]);
+            });
+        }
+    });
 }
 
 //获取节点的可用状态
 RCT_EXPORT_METHOD(bc_PeerState:(NSString*)peerid successCallback:(RCTResponseSenderBlock)successCallback) {
-  RCTLogInfo(@"bc_PeerState");
-  NSString *state = [dcapi bc_PeerState:peerid];
-  successCallback(@[state]);
+    RCTLogInfo(@"bc_PeerState");
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        NSString *state = [dcapi bc_PeerState:peerid];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            successCallback(@[state]);
+        });
+    });
 }
 
 // 随机生成区块链账号信息（返回mnemonic）
 RCT_EXPORT_METHOD(bc_GenerateBCAccount:(int)val  successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
-  RCTLogInfo(@"bc_GenerateBCAccount");
-  NSString *mnemonic = [dcapi bc_GenerateBCAccount:val];
-  if(mnemonic.length > 0){
-    successCallback(@[mnemonic]);
-  }else {
-    NSString *lastError = [dcapi dc_GetLastErr];
-    errorCallback(@[lastError]);
-  }
+    RCTLogInfo(@"bc_GenerateBCAccount");
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        NSString *mnemonic = [dcapi bc_GenerateBCAccount:val];
+        if(mnemonic.length > 0){
+            dispatch_async(dispatch_get_main_queue(), ^{
+                successCallback(@[mnemonic]);
+            });
+        }else {
+            NSString *lastError = [dcapi dc_GetLastErr];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                errorCallback(@[lastError]);
+            });
+        }
+    });
 }
 
 // 查询当前链上存储价格列表{data:[StroragePrice]}
 RCT_EXPORT_METHOD(bc_GetStoragePrices:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
-  RCTLogInfo(@"bc_GetStoragePrices");
-  NSString *jsonStroragePrices = [dcapi bc_GetStoragePrices];
-  if(jsonStroragePrices.length > 0){
-    successCallback(@[jsonStroragePrices]);
-  }else {
-    NSString *lastError = [dcapi dc_GetLastErr];
-    errorCallback(@[lastError]);
-  }
+    RCTLogInfo(@"bc_GetStoragePrices");
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        NSString *jsonStroragePrices = [dcapi bc_GetStoragePrices];
+        if(jsonStroragePrices.length > 0){
+            dispatch_async(dispatch_get_main_queue(), ^{
+                successCallback(@[jsonStroragePrices]);
+            });
+        }else {
+            NSString *lastError = [dcapi dc_GetLastErr];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                errorCallback(@[lastError]);
+            });
+        }
+    });
 }
 
 // 订阅存储
 RCT_EXPORT_METHOD(bc_SubscribeStorage:(int)pricetype successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
-  RCTLogInfo(@"bc_SubscribeStorage");
-  BOOL success = [dcapi bc_SubscribeStorage:pricetype];
-  if(success){
-    successCallback(@[@true]);
-  }else {
-    NSString *lastError = [dcapi dc_GetLastErr];
-    errorCallback(@[lastError]);
-  }
+    RCTLogInfo(@"bc_SubscribeStorage");
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        BOOL success = [dcapi bc_SubscribeStorage:pricetype];
+        if(success){
+            dispatch_async(dispatch_get_main_queue(), ^{
+                successCallback(@[@true]);
+            });
+        }else {
+            NSString *lastError = [dcapi dc_GetLastErr];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                errorCallback(@[lastError]);
+            });
+        }
+    });
 }
 
 #pragma mark - 向react-natvie 传递消息
