@@ -15,6 +15,11 @@ import java.io.InputStreamReader;
 import java.util.Base64;
 
 import dcapi.Dcapi_;
+
+import dcapi.If_P2pMsgHandler;
+import dcapi.If_StreamHandle;
+import dcapi.Dc_P2pConnectOptions;
+
 /**
  * 节点相关
  */
@@ -37,17 +42,17 @@ public class DCModule extends ReactContextBaseJavaModule {
 
     public static boolean mkUserDir(String path) {
         File file = new File(path);
-        //判断文件夹是否存在,如果不存在则创建文件夹
+        // 判断文件夹是否存在,如果不存在则创建文件夹
         if (!file.exists()) {
             Boolean mkSuccess = new File(path).mkdirs();
             System.out.println("---------------------------------不存在路径" + path);
             if (!file.exists()) {
                 System.out.println("---------------------------------不存在路径2" + path);
-            }else{
+            } else {
                 System.out.println("---------------------------------存在路径2" + path);
             }
             return mkSuccess;
-        }else{
+        } else {
             System.out.println("---------------------------------存在路径" + path);
             return true;
         }
@@ -71,7 +76,8 @@ public class DCModule extends ReactContextBaseJavaModule {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                byte[] key = dcClass.dc_EncryptData(data.getBytes(StandardCharsets.UTF_8), pin.getBytes(StandardCharsets.UTF_8));
+                byte[] key = dcClass.dc_EncryptData(data.getBytes(StandardCharsets.UTF_8),
+                        pin.getBytes(StandardCharsets.UTF_8));
                 if (key == null) {
                     String lastError = dcClass.dc_GetLastErr();
                     System.out.println("---------------------------------encryptData: err");
@@ -90,7 +96,8 @@ public class DCModule extends ReactContextBaseJavaModule {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                byte[] key = dcClass.dc_DecryptData(Base64.getDecoder().decode(data), pin.getBytes(StandardCharsets.UTF_8));
+                byte[] key = dcClass.dc_DecryptData(Base64.getDecoder().decode(data),
+                        pin.getBytes(StandardCharsets.UTF_8));
                 if (key == null) {
                     String lastError = dcClass.dc_GetLastErr();
                     System.out.println("---------------------------------decryptData: err");
@@ -105,16 +112,19 @@ public class DCModule extends ReactContextBaseJavaModule {
 
     // 初始化
     @ReactMethod
-    public void dc_ApiInit(String DCAPPName, String dir, String region, String key, Callback successCallback, Callback errorCallback){
+    public void dc_ApiInit(String DCAPPName, String dir, String region, String key, Callback successCallback,
+            Callback errorCallback) {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                //sdk初始化 region：区域编码（中国086） encryptkey:私钥文件加密密码 apppath:app dc文件目录  webflag 表示是否启用http访问文件模式  debugflag：是否打印调试信息 flag: 是否开启web监听
-                //Init(region string, encryptkey string, apppath string, listenport int, webflag bool, debugflag bool, flag bool) error
+                // sdk初始化 region：区域编码（中国086） encryptkey:私钥文件加密密码 apppath:app dc文件目录 webflag
+                // 表示是否启用http访问文件模式 debugflag：是否打印调试信息 flag: 是否开启web监听
+                // Init(region string, encryptkey string, apppath string, listenport int,
+                // webflag bool, debugflag bool, flag bool) error
                 String apppath = reactContext.getFilesDir().getAbsolutePath();
                 String userpath = apppath + "/" + dir;
                 Boolean mkSuccess = mkUserDir(userpath);
-                if(mkSuccess) {
+                if (mkSuccess) {
                     System.out.println("---------------------------------apppath : " + apppath);
                     System.out.println("---------------------------------userpath : " + userpath);
                     System.out.println("---------------------------------region : " + region);
@@ -129,7 +139,7 @@ public class DCModule extends ReactContextBaseJavaModule {
                     } else {
                         successCallback.invoke(webport);
                     }
-                }else{
+                } else {
                     errorCallback.invoke("");
                 }
             }
@@ -140,18 +150,18 @@ public class DCModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void dc_LoadDefaultUserInfo(
             Callback successCallback,
-            Callback errorCallback){
+            Callback errorCallback) {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 Boolean load = dcClass.dc_LoadDefaultUserInfo();
-                System.out.println("---------------------------------loadDefaultUserInfo"  + load);
-                if(!load){
+                System.out.println("---------------------------------loadDefaultUserInfo" + load);
+                if (!load) {
                     String lastError = dcClass.dc_GetLastErr();
                     System.out.println("---------------------------------loadDefaultUserInfo: err");
                     System.out.println(lastError);
                     errorCallback.invoke(lastError);
-                }else {
+                } else {
                     successCallback.invoke(true);
                 }
             }
@@ -165,12 +175,13 @@ public class DCModule extends ReactContextBaseJavaModule {
             String rk,
             String sk,
             Callback successCallback,
-            Callback errorCallback){
+            Callback errorCallback) {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 Boolean bool = dcClass.dc_SetUserDefaultDB(threadid, rk, sk);
-                System.out.println("---------------------------------setUserDefaultDB: " + bool + "...." + threadid + ", " + rk + ", " + sk);
+                System.out.println("---------------------------------setUserDefaultDB: " + bool + "...." + threadid
+                        + ", " + rk + ", " + sk);
                 if (!bool) {
                     String lastError = dcClass.dc_GetLastErr();
                     System.out.println("---------------------------------setUserDefaultDB: err");
@@ -187,43 +198,42 @@ public class DCModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void dc_GetLocalWebports(
             Callback successCallback,
-            Callback errorCallback){
+            Callback errorCallback) {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 String localWebports = dcClass.dc_GetLocalWebports();
-                System.out.println("---------------------------------getLocalWebports"  + localWebports);
-                if(localWebports.equals("")){
+                System.out.println("---------------------------------getLocalWebports" + localWebports);
+                if (localWebports.equals("")) {
                     String lastError = dcClass.dc_GetLastErr();
                     System.out.println("---------------------------------localWebports: err");
                     System.out.println(lastError);
                     errorCallback.invoke(lastError);
-                }else {
+                } else {
                     successCallback.invoke(localWebports);
                 }
             }
         }).start();
     }
 
-
     // 设置默认区块链代理节点
     @ReactMethod
     public void dc_SetDefaultChainProxy(
             String chainProxyUrl,
             Callback successCallback,
-            Callback errorCallback){
+            Callback errorCallback) {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 Boolean bool = dcClass.dc_SetDefaultChainProxy(chainProxyUrl);
                 String apppath = reactContext.getFilesDir().getAbsolutePath();
                 System.out.println("---------------------------------setDefaultChainProxy: " + chainProxyUrl);
-                if(!bool){
+                if (!bool) {
                     String lastError = dcClass.dc_GetLastErr();
                     System.out.println("---------------------------------setDefaultChainProxy: err");
                     System.out.println(lastError);
                     errorCallback.invoke(lastError);
-                }else {
+                } else {
                     successCallback.invoke(true);
                 }
             }
@@ -232,7 +242,7 @@ public class DCModule extends ReactContextBaseJavaModule {
 
     // 获取默认区块链代理节点
     @ReactMethod
-    public void dc_GetDefaultChainProxy(Callback successCallback){
+    public void dc_GetDefaultChainProxy(Callback successCallback) {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -258,7 +268,7 @@ public class DCModule extends ReactContextBaseJavaModule {
 
     // 获取在线的存储节点接入地址列表
     @ReactMethod
-    public void dc_GetOnlinePeers(Callback successCallback){
+    public void dc_GetOnlinePeers(Callback successCallback) {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -271,7 +281,7 @@ public class DCModule extends ReactContextBaseJavaModule {
 
     // 获取当前存储节点接入地址列表
     @ReactMethod
-    public void dc_GetBootPeers(Callback successCallback){
+    public void dc_GetBootPeers(Callback successCallback) {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -287,18 +297,18 @@ public class DCModule extends ReactContextBaseJavaModule {
     public void dc_AddBootAddrs(
             String multiaddr,
             Callback successCallback,
-            Callback errorCallback){
+            Callback errorCallback) {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 Boolean bool = dcClass.dc_AddBootAddrs(multiaddr);
                 System.out.println("---------------------------------addBootAddrs: " + bool);
-                if(!bool){
+                if (!bool) {
                     String lastError = dcClass.dc_GetLastErr();
                     System.out.println("---------------------------------addBootAddrs: err");
                     System.out.println(lastError);
                     errorCallback.invoke(lastError);
-                }else {
+                } else {
                     successCallback.invoke(true);
                 }
             }
@@ -308,7 +318,7 @@ public class DCModule extends ReactContextBaseJavaModule {
     // 删除指定的接入存储节点记录
     @ReactMethod
     public void dc_DeleteBootAddrs(String multiaddr,
-                                Callback successCallback){
+            Callback successCallback) {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -323,29 +333,28 @@ public class DCModule extends ReactContextBaseJavaModule {
     public void dc_SwitchDcServer(
             String multiaddr,
             Callback successCallback,
-            Callback errorCallback){
+            Callback errorCallback) {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 Boolean bool = dcClass.dc_SwitchDcServer(multiaddr);
                 System.out.println("---------------------------------switchDcServer: " + multiaddr + ", " + bool);
-                if(!bool){
+                if (!bool) {
                     String lastError = dcClass.dc_GetLastErr();
                     System.out.println("---------------------------------switchDcServer: err");
                     System.out.println(lastError);
                     errorCallback.invoke(lastError);
-                }else {
+                } else {
                     successCallback.invoke(true);
                 }
             }
         }).start();
     }
 
-
     // 获取当前接入的DC服务节点
     @ReactMethod
     public void dc_GetConnectedDcNetInfo(
-            Callback successCallback){
+            Callback successCallback) {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -356,23 +365,22 @@ public class DCModule extends ReactContextBaseJavaModule {
         }).start();
     }
 
-
     // 获取当前生效的私钥（返回16进制字符串）
     @ReactMethod
     public void dc_GetEd25519AppPrivateKey(
             Callback successCallback,
-            Callback errorCallback){
+            Callback errorCallback) {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 String privateKey = dcClass.dc_GetEd25519AppPrivateKey();
                 System.out.println("---------------------------------getEd25519AppPrivateKey: " + privateKey);
-                if(privateKey.equals("")){
+                if (privateKey.equals("")) {
                     String lastError = dcClass.dc_GetLastErr();
                     System.out.println("---------------------------------getEd25519AppPrivateKey: err");
                     System.out.println(lastError);
                     errorCallback.invoke(lastError);
-                }else {
+                } else {
                     successCallback.invoke(privateKey);
                 }
             }
@@ -382,7 +390,7 @@ public class DCModule extends ReactContextBaseJavaModule {
     // 获取当前生效key关联的助记词
     @ReactMethod
     public void dc_GetMnemonic(
-            Callback successCallback){
+            Callback successCallback) {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -393,10 +401,9 @@ public class DCModule extends ReactContextBaseJavaModule {
         }).start();
     }
 
-
     // 导入私钥，privatekey 16进制字符串
     @ReactMethod
-    public void dc_ImportEd25519PrivateKey (
+    public void dc_ImportEd25519PrivateKey(
             String privateKey,
             Callback successCallback,
             Callback errorCallback) {
@@ -419,7 +426,7 @@ public class DCModule extends ReactContextBaseJavaModule {
 
     // 导入助记词
     @ReactMethod
-    public void dc_ImportMnemonic (
+    public void dc_ImportMnemonic(
             String mnemonic,
             Callback successCallback,
             Callback errorCallback) {
@@ -442,7 +449,7 @@ public class DCModule extends ReactContextBaseJavaModule {
 
     // 给账户添加余额
     @ReactMethod
-    public void dc_AddBalanceForTest (
+    public void dc_AddBalanceForTest(
             String balance,
             Callback successCallback,
             Callback errorCallback) {
@@ -451,9 +458,9 @@ public class DCModule extends ReactContextBaseJavaModule {
             public void run() {
                 Boolean bool = dcClass.dc_AddBalanceForTest(Long.parseLong(balance));
                 System.out.println("--------------------------------addBalanceForTest");
-                if(bool){
+                if (bool) {
                     successCallback.invoke(true);
-                }else{
+                } else {
                     String lastError = dcClass.dc_GetLastErr();
                     System.out.println("---------------------------------addBalanceForTest: err");
                     System.out.println(lastError);
@@ -463,10 +470,9 @@ public class DCModule extends ReactContextBaseJavaModule {
         }).start();
     }
 
-
     // 获取用户信息
     @ReactMethod
-    public void dc_GetUserInfo (
+    public void dc_GetUserInfo(
             Callback successCallback,
             Callback errorCallback) {
         new Thread(new Runnable() {
@@ -474,18 +480,17 @@ public class DCModule extends ReactContextBaseJavaModule {
             public void run() {
                 String jsonUserInfo = dcClass.dc_GetUserInfo();
                 System.out.println("--------------------------------getUserInfo：" + jsonUserInfo);
-                if(jsonUserInfo.equals("")){
+                if (jsonUserInfo.equals("")) {
                     String lastError = dcClass.dc_GetLastErr();
                     System.out.println("---------------------------------getUserInfo: err");
                     System.out.println(lastError);
                     errorCallback.invoke(lastError);
-                }else {
+                } else {
                     successCallback.invoke(jsonUserInfo);
                 }
             }
         }).start();
     }
-
 
     // 应用账号是否已经创建
     @ReactMethod
@@ -583,6 +588,58 @@ public class DCModule extends ReactContextBaseJavaModule {
             }
         }).start();
     }
+
+    // 启动p2p通信服务
+    @ReactMethod
+    public void dc_StartP2pServer(
+            String receiver, // 接收的用户receiver，接收者16进制的账号或base32编码的pubkey
+            long model, // 0:默认模式，接收除了黑名单外的任何有效来源信息， 1:白名单模式，只接收白名单里用户的信息
+            Callback successCallback,
+            Callback errorCallback) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                System.out.println("---------------------------------start dc_StartP2pServer");
+                Dc_P2pConnectOptions options = dcapi.Dc_P2pConnectOptions();
+                Boolean bool = dcClass.dc_StartP2pServer(model, new If_P2pMsgHandler() {
+                    @Override
+                    public void PubSubMsgHandler(String fromPeerId, String topic, byte[] msg) {
+                    }
+                    @Override
+                    public void PubSubMsgResponseHandler(String msgId, String fromPeerId, String topic, byte[] msg, String err) {
+                    }
+                    @Override
+                    public void PubSubEventHandler(String fromPeerId, String topic, byte[] msg) {
+                    }
+                    @Override
+                    public void ReceiveMsg(String fromPeerId, String plaintextMsg, byte[] msg) {
+                        String jsonStr = "{\"receiver\":\"" + receiver + "\", \"fromPeerId\":\"" + fromPeerId
+                                + "\", \"plaintextMsg\":\"" + plaintextMsg
+                                + "\"}";
+                        reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                                .emit("receiveP2PMsg", jsonStr);
+                    }
+                }, new If_P2pStreamHandler() {
+                    @Override
+                    public void OnStreamConncetRequest(String fromPeerId, If_StreamHandle handle) {
+                    }
+                    @Override
+                    public void OnDataRecv(byte[] data) {
+                    }
+                    @Override
+                    public void OnStreamClose(String err) {
+                    }
+                }, options);
+                System.out.println("---------------------------------dc_StartP2pServer");
+                if (bool) {
+                    successCallback.invoke(bool);
+                } else {
+                    String lastError = dcClass.dc_GetLastErr();
+                    System.out.println("---------------------------------dc_StartP2pServer: err");
+                    System.out.println(lastError);
+                    errorCallback.invoke(lastError);
+                }
+            }
+        }).start();
+    }
 }
-
-

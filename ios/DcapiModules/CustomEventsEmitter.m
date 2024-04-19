@@ -25,7 +25,7 @@ RCT_EXPORT_MODULE(CustomEventsEmitter);
 
 
 - (NSArray<NSString *> *)supportedEvents {
-  return @[@"addFile", @"getFile"];
+  return @[@"addFile", @"getFile", @"receiveP2PMsg"];
 }
 
 // Will be called when this module's first listener is added.

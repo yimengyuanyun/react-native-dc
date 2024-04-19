@@ -474,6 +474,29 @@ RCT_EXPORT_METHOD(dc_GetSS58AddressForAccount:(NSString*)account successCallback
     });
 }
 
+// 启动p2p通信服务
+RCT_EXPORT_METHOD(dc_StartP2pServer:(NSString*)receiver model:(long)model 
+            successCallback:(RCTResponseSenderBlock)successCallback
+            errorCallback:(RCTResponseSenderBlock)errorCallback) {
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        RCTLogInfo(@"dc_StartP2pServer");
+        P2PHandlerModule *p2pHandler = [[P2PHandlerModule alloc] initWithInfo:receiver];
+        Dc_P2pConnectOptions *options = [dcapi Dc_P2pConnectOptions];
+        BOOL success = [dcapi dc_StartP2pServer:receiver model:model msgHandler:p2pHandler streamHandler:p2pHandler connectOptions:options];
+        if(success){
+            dispatch_async(dispatch_get_main_queue(), ^{
+                successCallback(@[success]);
+            });
+        }else {
+            NSString *lastError = [dcapi dc_GetLastErr];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                errorCallback(@[lastError]);
+            });
+        }
+    });
+}
+
+
 #pragma mark - 向react-natvie 传递消息
 - (NSArray<NSString *> *)supportedEvents
 {
@@ -500,5 +523,71 @@ RCT_EXPORT_METHOD(dc_GetSS58AddressForAccount:(NSString*)account successCallback
         }
     }
     return self;
+}
+@end
+
+
+
+@implementation P2PHandlerModule
+/**
+ *为了实现RCTBridgeModule协议，你的类需要包含RCT_EXPORT_MODULE()宏。这个宏也可以添加一个参数用来指定在 JavaScript 中访问这个模块的名字。如果你不指定，默认就会使用这个 Objective-C 类的名字。如果类名以 RCT 开头，则 JavaScript 端引入的模块名会自动移除这个前缀。
+ */
+RCT_EXPORT_MODULE()
+
+- (NSArray<NSString *> *)supportedEvents
+{
+    return @[@"receiveP2PMsg"];
+}
+
+
+-(id) initWithInfo:(NSString *)receiver
+{
+    self = [super init];
+    if(self)
+    {
+        self.receiver = receiver;
+    }
+    return self;
+}
+
+//If_P2pMsgHandler
+/**
+ * 订阅消息
+ */
+- (void)PubSubMsgHandler:(NSString*)fromPeerId topic:(NSString*)topic byte:(NSArray*)msg {
+    NSLog(@"-------PubSubMsgHandler");
+}
+/**
+ * 订阅消息收到消息
+ */
+- (void)PubSubMsgResponseHandler:(NSString*)msgId (NSString*)fromPeerId plaintextMsg:(NSString*)plaintextMsg topic:(NSString*)topic byte:(NSArray*)msg err:(NSString*)err {
+    NSLog(@"-------PubSubMsgResponseHandler");
+}
+/**
+ * 订阅消息时间
+ */
+- (void)PubSubEventHandler:(NSString*)fromPeerId topic:(NSString*)topic byte:(NSArray*)msg {
+    NSLog(@"-------PubSubEventHandler");
+}
+/**
+ * 收到p2p消息
+ */
+- (void)ReceiveMsg:(NSString*)fromPeerId plaintextMsg:(NSString*)plaintextMsg byte:(NSArray*)msg {
+    NSLog(@"-------ReceiveMsg");
+    [customEventsEmitter sendEventName:@"receiveP2PMsg" body:[NSString stringWithFormat:@"{\"receiver\":\"%@\",\"fromPeerId\": \"%@\",\"plaintextMsg\": \"%@\"}", self.receiver, fromPeerId, plaintextMsg]];
+}
+
+
+
+
+// If_P2pStreamHandler
+- (void)OnStreamConncetRequest:(NSString*)fromPeerId handle:(P2PHandlerModule*)handle {
+    NSLog(@"-------OnStreamConncetRequest");
+}
+- (void)OnDataRecv:(NSArray*)msg {
+    NSLog(@"-------OnDataRecv");
+}
+- (void)OnStreamClose:(NSString*)err {
+    NSLog(@"-------OnStreamClose");
 }
 @end

@@ -415,3 +415,19 @@ export const DCPubkeyToAccount = (basePubkey: string) => {
     DCModule.dc_PubkeyToAccount(basePubkey, successCallback, errorCallback);
   });
 };
+
+
+// 启动p2p通信服务
+export const dc_StartP2pServer = (receiver: string, model: number) => {
+  return new Promise((resolve) => {
+    const successCallback = (bool: boolean) => {
+      console.log("dc_StartP2pServer success", bool);
+      resolve({ bool });
+    };
+    const errorCallback = (error) => {
+      console.log("dc_StartP2pServer error", error);
+      resolve({ error });
+    };
+    DCModule.dc_StartP2pServer(receiver, model, successCallback, errorCallback);
+  });
+};
