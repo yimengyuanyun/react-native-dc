@@ -5,7 +5,7 @@ const { CommentModule } = NativeModules;
  * 评论相关接口
  */
 // 配置或增加用户自身的评论空间 0:成功 1:失败
-export const comment_AddUserCommentSpace = () => {
+export const commentAddUserCommentSpace = () => {
   return new Promise((resolve) => {
     const successCallback = (bool: boolean) => {
       console.log("comment_AddUserCommentSpace success", bool);
@@ -20,7 +20,7 @@ export const comment_AddUserCommentSpace = () => {
 };
 
 // 为指定对象开通评论功能，返回res-0:成功 1:评论空间没有配置 2:评论空间不足 3:评论数据同步中
-export const comment_AddCommentableObj = (
+export const commentAddCommentableObj = (
   objCid: string,
   openFlag: number,
   commentSpace: number
@@ -40,7 +40,7 @@ export const comment_AddCommentableObj = (
 };
 
 // 为开通评论的对象增加评论空间，返回res-0:成功 1:评论空间没有配置 2:评论空间不足 3:评论数据同步中
-export const comment_AddObjCommentSpace = (
+export const commentAddObjCommentSpace = (
   objCid: string,
   commentSpace: number
 ) => {
@@ -58,7 +58,7 @@ export const comment_AddObjCommentSpace = (
 };
 
 // 关闭指定对象的评论功能（会删除所有针对该对象的评论），返回res-0:成功 1:评论空间没有配置 2:评论空间不足 3:评论数据同步中
-export const comment_DisableCommentObj = (objCid: string) => {
+export const commentDisableCommentObj = (objCid: string) => {
   return new Promise((resolve) => {
     const successCallback = (res: number) => {
       console.log("comment_DisableCommentObj success", res);
@@ -69,7 +69,7 @@ export const comment_DisableCommentObj = (objCid: string) => {
 };
 
 // 举报恶意评论（会删除所有针对该对象的评论），返回res-0:成功 1:评论空间没有配置 2:评论空间不足 3:评论数据同步中
-export const comment_ReportMaliciousComment = (
+export const commentReportMaliciousComment = (
   objCid: string,
   commentBlockheight: number,
   commentCid: string
@@ -89,7 +89,7 @@ export const comment_ReportMaliciousComment = (
 };
 
 // 精选评论，让评论可见，返回res-0:成功 1:评论空间没有配置 2:评论空间不足 3:评论数据同步中
-export const comment_SetObjCommentPublic = (
+export const commentSetObjCommentPublic = (
   objCid: string,
   commentBlockheight: number,
   commentCid: string
@@ -109,7 +109,7 @@ export const comment_SetObjCommentPublic = (
 };
 
 // 发布对指定对象的评论，返回评论key,格式为:commentBlockHeight/commentCid
-export const comment_PublishCommentToObj = (
+export const commentPublishCommentToObj = (
   objCid: string,
   objAuthor: string,
   commentType: number,
@@ -135,7 +135,7 @@ export const comment_PublishCommentToObj = (
 };
 
 // 删除已发布的评论，返回评论key,格式为:commentBlockHeight/commentCid
-export const comment_DeleteSelfComment = (
+export const commentDeleteSelfComment = (
   objCid: string,
   objAuthor: string,
   commentKey: string
@@ -161,7 +161,7 @@ export const comment_DeleteSelfComment = (
 
 // 获取指定用户已开通评论的对象列表
 // 返回已开通评论的对象列表,格式：[{"objCid":"YmF...bXk=","appId":"dGVzdGFwcA==","blockheight":2904,"commentSpace":1000,"userPubkey":"YmJh...vZGU=","signature":"oCY1...Y8sO/lkDac/nLu...Rm/xm...CQ=="}]
-export const comment_GetCommentableObj = (
+export const commentGetCommentableObj = (
   objAuthor: string,
   startBlockheight: number,
   direction: number,
@@ -188,7 +188,7 @@ export const comment_GetCommentableObj = (
 
 // 取指定已开通对象的评论列表
 // 返回已开通评论的对象列表,格式：[{"objCid":"YmF...bXk=","appId":"dGVzdGFwcA==","blockheight":2904,"commentSpace":1000,"userPubkey":"YmJh...vZGU=","signature":"oCY1...Y8sO/lkDac/nLu...Rm/xm...CQ=="}]
-export const comment_GetObjComments = (
+export const commentGetObjComments = (
   objCid: string,
   objAuthor: string,
   startBlockheight: number,
@@ -218,7 +218,7 @@ export const comment_GetObjComments = (
 // 获取指定用户发布过的评论，私密评论只有评论者和被评论者可见
 // 返回用户评论列表，格式：[{"ObjCid":"bafk...fpy","AppId":"testapp","ObjAuthor":"bbaa...jkhmm","Blockheight":3209,"UserPubkey":"bba...2hzm","CommentCid":"baf...2aygu","Comment":"hello
 // world","CommentSize":11,"Status":0,"Signature":"bkqy...b6dkda","Refercommentkey":"","CCount":0,"UpCount":0,"DownCount":0,"TCount":0}]
-export const comment_GetUserComments = (
+export const commentGetUserComments = (
   userPubkey: string,
   startBlockheight: number,
   direction: number,

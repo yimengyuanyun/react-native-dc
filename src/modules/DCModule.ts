@@ -418,7 +418,7 @@ export const DCPubkeyToAccount = (basePubkey: string) => {
 
 
 // 启动p2p通信服务
-export const dc_StartP2pServer = (receiver: string, model: number) => {
+export const DCstartP2pServer = (receiver: string, model: number) => {
   return new Promise((resolve) => {
     const successCallback = (bool: boolean) => {
       console.log("dc_StartP2pServer success", bool);

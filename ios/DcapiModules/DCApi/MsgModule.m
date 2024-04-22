@@ -28,10 +28,10 @@ RCT_EXPORT_MODULE()
  */
 
 // 向指定用户发送消息 res 0:在线消息发送成功，2:离线消息发送成功（应用根据需要自行接推送服务）3:消息发送失败）
-RCT_EXPORT_METHOD(Msg_SendMsg:(NSString*)receiver msg:(NSString*)msg  successCallback:(RCTResponseSenderBlock)successCallback ) {
+RCT_EXPORT_METHOD(msg_SendMsg:(NSString*)receiver msg:(NSString*)msg  successCallback:(RCTResponseSenderBlock)successCallback ) {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        RCTLogInfo(@"Msg_SendMsg");
-        long res = [dcapi Msg_SendMsg:receiver msg:msg];
+        RCTLogInfo(@"msg_SendMsg");
+        long res = [dcapi msg_SendMsg:receiver msg:msg];
         dispatch_async(dispatch_get_main_queue(), ^{
             successCallback(@[res]);
           });

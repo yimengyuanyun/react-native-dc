@@ -31,17 +31,17 @@ public class MsgModule extends ReactContextBaseJavaModule {
 
   // 向指定用户发送消息 res 0:在线消息发送成功，2:离线消息发送成功（应用根据需要自行接推送服务）3:消息发送失败）
   @ReactMethod
-  public void Msg_SendMsg(
+  public void msg_SendMsg(
       String receiver, // 接收者16进制的账号或base32编码的pubkey  
       String msg, // 要发送的消息
       Callback successCallback) {
     new Thread(new Runnable() {
       @Override
       public void run() {
-        System.out.println("---------------------------------start Msg_SendMsg");
-        long res = dcClass.Msg_SendMsg(receiver, msg);
+        System.out.println("---------------------------------start msg_SendMsg");
+        long res = dcClass.msg_SendMsg(receiver, msg);
         successCallback.invoke(res);
-        System.out.println("---------------------------------Msg_SendMsg");
+        System.out.println("---------------------------------msg_SendMsg");
       }
     }).start();
   }
