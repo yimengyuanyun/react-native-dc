@@ -7,6 +7,7 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.common.StandardCharsets;
+import com.facebook.react.modules.core.DeviceEventManagerModule;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -17,6 +18,7 @@ import java.util.Base64;
 import dcapi.Dcapi_;
 
 import dcapi.If_P2pMsgHandler;
+import dcapi.If_P2pStreamHandler;
 import dcapi.If_StreamHandle;
 import dcapi.Dc_P2pConnectOptions;
 
@@ -593,41 +595,53 @@ public class DCModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void dc_StartP2pServer(
             String receiver, // 接收的用户receiver，接收者16进制的账号或base32编码的pubkey
-            long model, // 0:默认模式，接收除了黑名单外的任何有效来源信息， 1:白名单模式，只接收白名单里用户的信息
+            String model, // 0:默认模式，接收除了黑名单外的任何有效来源信息， 1:白名单模式，只接收白名单里用户的信息
             Callback successCallback,
             Callback errorCallback) {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 System.out.println("---------------------------------start dc_StartP2pServer");
-                Dc_P2pConnectOptions options = dcapi.Dc_P2pConnectOptions();
-                Boolean bool = dcClass.dc_StartP2pServer(model, new If_P2pMsgHandler() {
+                Dc_P2pConnectOptions options = new Dc_P2pConnectOptions();
+                Boolean bool = dcClass.dc_StartP2pServer(Long.parseLong(model), new If_P2pMsgHandler() {
+
+
                     @Override
-                    public void PubSubMsgHandler(String fromPeerId, String topic, byte[] msg) {
+                    public void pubSubMsgResponseHandler(String msgId, String fromPeerId, String topic, byte[] msg, String err) {
                     }
+
                     @Override
-                    public void PubSubMsgResponseHandler(String msgId, String fromPeerId, String topic, byte[] msg, String err) {
-                    }
-                    @Override
-                    public void PubSubEventHandler(String fromPeerId, String topic, byte[] msg) {
-                    }
-                    @Override
-                    public void ReceiveMsg(String fromPeerId, String plaintextMsg, byte[] msg) {
+                    public void receiveMsg(String fromPeerId, byte[] bytes, byte[] bytes1) {
                         String jsonStr = "{\"receiver\":\"" + receiver + "\", \"fromPeerId\":\"" + fromPeerId
-                                + "\", \"plaintextMsg\":\"" + plaintextMsg
+                                + "\", \"plaintextMsg\":\"" + bytes.toString()
                                 + "\"}";
                         reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
                                 .emit("receiveP2PMsg", jsonStr);
                     }
+
+                    @Override
+                    public void pubSubEventHandler(String fromPeerId, String topic, byte[] msg) {
+                    }
+
+                    @Override
+                    public byte[] pubSubMsgHandler(String s, String s1, byte[] bytes) {
+                        return new byte[0];
+                    }
+
                 }, new If_P2pStreamHandler() {
                     @Override
-                    public void OnStreamConncetRequest(String fromPeerId, If_StreamHandle handle) {
+                    public void onDataRecv(byte[] bytes) {
+
                     }
+
                     @Override
-                    public void OnDataRecv(byte[] data) {
+                    public void onStreamClose(Exception e) {
+
                     }
+
                     @Override
-                    public void OnStreamClose(String err) {
+                    public void onStreamConncetRequest(String s, If_StreamHandle ifStreamHandle) throws Exception {
+
                     }
                 }, options);
                 System.out.println("---------------------------------dc_StartP2pServer");

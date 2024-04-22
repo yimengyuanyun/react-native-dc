@@ -56,15 +56,15 @@ public class CommentModule extends ReactContextBaseJavaModule {
   @ReactMethod
   public void comment_AddCommentableObj(
       String objCid, // 要开通评论对象的cid
-      long openFlag, // 是否公开，0-公开，1-私密，2-可鉴权
-      long commentSpace, // 评论空间大小
+      String openFlag, // 是否公开，0-公开，1-私密，2-可鉴权
+      String commentSpace, // 评论空间大小
       Callback successCallback) {
     new Thread(new Runnable() {
       @Override
       public void run() {
         System.out.println("---------------------------------start comment_AddCommentableObj");
-        long res = dcClass.comment_AddCommentableObj(objCid, openFlag, commentSpace);
-        System.out.println("---------------------------------comment_AddCommentableObj", res);
+        long res = dcClass.comment_AddCommentableObj(objCid, Long.parseLong(openFlag), Long.parseLong(commentSpace));
+        System.out.println("---------------------------------comment_AddCommentableObj");
         successCallback.invoke(Long.toString(res));
       }
     }).start();
@@ -74,14 +74,14 @@ public class CommentModule extends ReactContextBaseJavaModule {
   @ReactMethod
   public void comment_AddObjCommentSpace(
       String objCid, // 要开通评论对象的cid
-      long commentSpace, // 评论空间大小
+      String commentSpace, // 评论空间大小
       Callback successCallback) {
     new Thread(new Runnable() {
       @Override
       public void run() {
         System.out.println("---------------------------------start comment_AddObjCommentSpace");
-        long res = dcClass.comment_AddObjCommentSpace(objCid, commentSpace);
-        System.out.println("---------------------------------comment_AddObjCommentSpace", res);
+        long res = dcClass.comment_AddObjCommentSpace(objCid, Long.parseLong(commentSpace));
+        System.out.println("---------------------------------comment_AddObjCommentSpace");
         successCallback.invoke(Long.toString(res));
       }
     }).start();
@@ -97,7 +97,7 @@ public class CommentModule extends ReactContextBaseJavaModule {
       public void run() {
         System.out.println("---------------------------------start comment_DisableCommentObj");
         long res = dcClass.comment_DisableCommentObj(objCid);
-        System.out.println("---------------------------------comment_DisableCommentObj", res);
+        System.out.println("---------------------------------comment_DisableCommentObj");
         successCallback.invoke(Long.toString(res));
       }
     }).start();
@@ -107,15 +107,15 @@ public class CommentModule extends ReactContextBaseJavaModule {
   @ReactMethod
   public void comment_ReportMaliciousComment(
       String objCid, // 要开通评论对象的cid
-      long commentBlockheight, // 评论所在区块高度
+      String commentBlockheight, // 评论所在区块高度
       String commentCid, // 评论id
       Callback successCallback) {
     new Thread(new Runnable() {
       @Override
       public void run() {
         System.out.println("---------------------------------start comment_ReportMaliciousComment");
-        long res = dcClass.comment_ReportMaliciousComment(objCid, commentBlockheight, commentCid);
-        System.out.println("---------------------------------comment_ReportMaliciousComment", res);
+        long res = dcClass.comment_ReportMaliciousComment(objCid, Long.parseLong(commentBlockheight), commentCid);
+        System.out.println("---------------------------------comment_ReportMaliciousComment");
         successCallback.invoke(Long.toString(res));
       }
     }).start();
@@ -125,15 +125,15 @@ public class CommentModule extends ReactContextBaseJavaModule {
   @ReactMethod
   public void comment_SetObjCommentPublic(
       String objCid, // 要开通评论对象的cid
-      long commentBlockheight, // 评论所在区块高度
+      String commentBlockheight, // 评论所在区块高度
       String commentCid, // 评论id
       Callback successCallback) {
     new Thread(new Runnable() {
       @Override
       public void run() {
         System.out.println("---------------------------------start comment_SetObjCommentPublic");
-        long res = dcClass.comment_SetObjCommentPublic(objCid, commentBlockheight, commentCid);
-        System.out.println("---------------------------------comment_SetObjCommentPublic", res);
+        long res = dcClass.comment_SetObjCommentPublic(objCid, Long.parseLong(commentBlockheight), commentCid);
+        System.out.println("---------------------------------comment_SetObjCommentPublic");
         successCallback.invoke(Long.toString(res));
       }
     }).start();
@@ -144,17 +144,17 @@ public class CommentModule extends ReactContextBaseJavaModule {
   public void comment_PublishCommentToObj(
       String objCid, // 要开通评论对象的cid
       String objAuthor, // 被发布评论的对象的用户pubkey base32编码,或者pubkey经过libp2p-crypto protobuf编码后再base32编码
-      long commentType, // 评论类型 0:普通评论 1:点赞 2:推荐 3:踩
+      String commentType, // 评论类型 0:普通评论 1:点赞 2:推荐 3:踩
       String comment, // 评论内容
       String referCommentkey, // 被引用的评论
-      long openFlag, // 开放标志 0-开放 1-私密
+      String openFlag, // 开放标志 0-开放 1-私密
       Callback successCallback) {
     new Thread(new Runnable() {
       @Override
       public void run() {
         System.out.println("---------------------------------start comment_PublishCommentToObj");
-        String res = dcClass.comment_PublishCommentToObj(objCid, objAuthor, commentType, comment, referCommentkey,
-            openFlag);
+        String res = dcClass.comment_PublishCommentToObj(objCid, objAuthor, Long.parseLong(commentType), comment, referCommentkey,
+          Long.parseLong(openFlag));
         System.out.println("---------------------------------comment_PublishCommentToObj");
         successCallback.invoke(res);
       }
@@ -166,7 +166,7 @@ public class CommentModule extends ReactContextBaseJavaModule {
   public void comment_DeleteSelfComment(
       String objCid, // 要开通评论对象的cid
       String objAuthor, // 被发布评论的对象的用户pubkey base32编码,或者pubkey经过libp2p-crypto protobuf编码后再base32编码
-      long commentKey, // 要删除的评论key
+      String commentKey, // 要删除的评论key
       Callback successCallback,
       Callback errorCallback) {
     new Thread(new Runnable() {
@@ -192,18 +192,18 @@ public class CommentModule extends ReactContextBaseJavaModule {
   @ReactMethod
   public void comment_GetCommentableObj(
       String objAuthor, // 被发布评论的对象的用户pubkey base32编码,或者pubkey经过libp2p-crypto protobuf编码后再base32编码
-      long startBlockheight, // 开始区块高度
-      long direction, // 方向 0:向前 1:向后
-      long offset, // 偏移量
+      String startBlockheight, // 开始区块高度
+      String direction, // 方向 0:向前 1:向后
+      String offset, // 偏移量
       String seekKey, // 起始key
-      long limit, // 限制条数
+      String limit, // 限制条数
       Callback successCallback) {
     new Thread(new Runnable() {
       @Override
       public void run() {
         System.out.println("---------------------------------start comment_GetCommentableObj");
-        String res = dcClass.comment_GetCommentableObj(objAuthor, startBlockheight, direction, offset,
-            seekKey, limit);
+        String res = dcClass.comment_GetCommentableObj(objAuthor, Long.parseLong(startBlockheight), Long.parseLong(direction), Long.parseLong(offset),
+            seekKey, Long.parseLong(limit));
         System.out.println("---------------------------------comment_GetCommentableObj");
         successCallback.invoke(res);
       }
@@ -216,18 +216,18 @@ public class CommentModule extends ReactContextBaseJavaModule {
   public void comment_GetObjComments(
       String objCid, // 评论对象的cid
       String objAuthor, // 被发布评论的对象的用户pubkey base32编码,或者pubkey经过libp2p-crypto protobuf编码后再base32编码
-      long startBlockheight, // 开始区块高度
-      long direction, // 方向 0:向前 1:向后
-      long offset, // 偏移量
+      String startBlockheight, // 开始区块高度
+      String direction, // 方向 0:向前 1:向后
+      String offset, // 偏移量
       String seekKey, // 起始key
-      long limit, // 限制条数
+      String limit, // 限制条数
       Callback successCallback) {
     new Thread(new Runnable() {
       @Override
       public void run() {
         System.out.println("---------------------------------start comment_GetObjComments");
-        String res = dcClass.comment_GetObjComments(objCid, objAuthor, startBlockheight, direction, offset,
-            seekKey, limit);
+        String res = dcClass.comment_GetObjComments(objCid, objAuthor, Long.parseLong(startBlockheight),  Long.parseLong(direction), Long.parseLong(offset),
+            seekKey, Long.parseLong(limit));
         System.out.println("---------------------------------comment_GetObjComments");
         successCallback.invoke(res);
       }
@@ -241,18 +241,18 @@ public class CommentModule extends ReactContextBaseJavaModule {
   public void comment_GetUserComments(
       String userPubkey, // 用户pubkey base32编码,或者pubkey经过libp2p-crypto
                          // protobuf编码后再base32编码或者账号的16进制编码(0x开头)
-      long startBlockheight, // 开始区块高度
-      long direction, // 方向 0:向前 1:向后
-      long offset, // 偏移量
+      String startBlockheight, // 开始区块高度
+      String direction, // 方向 0:向前 1:向后
+      String offset, // 偏移量
       String seekKey, // 起始key
-      long limit, // 限制条数
+      String limit, // 限制条数
       Callback successCallback) {
     new Thread(new Runnable() {
       @Override
       public void run() {
         System.out.println("---------------------------------start comment_GetUserComments");
-        String res = dcClass.comment_GetUserComments(userPubkey, startBlockheight, direction, offset,
-            seekKey, limit);
+        String res = dcClass.comment_GetUserComments(userPubkey, Long.parseLong(startBlockheight),  Long.parseLong(direction), Long.parseLong(offset),
+            seekKey, Long.parseLong(limit));
         System.out.println("---------------------------------comment_GetUserComments");
         successCallback.invoke(res);
       }
