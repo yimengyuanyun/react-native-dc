@@ -58,14 +58,22 @@ public class CommentModule extends ReactContextBaseJavaModule {
       String objCid, // 要开通评论对象的cid
       String openFlag, // 是否公开，0-公开，1-私密，2-可鉴权
       String commentSpace, // 评论空间大小
-      Callback successCallback) {
+      Callback successCallback,
+      Callback errorCallback) {
     new Thread(new Runnable() {
       @Override
       public void run() {
         System.out.println("---------------------------------start comment_AddCommentableObj");
         long res = dcClass.comment_AddCommentableObj(objCid, Long.parseLong(openFlag), Long.parseLong(commentSpace));
         System.out.println("---------------------------------comment_AddCommentableObj");
-        successCallback.invoke(Long.toString(res));
+        if (res > -1) {
+          successCallback.invoke(Long.toString(res));
+        } else {
+          String lastError = dcClass.dc_GetLastErr();
+          System.out.println("---------------------------------comment_AddUserCommentSpace: err");
+          System.out.println(lastError);
+          errorCallback.invoke(lastError);
+        }
       }
     }).start();
   }
@@ -75,14 +83,22 @@ public class CommentModule extends ReactContextBaseJavaModule {
   public void comment_AddObjCommentSpace(
       String objCid, // 要开通评论对象的cid
       String commentSpace, // 评论空间大小
-      Callback successCallback) {
+      Callback successCallback,
+      Callback errorCallback) {
     new Thread(new Runnable() {
       @Override
       public void run() {
         System.out.println("---------------------------------start comment_AddObjCommentSpace");
         long res = dcClass.comment_AddObjCommentSpace(objCid, Long.parseLong(commentSpace));
         System.out.println("---------------------------------comment_AddObjCommentSpace");
-        successCallback.invoke(Long.toString(res));
+        if (res > -1) {
+          successCallback.invoke(Long.toString(res));
+        } else {
+          String lastError = dcClass.dc_GetLastErr();
+          System.out.println("---------------------------------comment_AddObjCommentSpace: err");
+          System.out.println(lastError);
+          errorCallback.invoke(lastError);
+        }
       }
     }).start();
   }
@@ -91,14 +107,22 @@ public class CommentModule extends ReactContextBaseJavaModule {
   @ReactMethod
   public void comment_DisableCommentObj(
       String objCid, // 要开通评论对象的cid
-      Callback successCallback) {
+      Callback successCallback,
+      Callback errorCallback) {
     new Thread(new Runnable() {
       @Override
       public void run() {
         System.out.println("---------------------------------start comment_DisableCommentObj");
         long res = dcClass.comment_DisableCommentObj(objCid);
         System.out.println("---------------------------------comment_DisableCommentObj");
-        successCallback.invoke(Long.toString(res));
+        if (res > -1) {
+          successCallback.invoke(Long.toString(res));
+        } else {
+          String lastError = dcClass.dc_GetLastErr();
+          System.out.println("---------------------------------comment_DisableCommentObj: err");
+          System.out.println(lastError);
+          errorCallback.invoke(lastError);
+        }
       }
     }).start();
   }
@@ -109,14 +133,22 @@ public class CommentModule extends ReactContextBaseJavaModule {
       String objCid, // 要开通评论对象的cid
       String commentBlockheight, // 评论所在区块高度
       String commentCid, // 评论id
-      Callback successCallback) {
+      Callback successCallback,
+      Callback errorCallback) {
     new Thread(new Runnable() {
       @Override
       public void run() {
         System.out.println("---------------------------------start comment_ReportMaliciousComment");
         long res = dcClass.comment_ReportMaliciousComment(objCid, Long.parseLong(commentBlockheight), commentCid);
         System.out.println("---------------------------------comment_ReportMaliciousComment");
-        successCallback.invoke(Long.toString(res));
+        if (res > -1) {
+          successCallback.invoke(Long.toString(res));
+        } else {
+          String lastError = dcClass.dc_GetLastErr();
+          System.out.println("---------------------------------comment_ReportMaliciousComment: err");
+          System.out.println(lastError);
+          errorCallback.invoke(lastError);
+        }
       }
     }).start();
   }
@@ -127,14 +159,22 @@ public class CommentModule extends ReactContextBaseJavaModule {
       String objCid, // 要开通评论对象的cid
       String commentBlockheight, // 评论所在区块高度
       String commentCid, // 评论id
-      Callback successCallback) {
+      Callback successCallback,
+      Callback errorCallback) {
     new Thread(new Runnable() {
       @Override
       public void run() {
         System.out.println("---------------------------------start comment_SetObjCommentPublic");
         long res = dcClass.comment_SetObjCommentPublic(objCid, Long.parseLong(commentBlockheight), commentCid);
         System.out.println("---------------------------------comment_SetObjCommentPublic");
-        successCallback.invoke(Long.toString(res));
+        if (res > -1) {
+          successCallback.invoke(Long.toString(res));
+        } else {
+          String lastError = dcClass.dc_GetLastErr();
+          System.out.println("---------------------------------comment_SetObjCommentPublic: err");
+          System.out.println(lastError);
+          errorCallback.invoke(lastError);
+        }
       }
     }).start();
   }
@@ -148,7 +188,8 @@ public class CommentModule extends ReactContextBaseJavaModule {
       String comment, // 评论内容
       String referCommentkey, // 被引用的评论
       String openFlag, // 开放标志 0-开放 1-私密
-      Callback successCallback) {
+      Callback successCallback,
+      Callback errorCallback) {
     new Thread(new Runnable() {
       @Override
       public void run() {
@@ -156,7 +197,14 @@ public class CommentModule extends ReactContextBaseJavaModule {
         String res = dcClass.comment_PublishCommentToObj(objCid, objAuthor, Long.parseLong(commentType), comment, referCommentkey,
           Long.parseLong(openFlag));
         System.out.println("---------------------------------comment_PublishCommentToObj");
-        successCallback.invoke(res);
+        if (res.length() >0) {
+          successCallback.invoke(res);
+        } else {
+          String lastError = dcClass.dc_GetLastErr();
+          System.out.println("---------------------------------comment_PublishCommentToObj: err");
+          System.out.println(lastError);
+          errorCallback.invoke(lastError);
+        }
       }
     }).start();
   }
@@ -197,7 +245,8 @@ public class CommentModule extends ReactContextBaseJavaModule {
       String offset, // 偏移量
       String seekKey, // 起始key
       String limit, // 限制条数
-      Callback successCallback) {
+      Callback successCallback,
+      Callback errorCallback) {
     new Thread(new Runnable() {
       @Override
       public void run() {
@@ -205,7 +254,14 @@ public class CommentModule extends ReactContextBaseJavaModule {
         String res = dcClass.comment_GetCommentableObj(objAuthor, Long.parseLong(startBlockheight), Long.parseLong(direction), Long.parseLong(offset),
             seekKey, Long.parseLong(limit));
         System.out.println("---------------------------------comment_GetCommentableObj");
-        successCallback.invoke(res);
+        if (res.length() > 0) {
+          successCallback.invoke(res);
+        } else {
+          String lastError = dcClass.dc_GetLastErr();
+          System.out.println("---------------------------------comment_GetCommentableObj: err");
+          System.out.println(lastError);
+          errorCallback.invoke(lastError);
+        }
       }
     }).start();
   }
@@ -221,7 +277,8 @@ public class CommentModule extends ReactContextBaseJavaModule {
       String offset, // 偏移量
       String seekKey, // 起始key
       String limit, // 限制条数
-      Callback successCallback) {
+      Callback successCallback,
+      Callback errorCallback) {
     new Thread(new Runnable() {
       @Override
       public void run() {
@@ -229,7 +286,14 @@ public class CommentModule extends ReactContextBaseJavaModule {
         String res = dcClass.comment_GetObjComments(objCid, objAuthor, Long.parseLong(startBlockheight),  Long.parseLong(direction), Long.parseLong(offset),
             seekKey, Long.parseLong(limit));
         System.out.println("---------------------------------comment_GetObjComments");
-        successCallback.invoke(res);
+        if (res.length() > 0) {
+          successCallback.invoke(res);
+        } else {
+          String lastError = dcClass.dc_GetLastErr();
+          System.out.println("---------------------------------comment_GetObjComments: err");
+          System.out.println(lastError);
+          errorCallback.invoke(lastError);
+        }
       }
     }).start();
   }
@@ -246,7 +310,8 @@ public class CommentModule extends ReactContextBaseJavaModule {
       String offset, // 偏移量
       String seekKey, // 起始key
       String limit, // 限制条数
-      Callback successCallback) {
+      Callback successCallback,
+      Callback errorCallback) {
     new Thread(new Runnable() {
       @Override
       public void run() {
@@ -254,7 +319,14 @@ public class CommentModule extends ReactContextBaseJavaModule {
         String res = dcClass.comment_GetUserComments(userPubkey, Long.parseLong(startBlockheight),  Long.parseLong(direction), Long.parseLong(offset),
             seekKey, Long.parseLong(limit));
         System.out.println("---------------------------------comment_GetUserComments");
-        successCallback.invoke(res);
+        if (res.length() > 0) {
+          successCallback.invoke(res);
+        } else {
+          String lastError = dcClass.dc_GetLastErr();
+          System.out.println("---------------------------------comment_GetUserComments: err");
+          System.out.println(lastError);
+          errorCallback.invoke(lastError);
+        }
       }
     }).start();
   }

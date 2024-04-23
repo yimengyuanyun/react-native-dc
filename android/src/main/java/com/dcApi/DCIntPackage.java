@@ -28,6 +28,8 @@ public class DCIntPackage implements ReactPackage {
         modules.add(new DBModule(reactContext, dcClass));
         modules.add(new DCModule(reactContext, dcClass));
         modules.add(new FileModule(reactContext, dcClass));
+        modules.add(new CommentModule(reactContext, dcClass));
+        modules.add(new MsgModule(reactContext, dcClass));
 
         return modules;
     }

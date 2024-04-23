@@ -34,14 +34,22 @@ public class MsgModule extends ReactContextBaseJavaModule {
   public void msg_SendMsg(
       String receiver, // 接收者16进制的账号或base32编码的pubkey  
       String msg, // 要发送的消息
-      Callback successCallback) {
+      Callback successCallback,
+      Callback errorCallback) {
     new Thread(new Runnable() {
       @Override
       public void run() {
         System.out.println("---------------------------------start msg_SendMsg");
         long res = dcClass.msg_SendMsg(receiver, msg);
-        successCallback.invoke(res);
         System.out.println("---------------------------------msg_SendMsg");
+        if (res > -1) {
+          successCallback.invoke(Long.toString(res));
+        } else {
+          String lastError = dcClass.dc_GetLastErr();
+          System.out.println("---------------------------------msg_SendMsg: err");
+          System.out.println(lastError);
+          errorCallback.invoke(lastError);
+        }
       }
     }).start();
   }
