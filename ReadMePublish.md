@@ -23,3 +23,4 @@ npm publish
 0.1.9 - file下载bug调整
 0.1.12 - targetSdk compileSdk 改成34
 0.1.13 - ios多线程
+0.1.17 - db调整
