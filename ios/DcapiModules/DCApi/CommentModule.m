@@ -28,7 +28,7 @@ RCT_EXPORT_MODULE()
  */
  
 
-// 配置或增加用户自身的评论空间 0:成功 1:失败
+// 配置或增加用户自身的评论空间
 RCT_EXPORT_METHOD(comment_AddUserCommentSpace:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         RCTLogInfo(@"comment_AddUserCommentSpace");

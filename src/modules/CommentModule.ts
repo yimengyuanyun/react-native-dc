@@ -4,7 +4,7 @@ const { CommentModule } = NativeModules;
 /**
  * 评论相关接口
  */
-// 配置或增加用户自身的评论空间 0:成功 1:失败
+// 配置或增加用户自身的评论空间
 export const commentAddUserCommentSpace = () => {
   return new Promise((resolve) => {
     const successCallback = (bool: boolean) => {

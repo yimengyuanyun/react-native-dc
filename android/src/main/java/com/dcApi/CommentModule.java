@@ -29,7 +29,7 @@ public class CommentModule extends ReactContextBaseJavaModule {
     return "CommentModule";
   }
 
-  // 配置或增加用户自身的评论空间 0:成功 1:失败
+  // 配置或增加用户自身的评论空间
   @ReactMethod
   public void comment_AddUserCommentSpace(
       Callback successCallback,
@@ -209,7 +209,7 @@ public class CommentModule extends ReactContextBaseJavaModule {
     }).start();
   }
 
-  // 删除已发布的评论，返回评论key,格式为:commentBlockHeight/commentCid
+  // 删除已发布的评论
   @ReactMethod
   public void comment_DeleteSelfComment(
       String objCid, // 要开通评论对象的cid
