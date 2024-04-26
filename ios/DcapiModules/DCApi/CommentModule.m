@@ -47,29 +47,45 @@ RCT_EXPORT_METHOD(comment_AddUserCommentSpace:(RCTResponseSenderBlock)successCal
 }
 
 // 为指定对象开通评论功能，返回res-0:成功 1:评论空间没有配置 2:评论空间不足 3:评论数据同步中
-RCT_EXPORT_METHOD(comment_AddCommentableObj:(NSString*)objCid openFlag:(long*)openFlag commentSpace:(long*)commentSpace successCallback:(RCTResponseSenderBlock)successCallback ) {
+RCT_EXPORT_METHOD(comment_AddCommentableObj:(NSString*)objCid openFlag:(long*)openFlag commentSpace:(long*)commentSpace 
+        successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         RCTLogInfo(@"comment_AddCommentableObj");
         long res = [dcapi comment_AddCommentableObj:objCid openFlag:openFlag commentSpace:commentSpace];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            successCallback(@[res]);
-        });
+        if(res > -1){
+            dispatch_async(dispatch_get_main_queue(), ^{
+                successCallback(@[res]);
+            });
+        }else {
+            NSString *lastError = [dcapi dc_GetLastErr];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                errorCallback(@[lastError]);
+            });
+        }
     });
 }
 
 // 为开通评论的对象增加评论空间，返回res-0:成功 1:评论空间没有配置 2:评论空间不足 3:评论数据同步中
-RCT_EXPORT_METHOD(comment_AddObjCommentSpace:(NSString*)objCid commentSpace:(long*)commentSpace successCallback:(RCTResponseSenderBlock)successCallback ) {
+RCT_EXPORT_METHOD(comment_AddObjCommentSpace:(NSString*)objCid commentSpace:(long*)commentSpace 
+            successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         RCTLogInfo(@"comment_AddObjCommentSpace");
         long res = [dcapi comment_AddObjCommentSpace:objCid commentSpace:commentSpace];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            successCallback(@[res]);
-        });
+        if(res > -1){
+            dispatch_async(dispatch_get_main_queue(), ^{
+                successCallback(@[res]);
+            });
+        }else {
+            NSString *lastError = [dcapi dc_GetLastErr];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                errorCallback(@[lastError]);
+            });
+        }
     });
 }
 
 // 关闭指定对象的评论功能（会删除所有针对该对象的评论），返回res-0:成功 1:评论空间没有配置 2:评论空间不足 3:评论数据同步中
-RCT_EXPORT_METHOD(comment_DisableCommentObj:(NSString*)objCid successCallback:(RCTResponseSenderBlock)successCallback ) {
+RCT_EXPORT_METHOD(comment_DisableCommentObj:(NSString*)objCid successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         RCTLogInfo(@"comment_DisableCommentObj");
         long res = [dcapi comment_DisableCommentObj:objCid];
@@ -80,41 +96,66 @@ RCT_EXPORT_METHOD(comment_DisableCommentObj:(NSString*)objCid successCallback:(R
 }
 
 // 举报恶意评论（会删除所有针对该对象的评论），返回res-0:成功 1:评论空间没有配置 2:评论空间不足 3:评论数据同步中
-RCT_EXPORT_METHOD(comment_ReportMaliciousComment:(NSString*)objCid commentBlockheight:(long)commentBlockheight commentCid:(NSString*)commentCid successCallback:(RCTResponseSenderBlock)successCallback ) {
+RCT_EXPORT_METHOD(comment_ReportMaliciousComment:(NSString*)objCid commentBlockheight:(long)commentBlockheight commentCid:(NSString*)commentCid 
+            successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         RCTLogInfo(@"comment_ReportMaliciousComment");
         long res = [dcapi comment_ReportMaliciousComment:objCid commentBlockheight:commentBlockheight, commentCid:commentCid];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            successCallback(@[res]);
-        });
+        if(res > -1){
+            dispatch_async(dispatch_get_main_queue(), ^{
+                successCallback(@[res]);
+            });
+        }else {
+            NSString *lastError = [dcapi dc_GetLastErr];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                errorCallback(@[lastError]);
+            });
+        }
     });
 }
 
 // 精选评论，让评论可见，返回res-0:成功 1:评论空间没有配置 2:评论空间不足 3:评论数据同步中
-RCT_EXPORT_METHOD(comment_SetObjCommentPublic:(NSString*)objCid commentBlockheight:(long)commentBlockheight commentCid:(NSString*)commentCid successCallback:(RCTResponseSenderBlock)successCallback ) {
+RCT_EXPORT_METHOD(comment_SetObjCommentPublic:(NSString*)objCid commentBlockheight:(long)commentBlockheight commentCid:(NSString*)commentCid 
+            successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         RCTLogInfo(@"comment_SetObjCommentPublic");
         long res = [dcapi comment_SetObjCommentPublic:objCid commentBlockheight:commentBlockheight, commentCid:commentCid];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            successCallback(@[res]);
-        });
+        if(res > -1){
+            dispatch_async(dispatch_get_main_queue(), ^{
+                successCallback(@[res]);
+            });
+        }else {
+            NSString *lastError = [dcapi dc_GetLastErr];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                errorCallback(@[lastError]);
+            });
+        }
     });
 }
 
 // 发布对指定对象的评论，返回评论key,格式为:commentBlockHeight/commentCid
-RCT_EXPORT_METHOD(comment_PublishCommentToObj:(NSString*)objCid objAuthor:(NSString*)objAuthor commentType:(long)commentType comment:(NSString)comment referCommentkey:(NSString*)referCommentkey openFlag:(long*)openFlag successCallback:(RCTResponseSenderBlock)successCallback ) {
+RCT_EXPORT_METHOD(comment_PublishCommentToObj:(NSString*)objCid objAuthor:(NSString*)objAuthor commentType:(long)commentType comment:(NSString)comment referCommentkey:(NSString*)referCommentkey openFlag:(long*)openFlag 
+            successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         RCTLogInfo(@"comment_PublishCommentToObj");
-        long res = [dcapi comment_PublishCommentToObj:objCid objAuthor:objAuthor commentType:commentType comment:comment referCommentkey:referCommentkey 
+        NSString *res = [dcapi comment_PublishCommentToObj:objCid objAuthor:objAuthor commentType:commentType comment:comment referCommentkey:referCommentkey 
             openFlag:openFlag];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            successCallback(@[res]);
-        });
+        if(res.length > 0){
+            dispatch_async(dispatch_get_main_queue(), ^{
+                successCallback(@[res]);
+            });
+        }else {
+            NSString *lastError = [dcapi dc_GetLastErr];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                errorCallback(@[lastError]);
+            });
+        }
     });
 }
 
 // 删除已发布的评论，返回评论key,格式为:commentBlockHeight/commentCid
-RCT_EXPORT_METHOD(comment_DeleteSelfComment:(NSString*)objCid objAuthor:(NSString*)objAuthor commentKey:(NSString*)commentKey successCallback:(RCTResponseSenderBlock)successCallback ) {
+RCT_EXPORT_METHOD(comment_DeleteSelfComment:(NSString*)objCid objAuthor:(NSString*)objAuthor commentKey:(NSString*)commentKey 
+            successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         RCTLogInfo(@"comment_DeleteSelfComment");
         BOOL success = [dcapi comment_DeleteSelfComment:objCid objAuthor:objAuthor commentKey:commentKey];
@@ -134,28 +175,44 @@ RCT_EXPORT_METHOD(comment_DeleteSelfComment:(NSString*)objCid objAuthor:(NSStrin
 // 获取指定用户已开通评论的对象列表
 // 返回已开通评论的对象列表,格式：[{"objCid":"YmF...bXk=","appId":"dGVzdGFwcA==","blockheight":2904,"commentSpace":1000,"userPubkey":"YmJh...vZGU=","signature":"oCY1...Y8sO/lkDac/nLu...Rm/xm...CQ=="}]
 RCT_EXPORT_METHOD(comment_GetCommentableObj:(NSString*)objAuthor startBlockheight:(long)startBlockheight direction:(long)direction 
-        offset:(long)offset seekKey:(NSString*)seekKey limit:(long)limit successCallback:(RCTResponseSenderBlock)successCallback ) {
+        offset:(long)offset seekKey:(NSString*)seekKey limit:(long)limit 
+        successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         RCTLogInfo(@"comment_GetCommentableObj");
-        long res = [dcapi comment_GetCommentableObj:objAuthor startBlockheight:startBlockheight direction:direction 
+        NSString *res = [dcapi comment_GetCommentableObj:objAuthor startBlockheight:startBlockheight direction:direction 
           offset:offset seekKey:seekKey limit:limit];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            successCallback(@[res]);
-        });
+        if(res.length > 0){
+            dispatch_async(dispatch_get_main_queue(), ^{
+                successCallback(@[res]);
+            });
+        }else {
+            NSString *lastError = [dcapi dc_GetLastErr];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                errorCallback(@[lastError]);
+            });
+        }
     });
 }
 
 // 取指定已开通对象的评论列表
 // 返回已开通评论的对象列表,格式：[{"objCid":"YmF...bXk=","appId":"dGVzdGFwcA==","blockheight":2904,"commentSpace":1000,"userPubkey":"YmJh...vZGU=","signature":"oCY1...Y8sO/lkDac/nLu...Rm/xm...CQ=="}]
 RCT_EXPORT_METHOD(comment_GetObjComments:objCid objAuthor:(NSString*)objAuthor startBlockheight:(long)startBlockheight direction:(long)direction 
-        offset:(long)offset seekKey:(NSString*)seekKey limit:(long)limit successCallback:(RCTResponseSenderBlock)successCallback ) {
+        offset:(long)offset seekKey:(NSString*)seekKey limit:(long)limit 
+        successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         RCTLogInfo(@"comment_GetObjComments");
-        long res = [dcapi comment_GetObjComments:objCid objAuthor:objAuthor startBlockheight:startBlockheight direction:direction 
+        NSString *res = [dcapi comment_GetObjComments:objCid objAuthor:objAuthor startBlockheight:startBlockheight direction:direction 
           offset:offset seekKey:seekKey limit:limit];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            successCallback(@[res]);
-        });
+        if(res.length > 0){
+            dispatch_async(dispatch_get_main_queue(), ^{
+                successCallback(@[res]);
+            });
+        }else {
+            NSString *lastError = [dcapi dc_GetLastErr];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                errorCallback(@[lastError]);
+            });
+        }
     });
 }
 
@@ -163,14 +220,22 @@ RCT_EXPORT_METHOD(comment_GetObjComments:objCid objAuthor:(NSString*)objAuthor s
 // 返回用户评论列表，格式：[{"ObjCid":"bafk...fpy","AppId":"testapp","ObjAuthor":"bbaa...jkhmm","Blockheight":3209,"UserPubkey":"bba...2hzm","CommentCid":"baf...2aygu","Comment":"hello
 // world","CommentSize":11,"Status":0,"Signature":"bkqy...b6dkda","Refercommentkey":"","CCount":0,"UpCount":0,"DownCount":0,"TCount":0}]
 RCT_EXPORT_METHOD(comment_GetUserComments:userPubkey startBlockheight:(long)startBlockheight direction:(long)direction 
-        offset:(long)offset seekKey:(NSString*)seekKey limit:(long)limit successCallback:(RCTResponseSenderBlock)successCallback ) {
+        offset:(long)offset seekKey:(NSString*)seekKey limit:(long)limit 
+        successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         RCTLogInfo(@"comment_GetUserComments");
-        long res = [dcapi comment_GetUserComments:userPubkey startBlockheight:startBlockheight direction:direction 
+        NSString *res = [dcapi comment_GetUserComments:userPubkey startBlockheight:startBlockheight direction:direction 
           offset:offset seekKey:seekKey limit:limit];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            successCallback(@[res]);
-        });
+        if(res.length > 0){
+            dispatch_async(dispatch_get_main_queue(), ^{
+                successCallback(@[res]);
+            });
+        }else {
+            NSString *lastError = [dcapi dc_GetLastErr];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                errorCallback(@[lastError]);
+            });
+        }
     });
 }
 

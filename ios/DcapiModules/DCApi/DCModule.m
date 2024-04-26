@@ -474,6 +474,24 @@ RCT_EXPORT_METHOD(dc_GetSS58AddressForAccount:(NSString*)account successCallback
     });
 }
 
+//重启本地文件网络访问服务
+RCT_EXPORT_METHOD(dc_RestartLocalWebServer:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
+    RCTLogInfo(@"dc_RestartLocalWebServer");
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        BOOL success = [dcapi dc_RestartLocalWebServer];
+        if(success){
+            dispatch_async(dispatch_get_main_queue(), ^{
+                successCallback(@[success]);
+            });
+        }else {
+            NSString *lastError = [dcapi dc_GetLastErr];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                errorCallback(@[lastError]);
+            });
+        }
+    });
+}
+
 // 启动p2p通信服务
 RCT_EXPORT_METHOD(dc_StartP2pServer:(NSString*)receiver model:(long)model 
             successCallback:(RCTResponseSenderBlock)successCallback

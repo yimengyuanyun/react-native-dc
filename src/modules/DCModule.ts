@@ -416,6 +416,20 @@ export const DCPubkeyToAccount = (basePubkey: string) => {
   });
 };
 
+// 重启本地文件网络访问服务
+export const DCRestartLocalWebServer = () => {
+  return new Promise((resolve) => {
+    const successCallback = (bool: boolean) => {
+      console.log("dc_RestartLocalWebServer success", bool);
+      resolve({ bool });
+    };
+    const errorCallback = (error) => {
+      console.log("dc_RestartLocalWebServer error", error);
+      resolve({ error });
+    };
+    DCModule.dc_RestartLocalWebServer(successCallback, errorCallback);
+  });
+};
 
 // 启动p2p通信服务
 export const DCstartP2pServer = (receiver: string, model: number) => {

@@ -54,4 +54,27 @@ public class MsgModule extends ReactContextBaseJavaModule {
     }).start();
   }
 
+  // 从用户收件箱收取离线消息 
+  @ReactMethod
+  public void msg_GetMsgFromUserBox(
+      String limit,  // 一次最多提取多少条离线消息，最多500条每次
+      Callback successCallback,
+      Callback errorCallback) {
+    new Thread(new Runnable() {
+      @Override
+      public void run() {
+        System.out.println("---------------------------------start msg_GetMsgFromUserBox");
+        String res = dcClass.msg_GetMsgFromUserBox(Long.parseLong(limit));
+        System.out.println("---------------------------------msg_GetMsgFromUserBox");
+        if (res.length > 0) {
+          successCallback.invoke(res);
+        } else {
+          String lastError = dcClass.dc_GetLastErr();
+          System.out.println("---------------------------------msg_GetMsgFromUserBox: err");
+          System.out.println(lastError);
+          errorCallback.invoke(lastError);
+        }
+      }
+    }).start();
+  }
 }

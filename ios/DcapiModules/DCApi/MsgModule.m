@@ -28,16 +28,40 @@ RCT_EXPORT_MODULE()
  */
 
 // 向指定用户发送消息 res 0:在线消息发送成功，2:离线消息发送成功（应用根据需要自行接推送服务）3:消息发送失败）
-RCT_EXPORT_METHOD(msg_SendMsg:(NSString*)receiver msg:(NSString*)msg  successCallback:(RCTResponseSenderBlock)successCallback ) {
+RCT_EXPORT_METHOD(msg_SendMsg:(NSString*)receiver msg:(NSString*)msg  successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         RCTLogInfo(@"msg_SendMsg");
         long res = [dcapi msg_SendMsg:receiver msg:msg];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            successCallback(@[res]);
-          });
+        if(res > -1){
+            dispatch_async(dispatch_get_main_queue(), ^{
+                successCallback(@[res]);
+            });
+        }else {
+            NSString *lastError = [dcapi dc_GetLastErr];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                errorCallback(@[lastError]);
+            });
+        }
     });
 }
 
+// 从用户收件箱收取离线消息， limit 一次最多提取多少条离线消息，最多500条每次
+RCT_EXPORT_METHOD(msg_GetMsgFromUserBox:(NSString*)limit successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        RCTLogInfo(@"msg_GetMsgFromUserBox");
+        NSString *res = [dcapi msg_GetMsgFromUserBox:[limit longLongValue]];
+        if(res.length > 0 ){
+            dispatch_async(dispatch_get_main_queue(), ^{
+                successCallback(@[res]);
+            });
+        }else {
+            NSString *lastError = [dcapi dc_GetLastErr];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                errorCallback(@[lastError]);
+            });
+        }
+    });
+}
 
 
 #pragma mark - 向react-natvie 传递消息

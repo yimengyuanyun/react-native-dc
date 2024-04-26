@@ -591,6 +591,28 @@ public class DCModule extends ReactContextBaseJavaModule {
         }).start();
     }
 
+    // 重启本地文件网络访问服务
+    @ReactMethod
+    public void dc_RestartLocalWebServer(
+            Callback successCallback,
+            Callback errorCallback) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Boolean bool = dcClass.dc_RestartLocalWebServer();
+                System.out.println("--------------------------------dc_RestartLocalWebServer success：" + bool);
+                if (bool) {
+                    successCallback.invoke(bool);
+                } else {
+                    String lastError = dcClass.dc_GetLastErr();
+                    System.out.println("---------------------------------dc_RestartLocalWebServer: err");
+                    System.out.println(lastError);
+                    errorCallback.invoke(lastError);
+                }
+            }
+        }).start();
+    }
+
     // 启动p2p通信服务
     @ReactMethod
     public void dc_StartP2pServer(
