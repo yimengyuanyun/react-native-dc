@@ -449,29 +449,6 @@ public class DCModule extends ReactContextBaseJavaModule {
         }).start();
     }
 
-    // 给账户添加余额
-    @ReactMethod
-    public void dc_AddBalanceForTest(
-            String balance,
-            Callback successCallback,
-            Callback errorCallback) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                Boolean bool = dcClass.dc_AddBalanceForTest(Long.parseLong(balance));
-                System.out.println("--------------------------------addBalanceForTest");
-                if (bool) {
-                    successCallback.invoke(true);
-                } else {
-                    String lastError = dcClass.dc_GetLastErr();
-                    System.out.println("---------------------------------addBalanceForTest: err");
-                    System.out.println(lastError);
-                    errorCallback.invoke(lastError);
-                }
-            }
-        }).start();
-    }
-
     // 获取用户信息
     @ReactMethod
     public void dc_GetUserInfo(
@@ -570,17 +547,17 @@ public class DCModule extends ReactContextBaseJavaModule {
 
     // 获取以太坊地址
     @ReactMethod
-    public void getEthAddress(
+    public void dc_getEthAddress(
             Callback successCallback,
             Callback errorCallback) {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                String address = dcClass.getEthAddress();
-                System.out.println("--------------------------------getEthAddress success：" + address);
+                String address = dcClass.dc_getEthAddress();
+                System.out.println("--------------------------------dc_getEthAddress success：" + address);
                 if (address.equals("")) {
                     String lastError = dcClass.dc_GetLastErr();
-                    System.out.println("---------------------------------getEthAddress: err");
+                    System.out.println("---------------------------------dc_getEthAddress: err");
                     System.out.println(lastError);
                     errorCallback.invoke(lastError);
                 } else {

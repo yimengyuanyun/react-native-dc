@@ -290,14 +290,14 @@ export const DCgetMnemonic = () => {
 export const DCgetEthAddress = () => {
   return new Promise((resolve, reject) => {
     const successCallback = (ss58address: string) => {
-      console.log("getEthAddress success", ss58address);
+      console.log("dc_getEthAddress success", ss58address);
       resolve({ ss58address });
     };
     const errorCallback = (error: any) => {
-      console.log("getEthAddress error", error);
+      console.log("dc_getEthAddress error", error);
       resolve({ error });
     };
-    DCModule.getEthAddress(successCallback, errorCallback);
+    DCModule.dc_getEthAddress(successCallback, errorCallback);
   });
 };
 
@@ -313,21 +313,6 @@ export const DCifAppAccountExist = () => {
       resolve({ error });
     };
     DCModule.dc_IfAppAcountExist(successCallback, errorCallback);
-  });
-};
-
-// 给用户充值余额
-export const DCaddBalanceForTest = (balance: string) => {
-  return new Promise((resolve) => {
-    const successCallback = (bool: Boolean) => {
-      console.log("dc_AddBalanceForTest success " + bool);
-      resolve({ bool });
-    };
-    const errorCallback = (error: any) => {
-      console.log("dc_AddBalanceForTest error", error);
-      resolve({ error });
-    };
-    DCModule.dc_AddBalanceForTest(balance, successCallback, errorCallback);
   });
 };
 

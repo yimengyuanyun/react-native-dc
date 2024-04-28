@@ -360,24 +360,6 @@ RCT_EXPORT_METHOD(dc_ImportMnemonic:(NSString*)mnemonic successCallback:(RCTResp
     });
 }
 
-//给账户添加余额
-RCT_EXPORT_METHOD(dc_AddBalanceForTest:(NSString*)balance successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
-    RCTLogInfo(@"dc_AddBalanceForTest");
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        BOOL success = [dcapi dc_AddBalanceForTest:[balance longLongValue]];
-        if(success){
-            dispatch_async(dispatch_get_main_queue(), ^{
-                successCallback(@[@true]);
-            });
-        }else {
-            NSString *lastError = [dcapi dc_GetLastErr];
-            dispatch_async(dispatch_get_main_queue(), ^{
-                errorCallback(@[lastError]);
-            });
-        }
-    });
-}
-
 //获取用户信息
 RCT_EXPORT_METHOD(dc_GetUserInfo:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
     RCTLogInfo(@"dc_GetUserInfo");
@@ -457,10 +439,10 @@ RCT_EXPORT_METHOD(dc_GenerateAppAccount:(NSString*)appId successCallback:(RCTRes
 }
 
 //account转address
-RCT_EXPORT_METHOD(getEthAddress:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
-    RCTLogInfo(@"getEthAddress");
+RCT_EXPORT_METHOD(dc_getEthAddress:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
+    RCTLogInfo(@"dc_getEthAddress");
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        NSString *address = [dcapi getEthAddress];
+        NSString *address = [dcapi dc_getEthAddress];
         if(address.length > 0){
             dispatch_async(dispatch_get_main_queue(), ^{
                 successCallback(@[address]);
