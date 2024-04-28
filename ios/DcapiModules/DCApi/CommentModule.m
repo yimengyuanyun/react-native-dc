@@ -35,7 +35,7 @@ RCT_EXPORT_METHOD(comment_AddUserCommentSpace:(RCTResponseSenderBlock)successCal
         BOOL success = [dcapi comment_AddUserCommentSpace];
         if(success){
             dispatch_async(dispatch_get_main_queue(), ^{
-                successCallback(@[success]);
+                successCallback(@[@true]);
             });
         }else {
             NSString *lastError = [dcapi dc_GetLastErr];
@@ -54,7 +54,7 @@ RCT_EXPORT_METHOD(comment_AddCommentableObj:(NSString*)objCid openFlag:(long*)op
         long res = [dcapi comment_AddCommentableObj:objCid openFlag:openFlag commentSpace:commentSpace];
         if(res > -1){
             dispatch_async(dispatch_get_main_queue(), ^{
-                successCallback(@[res]);
+                successCallback(@[@(res)]);
             });
         }else {
             NSString *lastError = [dcapi dc_GetLastErr];
@@ -70,10 +70,10 @@ RCT_EXPORT_METHOD(comment_AddObjCommentSpace:(NSString*)objCid commentSpace:(lon
             successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         RCTLogInfo(@"comment_AddObjCommentSpace");
-        long res = [dcapi comment_AddObjCommentSpace:objCid commentSpace:commentSpace];
+        long res = [dcapi comment_AddObjCommentSpace:objCid addSpace:commentSpace];
         if(res > -1){
             dispatch_async(dispatch_get_main_queue(), ^{
-                successCallback(@[res]);
+                successCallback(@[@(res)]);
             });
         }else {
             NSString *lastError = [dcapi dc_GetLastErr];
@@ -90,7 +90,7 @@ RCT_EXPORT_METHOD(comment_DisableCommentObj:(NSString*)objCid successCallback:(R
         RCTLogInfo(@"comment_DisableCommentObj");
         long res = [dcapi comment_DisableCommentObj:objCid];
         dispatch_async(dispatch_get_main_queue(), ^{
-            successCallback(@[res]);
+            successCallback(@[@(res)]);
         });
     });
 }
@@ -100,10 +100,10 @@ RCT_EXPORT_METHOD(comment_ReportMaliciousComment:(NSString*)objCid commentBlockh
             successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         RCTLogInfo(@"comment_ReportMaliciousComment");
-        long res = [dcapi comment_ReportMaliciousComment:objCid commentBlockheight:commentBlockheight, commentCid:commentCid];
+        long res = [dcapi comment_ReportMaliciousComment:objCid commentBlockheight:commentBlockheight commentCid:commentCid];
         if(res > -1){
             dispatch_async(dispatch_get_main_queue(), ^{
-                successCallback(@[res]);
+                successCallback(@[@(res)]);
             });
         }else {
             NSString *lastError = [dcapi dc_GetLastErr];
@@ -119,10 +119,10 @@ RCT_EXPORT_METHOD(comment_SetObjCommentPublic:(NSString*)objCid commentBlockheig
             successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         RCTLogInfo(@"comment_SetObjCommentPublic");
-        long res = [dcapi comment_SetObjCommentPublic:objCid commentBlockheight:commentBlockheight, commentCid:commentCid];
+        long res = [dcapi comment_SetObjCommentPublic:objCid commentBlockheight:commentBlockheight commentCid:commentCid];
         if(res > -1){
             dispatch_async(dispatch_get_main_queue(), ^{
-                successCallback(@[res]);
+                successCallback(@[@(res)]);
             });
         }else {
             NSString *lastError = [dcapi dc_GetLastErr];
@@ -134,12 +134,11 @@ RCT_EXPORT_METHOD(comment_SetObjCommentPublic:(NSString*)objCid commentBlockheig
 }
 
 // 发布对指定对象的评论，返回评论key,格式为:commentBlockHeight/commentCid
-RCT_EXPORT_METHOD(comment_PublishCommentToObj:(NSString*)objCid objAuthor:(NSString*)objAuthor commentType:(long)commentType comment:(NSString)comment referCommentkey:(NSString*)referCommentkey openFlag:(long*)openFlag 
+RCT_EXPORT_METHOD(comment_PublishCommentToObj:(NSString*)objCid objAuthor:(NSString*)objAuthor commentType:(long)commentType comment:(NSString*)comment referCommentkey:(NSString*)referCommentkey openFlag:(long*)openFlag
             successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         RCTLogInfo(@"comment_PublishCommentToObj");
-        NSString *res = [dcapi comment_PublishCommentToObj:objCid objAuthor:objAuthor commentType:commentType comment:comment referCommentkey:referCommentkey 
-            openFlag:openFlag];
+        NSString *res = [dcapi comment_PublishCommentToObj:objCid ObjAuthor:objAuthor commentType:commentType comment:comment referCommentkey:referCommentkey openFlag:openFlag];
         if(res.length > 0){
             dispatch_async(dispatch_get_main_queue(), ^{
                 successCallback(@[res]);
@@ -161,7 +160,7 @@ RCT_EXPORT_METHOD(comment_DeleteSelfComment:(NSString*)objCid objAuthor:(NSStrin
         BOOL success = [dcapi comment_DeleteSelfComment:objCid objAuthor:objAuthor commentKey:commentKey];
         if(success){
             dispatch_async(dispatch_get_main_queue(), ^{
-                successCallback(@[success]);
+                successCallback(@[@true]);
             });
         }else {
             NSString *lastError = [dcapi dc_GetLastErr];

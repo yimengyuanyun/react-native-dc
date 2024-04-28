@@ -599,6 +599,7 @@ public class DCModule extends ReactContextBaseJavaModule {
         new Thread(new Runnable() {
             @Override
             public void run() {
+                System.out.println("---------------------------------start dc_RestartLocalWebServer");
                 Boolean bool = dcClass.dc_RestartLocalWebServer();
                 System.out.println("--------------------------------dc_RestartLocalWebServer success：" + bool);
                 if (bool) {

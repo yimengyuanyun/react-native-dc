@@ -474,36 +474,37 @@ RCT_EXPORT_METHOD(dc_GetSS58AddressForAccount:(NSString*)account successCallback
     });
 }
 
-//重启本地文件网络访问服务
-RCT_EXPORT_METHOD(dc_RestartLocalWebServer:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
-    RCTLogInfo(@"dc_RestartLocalWebServer");
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        BOOL success = [dcapi dc_RestartLocalWebServer];
-        if(success){
-            dispatch_async(dispatch_get_main_queue(), ^{
-                successCallback(@[success]);
-            });
-        }else {
-            NSString *lastError = [dcapi dc_GetLastErr];
-            dispatch_async(dispatch_get_main_queue(), ^{
-                errorCallback(@[lastError]);
-            });
-        }
-    });
-}
+//todo 重启本地文件网络访问服务
+//RCT_EXPORT_METHOD(dc_RestartLocalWebServer:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
+//    RCTLogInfo(@"dc_RestartLocalWebServer");
+//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+//        BOOL success = [dcapi dc_RestartLocalWebServer];
+//        if(success){
+//            dispatch_async(dispatch_get_main_queue(), ^{
+//                successCallback(@true);
+//            });
+//        }else {
+//            NSString *lastError = [dcapi dc_GetLastErr];
+//            dispatch_async(dispatch_get_main_queue(), ^{
+//                errorCallback(@[lastError]);
+//            });
+//        }
+//    });
+//}
 
 // 启动p2p通信服务
-RCT_EXPORT_METHOD(dc_StartP2pServer:(NSString*)receiver model:(long)model 
+RCT_EXPORT_METHOD(dc_StartP2pServer:(NSString*)receiver model:(long)model
             successCallback:(RCTResponseSenderBlock)successCallback
             errorCallback:(RCTResponseSenderBlock)errorCallback) {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         RCTLogInfo(@"dc_StartP2pServer");
         P2PHandlerModule *p2pHandler = [[P2PHandlerModule alloc] initWithInfo:receiver];
-        Dc_P2pConnectOptions *options = [dcapi Dc_P2pConnectOptions];
-        BOOL success = [dcapi dc_StartP2pServer:receiver model:model msgHandler:p2pHandler streamHandler:p2pHandler connectOptions:options];
+        P2PHandlerModule *streamHandler = [[P2PHandlerModule alloc] initWithInfo:receiver];
+        DcapiDc_P2pConnectOptions *options = [DcapiDc_P2pConnectOptions alloc];
+        BOOL success = [dcapi dc_StartP2pServer:model msgHandler:p2pHandler streamHandler:streamHandler connectOptions:options];
         if(success){
             dispatch_async(dispatch_get_main_queue(), ^{
-                successCallback(@[success]);
+                successCallback(@[@true]);
             });
         }else {
             NSString *lastError = [dcapi dc_GetLastErr];
@@ -578,7 +579,7 @@ RCT_EXPORT_MODULE()
 /**
  * 订阅消息收到消息
  */
-- (void)PubSubMsgResponseHandler:(NSString*)msgId (NSString*)fromPeerId plaintextMsg:(NSString*)plaintextMsg topic:(NSString*)topic byte:(NSArray*)msg err:(NSString*)err {
+- (void)PubSubMsgResponseHandler:(NSString*)msgId fromPeerId:(NSString*)fromPeerId plaintextMsg:(NSString*)plaintextMsg topic:(NSString*)topic byte:(NSArray*)msg err:(NSString*)err {
     NSLog(@"-------PubSubMsgResponseHandler");
 }
 /**
@@ -608,4 +609,8 @@ RCT_EXPORT_MODULE()
 - (void)OnStreamClose:(NSString*)err {
     NSLog(@"-------OnStreamClose");
 }
+- (void)updateTransmitSize:(long)status size:(int64_t)size { 
+    NSLog(@"-------updateTransmitSize");
+}
+
 @end

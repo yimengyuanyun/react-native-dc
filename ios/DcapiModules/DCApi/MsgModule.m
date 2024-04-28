@@ -34,7 +34,7 @@ RCT_EXPORT_METHOD(msg_SendMsg:(NSString*)receiver msg:(NSString*)msg  successCal
         long res = [dcapi msg_SendMsg:receiver msg:msg];
         if(res > -1){
             dispatch_async(dispatch_get_main_queue(), ^{
-                successCallback(@[res]);
+                successCallback(@[@(res)]);
             });
         }else {
             NSString *lastError = [dcapi dc_GetLastErr];

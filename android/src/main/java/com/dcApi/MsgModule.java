@@ -66,7 +66,7 @@ public class MsgModule extends ReactContextBaseJavaModule {
         System.out.println("---------------------------------start msg_GetMsgFromUserBox");
         String res = dcClass.msg_GetMsgFromUserBox(Long.parseLong(limit));
         System.out.println("---------------------------------msg_GetMsgFromUserBox");
-        if (res.length > 0) {
+        if (res.length() > 0) {
           successCallback.invoke(res);
         } else {
           String lastError = dcClass.dc_GetLastErr();
