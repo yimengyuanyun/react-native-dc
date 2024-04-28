@@ -457,10 +457,10 @@ RCT_EXPORT_METHOD(dc_GenerateAppAccount:(NSString*)appId successCallback:(RCTRes
 }
 
 //account转address
-RCT_EXPORT_METHOD(dc_GetSS58AddressForAccount:(NSString*)account successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
-    RCTLogInfo(@"dc_GetSS58AddressForAccount");
+RCT_EXPORT_METHOD(getEthAddress:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
+    RCTLogInfo(@"getEthAddress");
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        NSString *address = [dcapi dc_GetSS58AddressForAccount:account];
+        NSString *address = [dcapi getEthAddress];
         if(address.length > 0){
             dispatch_async(dispatch_get_main_queue(), ^{
                 successCallback(@[address]);

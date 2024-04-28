@@ -287,17 +287,17 @@ export const DCgetMnemonic = () => {
 };
 
 // 获取当前生效的钱包地址
-export const DCgetSS58Address = () => {
+export const DCgetEthAddress = () => {
   return new Promise((resolve, reject) => {
     const successCallback = (ss58address: string) => {
-      console.log("getSS58Address success", ss58address);
+      console.log("getEthAddress success", ss58address);
       resolve({ ss58address });
     };
     const errorCallback = (error: any) => {
-      console.log("getSS58Address error", error);
+      console.log("getEthAddress error", error);
       resolve({ error });
     };
-    DCModule.getSS58Address(successCallback, errorCallback);
+    DCModule.getEthAddress(successCallback, errorCallback);
   });
 };
 

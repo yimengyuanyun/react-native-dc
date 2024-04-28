@@ -568,20 +568,19 @@ public class DCModule extends ReactContextBaseJavaModule {
         }).start();
     }
 
-    // account转address
+    // 获取以太坊地址
     @ReactMethod
-    public void dc_GetSS58AddressForAccount(
-            String account,
+    public void getEthAddress(
             Callback successCallback,
             Callback errorCallback) {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                String address = dcClass.dc_GetSS58AddressForAccount(account);
-                System.out.println("--------------------------------dc_GetSS58AddressForAccount success：" + address);
+                String address = dcClass.getEthAddress();
+                System.out.println("--------------------------------getEthAddress success：" + address);
                 if (address.equals("")) {
                     String lastError = dcClass.dc_GetLastErr();
-                    System.out.println("---------------------------------dc_GetSS58AddressForAccount: err");
+                    System.out.println("---------------------------------getEthAddress: err");
                     System.out.println(lastError);
                     errorCallback.invoke(lastError);
                 } else {
