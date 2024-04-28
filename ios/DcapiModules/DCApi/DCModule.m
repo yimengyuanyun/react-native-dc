@@ -439,10 +439,10 @@ RCT_EXPORT_METHOD(dc_GenerateAppAccount:(NSString*)appId successCallback:(RCTRes
 }
 
 //account转address
-RCT_EXPORT_METHOD(dc_getEthAddress:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
-    RCTLogInfo(@"dc_getEthAddress");
+RCT_EXPORT_METHOD(dc_GetEthAddress:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
+    RCTLogInfo(@"dc_GetEthAddress");
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        NSString *address = [dcapi dc_getEthAddress];
+        NSString *address = [dcapi dc_GetEthAddress];
         if(address.length > 0){
             dispatch_async(dispatch_get_main_queue(), ^{
                 successCallback(@[address]);

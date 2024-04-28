@@ -547,17 +547,17 @@ public class DCModule extends ReactContextBaseJavaModule {
 
     // 获取以太坊地址
     @ReactMethod
-    public void dc_getEthAddress(
+    public void dc_GetEthAddress(
             Callback successCallback,
             Callback errorCallback) {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                String address = dcClass.dc_getEthAddress();
-                System.out.println("--------------------------------dc_getEthAddress success：" + address);
+                String address = dcClass.dc_GetEthAddress();
+                System.out.println("--------------------------------dc_GetEthAddress success：" + address);
                 if (address.equals("")) {
                     String lastError = dcClass.dc_GetLastErr();
-                    System.out.println("---------------------------------dc_getEthAddress: err");
+                    System.out.println("---------------------------------dc_GetEthAddress: err");
                     System.out.println(lastError);
                     errorCallback.invoke(lastError);
                 } else {
