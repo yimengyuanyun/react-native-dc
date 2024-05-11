@@ -28,3 +28,4 @@ npm publish
 0.1.21 - 新链
 0.1.26 - 新链调整
 0.1.27 - ios新版
+0.1.28 - bug修复DCsyncDBFromDC 
