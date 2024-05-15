@@ -138,7 +138,7 @@ RCT_EXPORT_METHOD(comment_PublishCommentToObj:(NSString*)objCid objAuthor:(NSStr
             successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         RCTLogInfo(@"comment_PublishCommentToObj");
-        NSString *res = [dcapi comment_PublishCommentToObj:objCid ObjAuthor:objAuthor commentType:commentType comment:comment referCommentkey:referCommentkey openFlag:openFlag];
+        NSString *res = [dcapi comment_PublishCommentToObj:objCid objAuthor:objAuthor commentType:commentType comment:comment referCommentkey:referCommentkey openFlag:openFlag];
         if(res.length > 0){
             dispatch_async(dispatch_get_main_queue(), ^{
                 successCallback(@[res]);
