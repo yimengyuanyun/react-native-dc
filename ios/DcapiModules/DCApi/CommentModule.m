@@ -238,6 +238,43 @@ RCT_EXPORT_METHOD(comment_GetUserComments:userPubkey startBlockheight:(long)star
     });
 }
 
+// 设置缓存key数据， value 缓存key对应的数据， expire 缓存key的过期时间，单位秒
+RCT_EXPORT_METHOD(comment_SetCacheKey:value expire:(long)expire 
+        successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        RCTLogInfo(@"comment_SetCacheKey");
+        NSString *res = [dcapi comment_SetCacheKey:userPubkey expire:expire];
+        if(res.length > 0){
+            dispatch_async(dispatch_get_main_queue(), ^{
+                successCallback(@[res]);
+            });
+        }else {
+            NSString *lastError = [dcapi dc_GetLastErr];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                errorCallback(@[lastError]);
+            });
+        }
+    });
+}
+
+// 获取缓存数据 key 对应缓存key
+RCT_EXPORT_METHOD(comment_GetCacheValue:key 
+        successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        RCTLogInfo(@"comment_GetCacheValue");
+        NSString *res = [dcapi comment_GetCacheValue:key];
+        if(res.length > 0){
+            dispatch_async(dispatch_get_main_queue(), ^{
+                successCallback(@[res]);
+            });
+        }else {
+            NSString *lastError = [dcapi dc_GetLastErr];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                errorCallback(@[lastError]);
+            });
+        }
+    });
+}
 
 #pragma mark - 向react-natvie 传递消息
 - (NSArray<NSString *> *)supportedEvents

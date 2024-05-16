@@ -331,3 +331,52 @@ public class CommentModule extends ReactContextBaseJavaModule {
     }).start();
   }
 }
+
+// 设置缓存key数据
+@ReactMethod
+public void comment_SetCacheKey(
+    String value, // 缓存key对应的数据
+    String expire, // 缓存key的过期时间，单位秒
+    Callback successCallback,
+    Callback errorCallback) {
+  new Thread(new Runnable() {
+    @Override
+    public void run() {
+      System.out.println("---------------------------------start comment_SetCacheKey");
+      String res = dcClass.comment_SetCacheKey(value, Long.parseLong(expire));
+      System.out.println("---------------------------------comment_SetCacheKey");
+      if (res.length() > 0) {
+        successCallback.invoke(res);
+      } else {
+        String lastError = dcClass.dc_GetLastErr();
+        System.out.println("---------------------------------comment_SetCacheKey: err");
+        System.out.println(lastError);
+        errorCallback.invoke(lastError);
+      }
+    }
+  }).start();
+}
+
+// 获取缓存数据
+@ReactMethod
+public void comment_GetCacheValue(
+    String key, // 对应缓存key
+    Callback successCallback,
+    Callback errorCallback) {
+  new Thread(new Runnable() {
+    @Override
+    public void run() {
+      System.out.println("---------------------------------start comment_GetCacheValue");
+      String res = dcClass.comment_GetCacheValue(key);
+      System.out.println("---------------------------------comment_GetCacheValue");
+      if (res.length() > 0) {
+        successCallback.invoke(res);
+      } else {
+        String lastError = dcClass.dc_GetLastErr();
+        System.out.println("---------------------------------comment_GetCacheValue: err");
+        System.out.println(lastError);
+        errorCallback.invoke(lastError);
+      }
+    }
+  }).start();
+}

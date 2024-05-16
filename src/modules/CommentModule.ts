@@ -7,11 +7,11 @@ const { CommentModule } = NativeModules;
 // 配置或增加用户自身的评论空间
 export const commentAddUserCommentSpace = () => {
   return new Promise((resolve) => {
-    const successCallback = (bool: boolean) => {
+    const successCallback = (bool) => {
       console.log("comment_AddUserCommentSpace success", bool);
       resolve({ bool });
     };
-    const errCallback = (error: any) => {
+    const errCallback = (error) => {
       console.log("-----------comment_AddUserCommentSpace error", error);
       resolve({ error });
     };
@@ -20,39 +20,42 @@ export const commentAddUserCommentSpace = () => {
 };
 
 // 为指定对象开通评论功能，返回res-0:成功 1:评论空间没有配置 2:评论空间不足 3:评论数据同步中
-export const commentAddCommentableObj = (
-  objCid: string,
-  openFlag: number,
-  commentSpace: number
-) => {
+export const commentAddCommentableObj = (objCid: string, openFlag: string, commentSpace: string) => {
   return new Promise((resolve) => {
-    const successCallback = (res: number) => {
+    const successCallback = (res) => {
       console.log("comment_AddCommentableObj success", res);
       resolve({ res });
+    };
+    const errCallback = (error) => {
+      console.log("-----------comment_AddCommentableObj error", error);
+      resolve({ error });
     };
     CommentModule.comment_AddCommentableObj(
       objCid,
       openFlag,
       commentSpace,
-      successCallback
+      successCallback,
+      errCallback
     );
   });
 };
 
 // 为开通评论的对象增加评论空间，返回res-0:成功 1:评论空间没有配置 2:评论空间不足 3:评论数据同步中
-export const commentAddObjCommentSpace = (
-  objCid: string,
-  commentSpace: number
-) => {
+export const commentAddObjCommentSpace = (objCid: string, commentSpace: string) => {
   return new Promise((resolve) => {
-    const successCallback = (res: number) => {
+    const successCallback = (res) => {
       console.log("comment_AddObjCommentSpace success", res);
       resolve({ res });
+    };
+    const errCallback = (error) => {
+      console.log("-----------comment_AddObjCommentSpace error", error);
+      resolve({ error });
     };
     CommentModule.comment_AddObjCommentSpace(
       objCid,
       commentSpace,
-      successCallback
+      successCallback,
+      errCallback
     );
   });
 };
@@ -60,30 +63,39 @@ export const commentAddObjCommentSpace = (
 // 关闭指定对象的评论功能（会删除所有针对该对象的评论），返回res-0:成功 1:评论空间没有配置 2:评论空间不足 3:评论数据同步中
 export const commentDisableCommentObj = (objCid: string) => {
   return new Promise((resolve) => {
-    const successCallback = (res: number) => {
+    const successCallback = (res) => {
       console.log("comment_DisableCommentObj success", res);
       resolve({ res });
     };
-    CommentModule.comment_DisableCommentObj(objCid, successCallback);
+    const errCallback = (error) => {
+      console.log("-----------comment_DisableCommentObj error", error);
+      resolve({ error });
+    };
+    CommentModule.comment_DisableCommentObj(objCid, successCallback, errCallback);
   });
 };
 
 // 举报恶意评论（会删除所有针对该对象的评论），返回res-0:成功 1:评论空间没有配置 2:评论空间不足 3:评论数据同步中
 export const commentReportMaliciousComment = (
   objCid: string,
-  commentBlockheight: number,
+  commentBlockheight: string,
   commentCid: string
 ) => {
   return new Promise((resolve) => {
-    const successCallback = (res: number) => {
+    const successCallback = (res) => {
       console.log("comment_ReportMaliciousComment success", res);
       resolve({ res });
+    };
+    const errCallback = (error) => {
+      console.log("-----------comment_ReportMaliciousComment error", error);
+      resolve({ error });
     };
     CommentModule.comment_ReportMaliciousComment(
       objCid,
       commentBlockheight,
       commentCid,
-      successCallback
+      successCallback,
+      errCallback
     );
   });
 };
@@ -91,19 +103,24 @@ export const commentReportMaliciousComment = (
 // 精选评论，让评论可见，返回res-0:成功 1:评论空间没有配置 2:评论空间不足 3:评论数据同步中
 export const commentSetObjCommentPublic = (
   objCid: string,
-  commentBlockheight: number,
+  commentBlockheight: string,
   commentCid: string
 ) => {
   return new Promise((resolve) => {
-    const successCallback = (res: number) => {
+    const successCallback = (res) => {
       console.log("comment_SetObjCommentPublic success", res);
       resolve({ res });
+    };
+    const errCallback = (error) => {
+      console.log("-----------comment_SetObjCommentPublic error", error);
+      resolve({ error });
     };
     CommentModule.comment_SetObjCommentPublic(
       objCid,
       commentBlockheight,
       commentCid,
-      successCallback
+      successCallback,
+      errCallback
     );
   });
 };
@@ -112,15 +129,19 @@ export const commentSetObjCommentPublic = (
 export const commentPublishCommentToObj = (
   objCid: string,
   objAuthor: string,
-  commentType: number,
+  commentType: string,
   comment: string,
   referCommentkey: string,
-  openFlag: number
+  openFlag: string
 ) => {
   return new Promise((resolve) => {
-    const successCallback = (res: number) => {
+    const successCallback = (res) => {
       console.log("comment_PublishCommentToObj success", res);
       resolve({ res });
+    };
+    const errCallback = (error) => {
+      console.log("-----------comment_PublishCommentToObj error", error);
+      resolve({ error });
     };
     CommentModule.comment_PublishCommentToObj(
       objCid,
@@ -129,23 +150,20 @@ export const commentPublishCommentToObj = (
       comment,
       referCommentkey,
       openFlag,
-      successCallback
+      successCallback,
+      errCallback
     );
   });
 };
 
 // 删除已发布的评论，返回评论key,格式为:commentBlockHeight/commentCid
-export const commentDeleteSelfComment = (
-  objCid: string,
-  objAuthor: string,
-  commentKey: string
-) => {
+export const commentDeleteSelfComment = (objCid: string, objAuthor: string, commentKey: string) => {
   return new Promise((resolve) => {
-    const successCallback = (bool: boolean) => {
+    const successCallback = (bool) => {
       console.log("comment_DeleteSelfComment success", bool);
       resolve({ bool });
     };
-    const errCallback = (error: any) => {
+    const errCallback = (error) => {
       console.log("-----------comment_DeleteSelfComment error", error);
       resolve({ error });
     };
@@ -163,16 +181,20 @@ export const commentDeleteSelfComment = (
 // 返回已开通评论的对象列表,格式：[{"objCid":"YmF...bXk=","appId":"dGVzdGFwcA==","blockheight":2904,"commentSpace":1000,"userPubkey":"YmJh...vZGU=","signature":"oCY1...Y8sO/lkDac/nLu...Rm/xm...CQ=="}]
 export const commentGetCommentableObj = (
   objAuthor: string,
-  startBlockheight: number,
-  direction: number,
-  offset: number,
+  startBlockheight: string,
+  direction: string,
+  offset: string,
   seekKey: string,
-  limit: number
+  limit: string
 ) => {
   return new Promise((resolve) => {
-    const successCallback = (res: number) => {
+    const successCallback = (res) => {
       console.log("comment_GetCommentableObj success", res);
       resolve({ res });
+    };
+    const errCallback = (error) => {
+      console.log("-----------comment_GetCommentableObj error", error);
+      resolve({ error });
     };
     CommentModule.comment_GetCommentableObj(
       objAuthor,
@@ -181,7 +203,8 @@ export const commentGetCommentableObj = (
       offset,
       seekKey,
       limit,
-      successCallback
+      successCallback,
+      errCallback
     );
   });
 };
@@ -191,16 +214,20 @@ export const commentGetCommentableObj = (
 export const commentGetObjComments = (
   objCid: string,
   objAuthor: string,
-  startBlockheight: number,
-  direction: number,
-  offset: number,
+  startBlockheight: string,
+  direction: string,
+  offset: string,
   seekKey: string,
-  limit: number
+  limit: string
 ) => {
   return new Promise((resolve) => {
-    const successCallback = (res: number) => {
+    const successCallback = (res) => {
       console.log("comment_GetObjComments success", res);
       resolve({ res });
+    };
+    const errCallback = (error) => {
+      console.log("-----------comment_GetObjComments error", error);
+      resolve({ error });
     };
     CommentModule.comment_GetObjComments(
       objCid,
@@ -210,7 +237,8 @@ export const commentGetObjComments = (
       offset,
       seekKey,
       limit,
-      successCallback
+      successCallback,
+      errCallback
     );
   });
 };
@@ -220,16 +248,20 @@ export const commentGetObjComments = (
 // world","CommentSize":11,"Status":0,"Signature":"bkqy...b6dkda","Refercommentkey":"","CCount":0,"UpCount":0,"DownCount":0,"TCount":0}]
 export const commentGetUserComments = (
   userPubkey: string,
-  startBlockheight: number,
-  direction: number,
-  offset: number,
+  startBlockheight: string,
+  direction: string,
+  offset: string,
   seekKey: string,
-  limit: number
+  limit: string
 ) => {
   return new Promise((resolve) => {
-    const successCallback = (res: number) => {
+    const successCallback = (res) => {
       console.log("comment_GetUserComments success", res);
       resolve({ res });
+    };
+    const errCallback = (error) => {
+      console.log("-----------comment_GetUserComments error", error);
+      resolve({ error });
     };
     CommentModule.comment_GetUserComments(
       userPubkey,
@@ -238,7 +270,52 @@ export const commentGetUserComments = (
       offset,
       seekKey,
       limit,
-      successCallback
+      successCallback,
+      errCallback
+    );
+  });
+};
+
+// 设置缓存key数据 value 缓存key对应的数据， expire 缓存key的过期时间，单位秒
+export const commentSetCacheKey = (
+  value: string,
+  expire: string,
+) => {
+  return new Promise((resolve) => {
+    const successCallback = (res) => {
+      console.log("comment_SetCacheKey success", res);
+      resolve({ res });
+    };
+    const errCallback = (error) => {
+      console.log("-----------comment_SetCacheKey error", error);
+      resolve({ error });
+    };
+    CommentModule.comment_SetCacheKey(
+      value,
+      expire,
+      successCallback,
+      errCallback
+    );
+  });
+};
+
+// 获取缓存数据 key 对应缓存key
+export const commentGetCacheValue = (
+  key: string,
+) => {
+  return new Promise((resolve) => {
+    const successCallback = (res) => {
+      console.log("comment_GetCacheValue success", res);
+      resolve({ res });
+    };
+    const errCallback = (error) => {
+      console.log("-----------comment_GetCacheValue error", error);
+      resolve({ error });
+    };
+    CommentModule.comment_GetCacheValue(
+      key,
+      successCallback,
+      errCallback
     );
   });
 };
