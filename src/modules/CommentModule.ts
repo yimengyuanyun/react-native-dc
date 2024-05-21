@@ -5,17 +5,17 @@ const { CommentModule } = NativeModules;
  * 评论相关接口
  */
 // 配置或增加用户自身的评论空间
-export const commentAddUserCommentSpace = () => {
+export const commentAddUserOffChainSpace = () => {
   return new Promise((resolve) => {
     const successCallback = (bool) => {
-      console.log("comment_AddUserCommentSpace success", bool);
+      console.log("comment_AddUserOffChainSpace success", bool);
       resolve({ bool });
     };
     const errCallback = (error) => {
-      console.log("-----------comment_AddUserCommentSpace error", error);
+      console.log("-----------comment_AddUserOffChainSpace error", error);
       resolve({ error });
     };
-    CommentModule.comment_AddUserCommentSpace(successCallback, errCallback);
+    CommentModule.comment_AddUserOffChainSpace(successCallback, errCallback);
   });
 };
 

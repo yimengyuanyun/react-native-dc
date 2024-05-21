@@ -31,20 +31,20 @@ public class CommentModule extends ReactContextBaseJavaModule {
 
   // 配置或增加用户自身的评论空间
   @ReactMethod
-  public void comment_AddUserCommentSpace(
+  public void comment_AddUserOffChainSpace(
       Callback successCallback,
       Callback errorCallback) {
     new Thread(new Runnable() {
       @Override
       public void run() {
-        System.out.println("---------------------------------start comment_AddUserCommentSpace");
-        Boolean bool = dcClass.comment_AddUserCommentSpace();
-        System.out.println("---------------------------------comment_AddUserCommentSpace");
+        System.out.println("---------------------------------start comment_AddUserOffChainSpace");
+        Boolean bool = dcClass.comment_AddUserOffChainSpace();
+        System.out.println("---------------------------------comment_AddUserOffChainSpace");
         if (bool) {
           successCallback.invoke(bool);
         } else {
           String lastError = dcClass.dc_GetLastErr();
-          System.out.println("---------------------------------comment_AddUserCommentSpace: err");
+          System.out.println("---------------------------------comment_AddUserOffChainSpace: err");
           System.out.println(lastError);
           errorCallback.invoke(lastError);
         }
@@ -70,7 +70,7 @@ public class CommentModule extends ReactContextBaseJavaModule {
           successCallback.invoke(Long.toString(res));
         } else {
           String lastError = dcClass.dc_GetLastErr();
-          System.out.println("---------------------------------comment_AddUserCommentSpace: err");
+          System.out.println("---------------------------------comment_AddUserOffChainSpace: err");
           System.out.println(lastError);
           errorCallback.invoke(lastError);
         }
