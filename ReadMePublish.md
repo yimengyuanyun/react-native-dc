@@ -35,3 +35,4 @@ npm publish
 0.2.3 - bugfix
 0.2.4 - auth_
 0.2.5 - bugfix
+0.2.7 - msgGetMsgFromUserBox

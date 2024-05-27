@@ -18,3 +18,22 @@ export const msgSendMsg = (receiver: string, msg: string) => {
     );
   });
 };
+
+// 从用户收件箱收取离线消息, limit, 一次最多提取多少条离线消息，最多500条每次
+export const msgGetMsgFromUserBox = (limit: number) => {
+  return new Promise(resolve => {
+    const successCallback = (res) => {
+      console.log('msg_GetMsgFromUserBox success', res);
+      resolve({res});
+    };
+    const errCallback = (error) => {
+      console.log("-----------msg_GetMsgFromUserBox error", error);
+      resolve({ error });
+    };
+    MsgModule.msg_GetMsgFromUserBox(
+      limit,
+      successCallback,
+      errCallback,
+    );
+  });
+};
