@@ -260,7 +260,11 @@ public class CommentModule extends ReactContextBaseJavaModule {
           String lastError = dcClass.dc_GetLastErr();
           System.out.println("---------------------------------comment_GetCommentableObj: err");
           System.out.println(lastError);
-          errorCallback.invoke(lastError);
+          if(lastError.length() > 0) {
+            errorCallback.invoke(lastError);
+          } else {
+            successCallback.invoke("");
+          }
         }
       }
     }).start();
@@ -292,7 +296,11 @@ public class CommentModule extends ReactContextBaseJavaModule {
           String lastError = dcClass.dc_GetLastErr();
           System.out.println("---------------------------------comment_GetObjComments: err");
           System.out.println(lastError);
-          errorCallback.invoke(lastError);
+          if(lastError.length() > 0) {
+            errorCallback.invoke(lastError);
+          } else {
+            successCallback.invoke("");
+          }
         }
       }
     }).start();
@@ -325,7 +333,11 @@ public class CommentModule extends ReactContextBaseJavaModule {
           String lastError = dcClass.dc_GetLastErr();
           System.out.println("---------------------------------comment_GetUserComments: err");
           System.out.println(lastError);
-          errorCallback.invoke(lastError);
+          if(lastError.length() > 0) {
+            errorCallback.invoke(lastError);
+          } else {
+            successCallback.invoke("");
+          }
         }
       }
     }).start();
@@ -374,7 +386,11 @@ public class CommentModule extends ReactContextBaseJavaModule {
           String lastError = dcClass.dc_GetLastErr();
           System.out.println("---------------------------------comment_GetCacheValue: err");
           System.out.println(lastError);
-          errorCallback.invoke(lastError);
+          if(lastError.length() > 0) {
+            errorCallback.invoke(lastError);
+          } else {
+            successCallback.invoke("");
+          }
         }
       }
     }).start();

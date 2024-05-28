@@ -29,7 +29,7 @@ public class MsgModule extends ReactContextBaseJavaModule {
     return "MsgModule";
   }
 
-  // 向指定用户发送消息 res 0:在线消息发送成功，2:离线消息发送成功（应用根据需要自行接推送服务）3:消息发送失败）
+  // 向指定用户发送消息 res 0:在线消息发送成功，1:离线消息发送成功（应用根据需要自行接推送服务）2:消息发送失败）
   @ReactMethod
   public void msg_SendMsg(
       String receiver, // 接收者16进制的账号或base32编码的pubkey  
@@ -72,7 +72,11 @@ public class MsgModule extends ReactContextBaseJavaModule {
           String lastError = dcClass.dc_GetLastErr();
           System.out.println("---------------------------------msg_GetMsgFromUserBox: err");
           System.out.println(lastError);
-          errorCallback.invoke(lastError);
+          if(lastError.length() > 0) {
+            errorCallback.invoke(lastError);
+          } else {
+            successCallback.invoke("");
+          }
         }
       }
     }).start();
