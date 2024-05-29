@@ -593,7 +593,6 @@ public class DCModule extends ReactContextBaseJavaModule {
     // 启动p2p通信服务
     @ReactMethod
     public void dc_StartP2pServer(
-            String receiver, // 接收的用户receiver，接收者16进制的账号或base32编码的pubkey
             String model, // 0:默认模式，接收除了黑名单外的任何有效来源信息， 1:白名单模式，只接收白名单里用户的信息
             Callback successCallback,
             Callback errorCallback) {
@@ -611,7 +610,7 @@ public class DCModule extends ReactContextBaseJavaModule {
 
                     @Override
                     public void receiveMsg(String fromPeerId, byte[] bytes, byte[] bytes1) {
-                        String jsonStr = "{\"receiver\":\"" + receiver + "\", \"fromPeerId\":\"" + fromPeerId
+                        String jsonStr = "{\"fromPeerId\":\"" + fromPeerId
                                 + "\", \"plaintextMsg\":\"" + bytes.toString()
                                 + "\"}";
                         reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)

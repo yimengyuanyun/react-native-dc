@@ -475,13 +475,13 @@ RCT_EXPORT_METHOD(dc_RestartLocalWebServer:(RCTResponseSenderBlock)successCallba
 }
 
 // 启动p2p通信服务
-RCT_EXPORT_METHOD(dc_StartP2pServer:(NSString*)receiver model:(long)model
+RCT_EXPORT_METHOD(dc_StartP2pServer:(long)model
             successCallback:(RCTResponseSenderBlock)successCallback
             errorCallback:(RCTResponseSenderBlock)errorCallback) {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         RCTLogInfo(@"dc_StartP2pServer");
-        P2PHandlerModule *p2pHandler = [[P2PHandlerModule alloc] initWithInfo:receiver];
-        P2PHandlerModule *streamHandler = [[P2PHandlerModule alloc] initWithInfo:receiver];
+        P2PHandlerModule *p2pHandler = [P2PHandlerModule alloc] ;
+        P2PHandlerModule *streamHandler = [P2PHandlerModule alloc] ;
         DcapiDc_P2pConnectOptions *options = [DcapiDc_P2pConnectOptions alloc];
         BOOL success = [dcapi dc_StartP2pServer:model msgHandler:p2pHandler streamHandler:streamHandler connectOptions:options];
         if(success){
@@ -541,16 +541,6 @@ RCT_EXPORT_MODULE()
 }
 
 
--(id) initWithInfo:(NSString *)receiver
-{
-    self = [super init];
-    if(self)
-    {
-        self.receiver = receiver;
-    }
-    return self;
-}
-
 //If_P2pMsgHandler
 /**
  * 订阅消息
@@ -575,7 +565,7 @@ RCT_EXPORT_MODULE()
  */
 - (void)ReceiveMsg:(NSString*)fromPeerId plaintextMsg:(NSString*)plaintextMsg byte:(NSArray*)msg {
     NSLog(@"-------ReceiveMsg");
-    [customEventsEmitter sendEventName:@"receiveP2PMsg" body:[NSString stringWithFormat:@"{\"receiver\":\"%@\",\"fromPeerId\": \"%@\",\"plaintextMsg\": \"%@\"}", self.receiver, fromPeerId, plaintextMsg]];
+    [customEventsEmitter sendEventName:@"receiveP2PMsg" body:[NSString stringWithFormat:@"{\"fromPeerId\": \"%@\",\"plaintextMsg\": \"%@\"}", fromPeerId, plaintextMsg]];
 }
 
 

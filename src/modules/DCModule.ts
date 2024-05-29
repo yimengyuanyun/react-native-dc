@@ -417,7 +417,7 @@ export const DCRestartLocalWebServer = () => {
 };
 
 // 启动p2p通信服务
-export const DCstartP2pServer = (receiver: string, model: number) => {
+export const DCstartP2pServer = (model: number) => {
   return new Promise((resolve) => {
     const successCallback = (bool: boolean) => {
       console.log("dc_StartP2pServer success", bool);
@@ -427,6 +427,6 @@ export const DCstartP2pServer = (receiver: string, model: number) => {
       console.log("dc_StartP2pServer error", error);
       resolve({ error });
     };
-    DCModule.dc_StartP2pServer(receiver, model, successCallback, errorCallback);
+    DCModule.dc_StartP2pServer(model, successCallback, errorCallback);
   });
 };
