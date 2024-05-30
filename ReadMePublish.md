@@ -36,3 +36,5 @@ npm publish
 0.2.4 - auth_
 0.2.5 - bugfix
 0.2.7 - msgGetMsgFromUserBox
+
+0.2.11 - 函数名调整
