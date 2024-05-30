@@ -590,6 +590,32 @@ public class DCModule extends ReactContextBaseJavaModule {
         }).start();
     }
 
+    public If_P2pMsgHandler IfP2pMsgHandler(){
+        return new If_P2pMsgHandler(){
+            @Override
+            public void pubSubMsgResponseHandler(String msgId, String fromPeerId, String topic, byte[] msg, String err) {
+            }
+
+            @Override
+            public void receiveMsg(String fromPeerId, byte[] bytes, byte[] bytes1) {
+                String jsonStr = "{\"fromPeerId\":\"" + fromPeerId
+                        + "\", \"plaintextMsg\":\"" + bytes.toString()
+                        + "\"}";
+                reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                        .emit("receiveP2PMsg", jsonStr);
+            }
+
+            @Override
+            public void pubSubEventHandler(String fromPeerId, String topic, byte[] msg) {
+            }
+
+            @Override
+            public byte[] pubSubMsgHandler(String s, String s1, byte[] bytes) {
+                return new byte[0];
+            }
+        };
+    }
+    If_P2pMsgHandler msgHandler = IfP2pMsgHandler();
     // 启动p2p通信服务
     @ReactMethod
     public void dc_EnableMessage(
@@ -601,32 +627,7 @@ public class DCModule extends ReactContextBaseJavaModule {
             public void run() {
                 System.out.println("---------------------------------start dc_EnableMessage");
                 Dc_P2pConnectOptions options = new Dc_P2pConnectOptions();
-                Boolean bool = dcClass.dc_EnableMessage(Long.parseLong(model), new If_P2pMsgHandler() {
-
-
-                    @Override
-                    public void pubSubMsgResponseHandler(String msgId, String fromPeerId, String topic, byte[] msg, String err) {
-                    }
-
-                    @Override
-                    public void receiveMsg(String fromPeerId, byte[] bytes, byte[] bytes1) {
-                        String jsonStr = "{\"fromPeerId\":\"" + fromPeerId
-                                + "\", \"plaintextMsg\":\"" + bytes.toString()
-                                + "\"}";
-                        reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                                .emit("receiveP2PMsg", jsonStr);
-                    }
-
-                    @Override
-                    public void pubSubEventHandler(String fromPeerId, String topic, byte[] msg) {
-                    }
-
-                    @Override
-                    public byte[] pubSubMsgHandler(String s, String s1, byte[] bytes) {
-                        return new byte[0];
-                    }
-
-                }, new If_P2pStreamHandler() {
+                Boolean bool = dcClass.dc_EnableMessage(Long.parseLong(model), msgHandler, new If_P2pStreamHandler() {
                     @Override
                     public void onDataRecv(byte[] bytes) {
 
