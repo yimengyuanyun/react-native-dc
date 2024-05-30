@@ -1,7 +1,7 @@
 {
   "name": "react-native-dc",
   "title": "React Native Dc",
-  "version": "0.2.11",
+  "version": "0.2.12",
   "description": "TODO",
   "main": "lib/index.js",
   "files": [
