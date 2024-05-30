@@ -475,15 +475,15 @@ RCT_EXPORT_METHOD(dc_RestartLocalWebServer:(RCTResponseSenderBlock)successCallba
 }
 
 // 启动p2p通信服务
-RCT_EXPORT_METHOD(dc_StartP2pServer:(long)model
+RCT_EXPORT_METHOD(dc_EnableMessage:(long)model
             successCallback:(RCTResponseSenderBlock)successCallback
             errorCallback:(RCTResponseSenderBlock)errorCallback) {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        RCTLogInfo(@"dc_StartP2pServer");
+        RCTLogInfo(@"dc_EnableMessage");
         P2PHandlerModule *p2pHandler = [P2PHandlerModule alloc] ;
         P2PHandlerModule *streamHandler = [P2PHandlerModule alloc] ;
         DcapiDc_P2pConnectOptions *options = [DcapiDc_P2pConnectOptions alloc];
-        BOOL success = [dcapi dc_StartP2pServer:model msgHandler:p2pHandler streamHandler:streamHandler connectOptions:options];
+        BOOL success = [dcapi dc_EnableMessage:model msgHandler:p2pHandler streamHandler:streamHandler connectOptions:options];
         if(success){
             dispatch_async(dispatch_get_main_queue(), ^{
                 successCallback(@[@true]);

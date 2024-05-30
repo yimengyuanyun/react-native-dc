@@ -47,11 +47,11 @@ RCT_EXPORT_METHOD(comment_AddUserOffChainSpace:(RCTResponseSenderBlock)successCa
 }
 
 // 为指定对象开通评论功能，返回res-0:成功 1:评论空间没有配置 2:评论空间不足 3:评论数据同步中
-RCT_EXPORT_METHOD(comment_AddCommentableObj:(NSString*)objCid openFlag:(long*)openFlag commentSpace:(long*)commentSpace 
+RCT_EXPORT_METHOD(comment_AddThemeObj:(NSString*)objCid openFlag:(long*)openFlag commentSpace:(long*)commentSpace 
         successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        RCTLogInfo(@"comment_AddCommentableObj");
-        long res = [dcapi comment_AddCommentableObj:objCid openFlag:openFlag commentSpace:commentSpace];
+        RCTLogInfo(@"comment_AddThemeObj");
+        long res = [dcapi comment_AddThemeObj:objCid openFlag:openFlag commentSpace:commentSpace];
         if(res > -1){
             dispatch_async(dispatch_get_main_queue(), ^{
                 successCallback(@[@(res)]);
@@ -66,11 +66,11 @@ RCT_EXPORT_METHOD(comment_AddCommentableObj:(NSString*)objCid openFlag:(long*)op
 }
 
 // 为开通评论的对象增加评论空间，返回res-0:成功 1:评论空间没有配置 2:评论空间不足 3:评论数据同步中
-RCT_EXPORT_METHOD(comment_AddObjCommentSpace:(NSString*)objCid commentSpace:(long*)commentSpace 
+RCT_EXPORT_METHOD(comment_AddThemeSpace:(NSString*)objCid commentSpace:(long*)commentSpace 
             successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        RCTLogInfo(@"comment_AddObjCommentSpace");
-        long res = [dcapi comment_AddObjCommentSpace:objCid addSpace:commentSpace];
+        RCTLogInfo(@"comment_AddThemeSpace");
+        long res = [dcapi comment_AddThemeSpace:objCid addSpace:commentSpace];
         if(res > -1){
             dispatch_async(dispatch_get_main_queue(), ^{
                 successCallback(@[@(res)]);
@@ -85,10 +85,10 @@ RCT_EXPORT_METHOD(comment_AddObjCommentSpace:(NSString*)objCid commentSpace:(lon
 }
 
 // 关闭指定对象的评论功能（会删除所有针对该对象的评论），返回res-0:成功 1:评论空间没有配置 2:评论空间不足 3:评论数据同步中
-RCT_EXPORT_METHOD(comment_DisableCommentObj:(NSString*)objCid successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
+RCT_EXPORT_METHOD(comment_DisableTheme:(NSString*)objCid successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        RCTLogInfo(@"comment_DisableCommentObj");
-        long res = [dcapi comment_DisableCommentObj:objCid];
+        RCTLogInfo(@"comment_DisableTheme");
+        long res = [dcapi comment_DisableTheme:objCid];
         dispatch_async(dispatch_get_main_queue(), ^{
             successCallback(@[@(res)]);
         });
@@ -134,11 +134,11 @@ RCT_EXPORT_METHOD(comment_SetObjCommentPublic:(NSString*)objCid commentBlockheig
 }
 
 // 发布对指定对象的评论，返回评论key,格式为:commentBlockHeight/commentCid
-RCT_EXPORT_METHOD(comment_PublishCommentToObj:(NSString*)objCid objAuthor:(NSString*)objAuthor commentType:(long)commentType comment:(NSString*)comment referCommentkey:(NSString*)referCommentkey openFlag:(long*)openFlag
+RCT_EXPORT_METHOD(comment_PublishCommentToTheme :(NSString*)objCid objAuthor:(NSString*)objAuthor commentType:(long)commentType comment:(NSString*)comment referCommentkey:(NSString*)referCommentkey openFlag:(long*)openFlag
             successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        RCTLogInfo(@"comment_PublishCommentToObj");
-        NSString *res = [dcapi comment_PublishCommentToObj:objCid objAuthor:objAuthor commentType:commentType comment:comment referCommentkey:referCommentkey openFlag:openFlag];
+        RCTLogInfo(@"comment_PublishCommentToTheme ");
+        NSString *res = [dcapi comment_PublishCommentToTheme :objCid objAuthor:objAuthor commentType:commentType comment:comment referCommentkey:referCommentkey openFlag:openFlag];
         if(res.length > 0){
             dispatch_async(dispatch_get_main_queue(), ^{
                 successCallback(@[res]);
@@ -173,12 +173,12 @@ RCT_EXPORT_METHOD(comment_DeleteSelfComment:(NSString*)objCid objAuthor:(NSStrin
 
 // 获取指定用户已开通评论的对象列表
 // 返回已开通评论的对象列表,格式：[{"objCid":"YmF...bXk=","appId":"dGVzdGFwcA==","blockheight":2904,"commentSpace":1000,"userPubkey":"YmJh...vZGU=","signature":"oCY1...Y8sO/lkDac/nLu...Rm/xm...CQ=="}]
-RCT_EXPORT_METHOD(comment_GetCommentableObj:(NSString*)objAuthor startBlockheight:(long)startBlockheight direction:(long)direction 
+RCT_EXPORT_METHOD(comment_GetThemeComments:(NSString*)objAuthor startBlockheight:(long)startBlockheight direction:(long)direction 
         offset:(long)offset seekKey:(NSString*)seekKey limit:(long)limit 
         successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        RCTLogInfo(@"comment_GetCommentableObj");
-        NSString *res = [dcapi comment_GetCommentableObj:objAuthor startBlockheight:startBlockheight direction:direction 
+        RCTLogInfo(@"comment_GetThemeComments");
+        NSString *res = [dcapi comment_GetThemeComments:objAuthor startBlockheight:startBlockheight direction:direction 
           offset:offset seekKey:seekKey limit:limit];
         if(res.length > 0){
             dispatch_async(dispatch_get_main_queue(), ^{

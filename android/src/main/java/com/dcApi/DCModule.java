@@ -592,16 +592,16 @@ public class DCModule extends ReactContextBaseJavaModule {
 
     // 启动p2p通信服务
     @ReactMethod
-    public void dc_StartP2pServer(
+    public void dc_EnableMessage(
             String model, // 0:默认模式，接收除了黑名单外的任何有效来源信息， 1:白名单模式，只接收白名单里用户的信息
             Callback successCallback,
             Callback errorCallback) {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                System.out.println("---------------------------------start dc_StartP2pServer");
+                System.out.println("---------------------------------start dc_EnableMessage");
                 Dc_P2pConnectOptions options = new Dc_P2pConnectOptions();
-                Boolean bool = dcClass.dc_StartP2pServer(Long.parseLong(model), new If_P2pMsgHandler() {
+                Boolean bool = dcClass.dc_EnableMessage(Long.parseLong(model), new If_P2pMsgHandler() {
 
 
                     @Override
@@ -642,12 +642,12 @@ public class DCModule extends ReactContextBaseJavaModule {
 
                     }
                 }, options);
-                System.out.println("---------------------------------dc_StartP2pServer");
+                System.out.println("---------------------------------dc_EnableMessage");
                 if (bool) {
                     successCallback.invoke(bool);
                 } else {
                     String lastError = dcClass.dc_GetLastErr();
-                    System.out.println("---------------------------------dc_StartP2pServer: err");
+                    System.out.println("---------------------------------dc_EnableMessage: err");
                     System.out.println(lastError);
                     errorCallback.invoke(lastError);
                 }

@@ -54,7 +54,7 @@ public class CommentModule extends ReactContextBaseJavaModule {
 
   // 为指定对象开通评论功能，返回res-0:成功 1:评论空间没有配置 2:评论空间不足 3:评论数据同步中
   @ReactMethod
-  public void comment_AddCommentableObj(
+  public void comment_AddThemeObj(
       String objCid, // 要开通评论对象的cid
       String openFlag, // 是否公开，0-公开，1-私密，2-可鉴权
       String commentSpace, // 评论空间大小
@@ -63,9 +63,9 @@ public class CommentModule extends ReactContextBaseJavaModule {
     new Thread(new Runnable() {
       @Override
       public void run() {
-        System.out.println("---------------------------------start comment_AddCommentableObj");
-        long res = dcClass.comment_AddCommentableObj(objCid, Long.parseLong(openFlag), Long.parseLong(commentSpace));
-        System.out.println("---------------------------------comment_AddCommentableObj");
+        System.out.println("---------------------------------start comment_AddThemeObj");
+        long res = dcClass.comment_AddThemeObj(objCid, Long.parseLong(openFlag), Long.parseLong(commentSpace));
+        System.out.println("---------------------------------comment_AddThemeObj");
         if (res > -1) {
           successCallback.invoke(Long.toString(res));
         } else {
@@ -80,7 +80,7 @@ public class CommentModule extends ReactContextBaseJavaModule {
 
   // 为开通评论的对象增加评论空间，返回res-0:成功 1:评论空间没有配置 2:评论空间不足 3:评论数据同步中
   @ReactMethod
-  public void comment_AddObjCommentSpace(
+  public void comment_AddThemeSpace(
       String objCid, // 要开通评论对象的cid
       String commentSpace, // 评论空间大小
       Callback successCallback,
@@ -88,14 +88,14 @@ public class CommentModule extends ReactContextBaseJavaModule {
     new Thread(new Runnable() {
       @Override
       public void run() {
-        System.out.println("---------------------------------start comment_AddObjCommentSpace");
-        long res = dcClass.comment_AddObjCommentSpace(objCid, Long.parseLong(commentSpace));
-        System.out.println("---------------------------------comment_AddObjCommentSpace");
+        System.out.println("---------------------------------start comment_AddThemeSpace");
+        long res = dcClass.comment_AddThemeSpace(objCid, Long.parseLong(commentSpace));
+        System.out.println("---------------------------------comment_AddThemeSpace");
         if (res > -1) {
           successCallback.invoke(Long.toString(res));
         } else {
           String lastError = dcClass.dc_GetLastErr();
-          System.out.println("---------------------------------comment_AddObjCommentSpace: err");
+          System.out.println("---------------------------------comment_AddThemeSpace: err");
           System.out.println(lastError);
           errorCallback.invoke(lastError);
         }
@@ -105,21 +105,21 @@ public class CommentModule extends ReactContextBaseJavaModule {
 
   // 关闭指定对象的评论功能（会删除所有针对该对象的评论），返回res-0:成功 1:评论空间没有配置 2:评论空间不足 3:评论数据同步中
   @ReactMethod
-  public void comment_DisableCommentObj(
+  public void comment_DisableTheme(
       String objCid, // 要开通评论对象的cid
       Callback successCallback,
       Callback errorCallback) {
     new Thread(new Runnable() {
       @Override
       public void run() {
-        System.out.println("---------------------------------start comment_DisableCommentObj");
-        long res = dcClass.comment_DisableCommentObj(objCid);
-        System.out.println("---------------------------------comment_DisableCommentObj");
+        System.out.println("---------------------------------start comment_DisableTheme");
+        long res = dcClass.comment_DisableTheme(objCid);
+        System.out.println("---------------------------------comment_DisableTheme");
         if (res > -1) {
           successCallback.invoke(Long.toString(res));
         } else {
           String lastError = dcClass.dc_GetLastErr();
-          System.out.println("---------------------------------comment_DisableCommentObj: err");
+          System.out.println("---------------------------------comment_DisableTheme: err");
           System.out.println(lastError);
           errorCallback.invoke(lastError);
         }
@@ -181,7 +181,7 @@ public class CommentModule extends ReactContextBaseJavaModule {
 
   // 发布对指定对象的评论，返回评论key,格式为:commentBlockHeight/commentCid
   @ReactMethod
-  public void comment_PublishCommentToObj(
+  public void comment_PublishCommentToTheme (
       String objCid, // 要开通评论对象的cid
       String objAuthor, // 被发布评论的对象的用户pubkey base32编码,或者pubkey经过libp2p-crypto protobuf编码后再base32编码
       String commentType, // 评论类型 0:普通评论 1:点赞 2:推荐 3:踩
@@ -193,15 +193,15 @@ public class CommentModule extends ReactContextBaseJavaModule {
     new Thread(new Runnable() {
       @Override
       public void run() {
-        System.out.println("---------------------------------start comment_PublishCommentToObj");
-        String res = dcClass.comment_PublishCommentToObj(objCid, objAuthor, Long.parseLong(commentType), comment, referCommentkey,
+        System.out.println("---------------------------------start comment_PublishCommentToTheme ");
+        String res = dcClass.comment_PublishCommentToTheme (objCid, objAuthor, Long.parseLong(commentType), comment, referCommentkey,
           Long.parseLong(openFlag));
-        System.out.println("---------------------------------comment_PublishCommentToObj");
+        System.out.println("---------------------------------comment_PublishCommentToTheme ");
         if (res.length() >0) {
           successCallback.invoke(res);
         } else {
           String lastError = dcClass.dc_GetLastErr();
-          System.out.println("---------------------------------comment_PublishCommentToObj: err");
+          System.out.println("---------------------------------comment_PublishCommentToTheme : err");
           System.out.println(lastError);
           errorCallback.invoke(lastError);
         }
@@ -238,7 +238,7 @@ public class CommentModule extends ReactContextBaseJavaModule {
   // 获取指定用户已开通评论的对象列表
   // 返回已开通评论的对象列表,格式：[{"objCid":"YmF...bXk=","appId":"dGVzdGFwcA==","blockheight":2904,"commentSpace":1000,"userPubkey":"YmJh...vZGU=","signature":"oCY1...Y8sO/lkDac/nLu...Rm/xm...CQ=="}]
   @ReactMethod
-  public void comment_GetCommentableObj(
+  public void comment_GetThemeComments(
       String objAuthor, // 被发布评论的对象的用户pubkey base32编码,或者pubkey经过libp2p-crypto protobuf编码后再base32编码
       String startBlockheight, // 开始区块高度
       String direction, // 方向 0:向前 1:向后
@@ -250,15 +250,15 @@ public class CommentModule extends ReactContextBaseJavaModule {
     new Thread(new Runnable() {
       @Override
       public void run() {
-        System.out.println("---------------------------------start comment_GetCommentableObj");
-        String res = dcClass.comment_GetCommentableObj(objAuthor, Long.parseLong(startBlockheight), Long.parseLong(direction), Long.parseLong(offset),
+        System.out.println("---------------------------------start comment_GetThemeComments");
+        String res = dcClass.comment_GetThemeComments(objAuthor, Long.parseLong(startBlockheight), Long.parseLong(direction), Long.parseLong(offset),
             seekKey, Long.parseLong(limit));
-        System.out.println("---------------------------------comment_GetCommentableObj");
+        System.out.println("---------------------------------comment_GetThemeComments");
         if (res.length() > 0) {
           successCallback.invoke(res);
         } else {
           String lastError = dcClass.dc_GetLastErr();
-          System.out.println("---------------------------------comment_GetCommentableObj: err");
+          System.out.println("---------------------------------comment_GetThemeComments: err");
           System.out.println(lastError);
           if(lastError.length() > 0) {
             errorCallback.invoke(lastError);
