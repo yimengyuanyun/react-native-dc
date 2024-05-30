@@ -173,12 +173,12 @@ RCT_EXPORT_METHOD(comment_DeleteSelfComment:(NSString*)Theme objAuthor:(NSString
 
 // 获取指定用户已开通评论的对象列表
 // 返回已开通评论的对象列表,格式：[{"objCid":"YmF...bXk=","appId":"dGVzdGFwcA==","blockheight":2904,"commentSpace":1000,"userPubkey":"YmJh...vZGU=","signature":"oCY1...Y8sO/lkDac/nLu...Rm/xm...CQ=="}]
-RCT_EXPORT_METHOD(Comment_GetCommentableObj:(NSString*)objAuthor startBlockheight:(long)startBlockheight direction:(long)direction 
+RCT_EXPORT_METHOD(comment_GetCommentableObj:(NSString*)objAuthor startBlockheight:(long)startBlockheight direction:(long)direction 
         offset:(long)offset seekKey:(NSString*)seekKey limit:(long)limit 
         successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        RCTLogInfo(@"Comment_GetCommentableObj");
-        NSString *res = [dcapi Comment_GetCommentableObj:objAuthor startBlockheight:startBlockheight direction:direction 
+        RCTLogInfo(@"comment_GetCommentableObj");
+        NSString *res = [dcapi comment_GetCommentableObj:objAuthor startBlockheight:startBlockheight direction:direction 
           offset:offset seekKey:seekKey limit:limit];
         if(res.length > 0){
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -195,12 +195,12 @@ RCT_EXPORT_METHOD(Comment_GetCommentableObj:(NSString*)objAuthor startBlockheigh
 
 // 取指定已开通对象的评论列表
 // 返回已开通评论的对象列表,格式：[{"objCid":"YmF...bXk=","appId":"dGVzdGFwcA==","blockheight":2904,"commentSpace":1000,"userPubkey":"YmJh...vZGU=","signature":"oCY1...Y8sO/lkDac/nLu...Rm/xm...CQ=="}]
-RCT_EXPORT_METHOD(Comment_GetThemeComments:Theme objAuthor:(NSString*)objAuthor startBlockheight:(long)startBlockheight direction:(long)direction 
+RCT_EXPORT_METHOD(comment_GetThemeComments:Theme objAuthor:(NSString*)objAuthor startBlockheight:(long)startBlockheight direction:(long)direction 
         offset:(long)offset seekKey:(NSString*)seekKey limit:(long)limit 
         successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        RCTLogInfo(@"Comment_GetThemeComments");
-        NSString *res = [dcapi Comment_GetThemeComments:Theme objAuthor:objAuthor startBlockheight:startBlockheight direction:direction 
+        RCTLogInfo(@"comment_GetThemeComments");
+        NSString *res = [dcapi comment_GetThemeComments:Theme objAuthor:objAuthor startBlockheight:startBlockheight direction:direction 
           offset:offset seekKey:seekKey limit:limit];
         if(res.length > 0){
             dispatch_async(dispatch_get_main_queue(), ^{

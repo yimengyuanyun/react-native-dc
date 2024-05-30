@@ -238,7 +238,7 @@ public class CommentModule extends ReactContextBaseJavaModule {
   // 获取指定用户已开通评论的对象列表
   // 返回已开通评论的对象列表,格式：[{"objCid":"YmF...bXk=","appId":"dGVzdGFwcA==","blockheight":2904,"commentSpace":1000,"userPubkey":"YmJh...vZGU=","signature":"oCY1...Y8sO/lkDac/nLu...Rm/xm...CQ=="}]
   @ReactMethod
-  public void Comment_GetCommentableObj(
+  public void comment_GetCommentableObj(
       String objAuthor, // 被发布评论的对象的用户pubkey base32编码,或者pubkey经过libp2p-crypto protobuf编码后再base32编码
       String startBlockheight, // 开始区块高度
       String direction, // 方向 0:向前 1:向后
@@ -250,15 +250,15 @@ public class CommentModule extends ReactContextBaseJavaModule {
     new Thread(new Runnable() {
       @Override
       public void run() {
-        System.out.println("---------------------------------start Comment_GetCommentableObj");
-        String res = dcClass.Comment_GetCommentableObj(objAuthor, Long.parseLong(startBlockheight), Long.parseLong(direction), Long.parseLong(offset),
+        System.out.println("---------------------------------start comment_GetCommentableObj");
+        String res = dcClass.comment_GetCommentableObj(objAuthor, Long.parseLong(startBlockheight), Long.parseLong(direction), Long.parseLong(offset),
             seekKey, Long.parseLong(limit));
-        System.out.println("---------------------------------Comment_GetCommentableObj");
+        System.out.println("---------------------------------comment_GetCommentableObj");
         if (res.length() > 0) {
           successCallback.invoke(res);
         } else {
           String lastError = dcClass.dc_GetLastErr();
-          System.out.println("---------------------------------Comment_GetCommentableObj: err");
+          System.out.println("---------------------------------comment_GetCommentableObj: err");
           System.out.println(lastError);
           if(lastError.length() > 0) {
             errorCallback.invoke(lastError);
@@ -273,7 +273,7 @@ public class CommentModule extends ReactContextBaseJavaModule {
   // 取指定已开通对象的评论列表
   // 返回已开通评论的对象列表,格式：[{"objCid":"YmF...bXk=","appId":"dGVzdGFwcA==","blockheight":2904,"commentSpace":1000,"userPubkey":"YmJh...vZGU=","signature":"oCY1...Y8sO/lkDac/nLu...Rm/xm...CQ=="}]
   @ReactMethod
-  public void Comment_GetThemeComments(
+  public void comment_GetThemeComments(
       String Theme, // 评论对象的cid
       String objAuthor, // 被发布评论的对象的用户pubkey base32编码,或者pubkey经过libp2p-crypto protobuf编码后再base32编码
       String startBlockheight, // 开始区块高度
@@ -286,15 +286,15 @@ public class CommentModule extends ReactContextBaseJavaModule {
     new Thread(new Runnable() {
       @Override
       public void run() {
-        System.out.println("---------------------------------start Comment_GetThemeComments");
-        String res = dcClass.Comment_GetThemeComments(Theme, objAuthor, Long.parseLong(startBlockheight),  Long.parseLong(direction), Long.parseLong(offset),
+        System.out.println("---------------------------------start comment_GetThemeComments");
+        String res = dcClass.comment_GetThemeComments(Theme, objAuthor, Long.parseLong(startBlockheight),  Long.parseLong(direction), Long.parseLong(offset),
             seekKey, Long.parseLong(limit));
-        System.out.println("---------------------------------Comment_GetThemeComments");
+        System.out.println("---------------------------------comment_GetThemeComments");
         if (res.length() > 0) {
           successCallback.invoke(res);
         } else {
           String lastError = dcClass.dc_GetLastErr();
-          System.out.println("---------------------------------Comment_GetThemeComments: err");
+          System.out.println("---------------------------------comment_GetThemeComments: err");
           System.out.println(lastError);
           if(lastError.length() > 0) {
             errorCallback.invoke(lastError);
