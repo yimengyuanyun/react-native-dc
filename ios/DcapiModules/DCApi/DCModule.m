@@ -492,6 +492,24 @@ RCT_EXPORT_METHOD(dc_AccountToPubkey:(NSString*)account successCallback:(RCTResp
    });
 }
 
+//base32公钥转换为16进制Account
+RCT_EXPORT_METHOD(dc_PubkeyToHexAccount:(NSString*)basePubkey successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
+   RCTLogInfo(@"dc_PubkeyToHexAccount");
+   dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+       String account = [dcapi dc_PubkeyToHexAccount:basePubkey];
+       if(account.length > 0){
+           dispatch_async(dispatch_get_main_queue(), ^{
+               successCallback(@[account]);
+           });
+       }else {
+           NSString *lastError = [dcapi dc_GetLastErr];
+           dispatch_async(dispatch_get_main_queue(), ^{
+               errorCallback(@[lastError]);
+           });
+       }
+   });
+}
+
 // 启动p2p通信服务
 RCT_EXPORT_METHOD(dc_EnableMessage:(long)model
             successCallback:(RCTResponseSenderBlock)successCallback

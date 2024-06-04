@@ -614,6 +614,30 @@ public class DCModule extends ReactContextBaseJavaModule {
         }).start();
     }
 
+    // base32公钥转换为16进制Account
+    @ReactMethod
+    public void dc_PubkeyToHexAccount(
+            String basePubkey,
+            Callback successCallback,
+            Callback errorCallback) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                System.out.println("---------------------------------start dc_PubkeyToHexAccount");
+                String res = dcClass.dc_PubkeyToHexAccount(basePubkey);
+                System.out.println("--------------------------------dc_PubkeyToHexAccount success：" + res);
+                if (res.length() > 0) {
+                    successCallback.invoke(res);
+                } else {
+                    String lastError = dcClass.dc_GetLastErr();
+                    System.out.println("---------------------------------dc_PubkeyToHexAccount: err");
+                    System.out.println(lastError);
+                    errorCallback.invoke(lastError);
+                }
+            }
+        }).start();
+    }
+
     public If_P2pMsgHandler IfP2pMsgHandler(){
         return new If_P2pMsgHandler(){
             @Override
