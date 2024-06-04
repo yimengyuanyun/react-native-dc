@@ -38,3 +38,4 @@ npm publish
 0.2.7 - msgGetMsgFromUserBox
 
 0.2.11 - 函数名调整
+0.2.15 - DCAccountToPubkey

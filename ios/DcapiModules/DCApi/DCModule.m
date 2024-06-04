@@ -474,6 +474,24 @@ RCT_EXPORT_METHOD(dc_RestartLocalWebServer:(RCTResponseSenderBlock)successCallba
    });
 }
 
+//16进制区块链账号转换为base32公钥
+RCT_EXPORT_METHOD(dc_AccountToPubkey:(NSString*)account successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
+   RCTLogInfo(@"dc_AccountToPubkey");
+   dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+       String basePubkey = [dcapi dc_AccountToPubkey:account];
+       if(basePubkey.length > 0){
+           dispatch_async(dispatch_get_main_queue(), ^{
+               successCallback(@[basePubkey]);
+           });
+       }else {
+           NSString *lastError = [dcapi dc_GetLastErr];
+           dispatch_async(dispatch_get_main_queue(), ^{
+               errorCallback(@[lastError]);
+           });
+       }
+   });
+}
+
 // 启动p2p通信服务
 RCT_EXPORT_METHOD(dc_EnableMessage:(long)model
             successCallback:(RCTResponseSenderBlock)successCallback

@@ -590,6 +590,30 @@ public class DCModule extends ReactContextBaseJavaModule {
         }).start();
     }
 
+    // 16进制区块链账号转换为base32公钥
+    @ReactMethod
+    public void dc_AccountToPubkey(
+            String account,
+            Callback successCallback,
+            Callback errorCallback) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                System.out.println("---------------------------------start dc_AccountToPubkey");
+                String res = dcClass.dc_AccountToPubkey(account);
+                System.out.println("--------------------------------dc_AccountToPubkey success：" + res);
+                if (res.length() > 0) {
+                    successCallback.invoke(res);
+                } else {
+                    String lastError = dcClass.dc_GetLastErr();
+                    System.out.println("---------------------------------dc_AccountToPubkey: err");
+                    System.out.println(lastError);
+                    errorCallback.invoke(lastError);
+                }
+            }
+        }).start();
+    }
+
     public If_P2pMsgHandler IfP2pMsgHandler(){
         return new If_P2pMsgHandler(){
             @Override
