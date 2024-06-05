@@ -34,6 +34,7 @@ dependencies {
     implementation "com.facebook.react:react-native:+"
     implementation 'com.dcapi:dcapi_lib:0.2.21'
     implementation 'com.google.protobuf:protobuf-java:3.21.7'
+    implementation 'com.alibaba:fastjson:2.0.31'
 }
 
 
