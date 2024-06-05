@@ -646,6 +646,7 @@ public class DCModule extends ReactContextBaseJavaModule {
 
             @Override
             public void receiveMsg(String fromPeerId, byte[] bytes, byte[] bytes1) {
+                System.out.println("---------------------------------receiveMsg");
                 String jsonStr = "{\"fromPeerId\":\"" + fromPeerId
                         + "\", \"plaintextMsg\":\"" + bytes.toString()
                         + "\"}";
