@@ -648,8 +648,9 @@ public class DCModule extends ReactContextBaseJavaModule {
             public void receiveMsg(String fromPeerId, byte[] bytes, byte[] bytes1) {
                 System.out.println("---------------------------------receiveMsg");
                 String jsonStr = "{\"fromPeerId\":\"" + fromPeerId
-                        + "\", \"plaintextMsg\":\"" + bytes.toString()
+                        + "\", \"plaintextMsg\":\"" + new String(bytes)
                         + "\"}";
+                System.out.println(jsonStr);
                 reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
                         .emit("receiveP2PMsg", jsonStr);
             }
