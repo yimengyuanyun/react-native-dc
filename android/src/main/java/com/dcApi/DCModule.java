@@ -8,6 +8,8 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.common.StandardCharsets;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
+import com.google.protobuf.ByteString;
+import com.google.protobuf.InvalidProtocolBufferException;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -26,7 +28,6 @@ import dcapi.Dc_P2pConnectOptions;
  * 节点相关
  */
 public class DCModule extends ReactContextBaseJavaModule {
-
     private static ReactApplicationContext reactContext;
     public Dcapi_ dcClass;
 
@@ -647,12 +648,27 @@ public class DCModule extends ReactContextBaseJavaModule {
             @Override
             public void receiveMsg(String fromPeerId, byte[] bytes, byte[] bytes1) {
                 System.out.println("---------------------------------receiveMsg");
-                String jsonStr = "{\"fromPeerId\":\"" + fromPeerId
-                        + "\", \"plaintextMsg\":\"" + new String(bytes)
-                        + "\"}";
-                System.out.println(jsonStr);
-                reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                        .emit("receiveP2PMsg", jsonStr);
+                try {
+                    Net.SendMsgRequest msgRequest = Net.SendMsgRequest.parseFrom(bytes1);
+                    System.out.println("---------------------------------msgRequest");
+                    ByteString senderPubkey = msgRequest.getSenderPubkey();
+                    System.out.println("---------------------------------senderPubkey");
+                    String senderPubkeyStr = new String(senderPubkey.toByteArray());
+                    System.out.println("---------------------------------senderPubkeyStr : " + senderPubkeyStr);
+                    String msgStr = new String(bytes);
+                    System.out.println("---------------------------------msgStr : " + msgStr);
+                    StringBuilder sb = new StringBuilder();
+                    sb.append("{");
+                    sb.append("\"sender\":").append(senderPubkeyStr);
+                    sb.append(",\"msg\":").append(msgStr);
+                    sb.append("}");
+                    String jsonStr = sb.toString();
+                    System.out.println("---------------------------------jsonStr : " + jsonStr);
+                    reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                            .emit("receiveP2PMsg", jsonStr);
+                } catch (InvalidProtocolBufferException e) {
+                    throw new RuntimeException(e);
+                }
             }
 
             @Override
