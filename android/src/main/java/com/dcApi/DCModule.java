@@ -659,9 +659,9 @@ public class DCModule extends ReactContextBaseJavaModule {
                     System.out.println("---------------------------------msgStr : " + msgStr);
                     StringBuilder sb = new StringBuilder();
                     sb.append("{");
-                    sb.append("\"sender\":").append(senderPubkeyStr);
-                    sb.append(",\"msg\":").append(msgStr);
-                    sb.append("}");
+                    sb.append("\"sender\":\"").append(senderPubkeyStr);
+                    sb.append("\",\"msg\":\"").append(msgStr);
+                    sb.append("\"}");
                     String jsonStr = sb.toString();
                     System.out.println("---------------------------------jsonStr : " + jsonStr);
                     reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
