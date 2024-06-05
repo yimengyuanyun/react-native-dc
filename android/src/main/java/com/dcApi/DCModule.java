@@ -2,6 +2,7 @@ package com.dcApi;
 
 import androidx.annotation.NonNull;
 
+import com.alibaba.fastjson.JSONObject;
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
@@ -11,11 +12,14 @@ import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.google.protobuf.ByteString;
 import com.google.protobuf.InvalidProtocolBufferException;
 
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.util.Base64;
+import java.util.HashMap;
+import java.util.Map;
 
 import dcapi.Dcapi_;
 
@@ -657,12 +661,17 @@ public class DCModule extends ReactContextBaseJavaModule {
                     System.out.println("---------------------------------senderPubkeyStr : " + senderPubkeyStr);
                     String msgStr = new String(bytes);
                     System.out.println("---------------------------------msgStr : " + msgStr);
-                    StringBuilder sb = new StringBuilder();
-                    sb.append("{");
-                    sb.append("\"sender\":\"").append(senderPubkeyStr);
-                    sb.append("\",\"msg\":\"").append(msgStr);
-                    sb.append("\"}");
-                    String jsonStr = sb.toString();
+                    Map<String,Object> map=new HashMap<>();
+                    map.put("sender",senderPubkeyStr);
+                    map.put("msg",msgStr);
+                    String jsonStr=  JSONObject.toJSONString(map);
+
+                    // 也可以
+//                    JSONObject jo= new JSONObject();
+//                    jo.put("sender",senderPubkeyStr);
+//                    jo.put("msg",msgStr);
+//                    String jsonStr= jo.toString();
+
                     System.out.println("---------------------------------jsonStr : " + jsonStr);
                     reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
                             .emit("receiveP2PMsg", jsonStr);
