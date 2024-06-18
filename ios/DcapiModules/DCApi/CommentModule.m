@@ -47,11 +47,11 @@ RCT_EXPORT_METHOD(comment_AddUserOffChainSpace:(RCTResponseSenderBlock)successCa
 }
 
 // 为指定对象开通评论功能，返回res-0:成功 1:评论空间没有配置 2:评论空间不足 3:评论数据同步中
-RCT_EXPORT_METHOD(comment_AddThemeObj:(NSString*)Theme openFlag:(long*)openFlag commentSpace:(long*)commentSpace 
+RCT_EXPORT_METHOD(comment_AddThemeObj:(NSString*)Theme openFlag:(NSString*)openFlag commentSpace:(NSString*)commentSpace
         successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         RCTLogInfo(@"comment_AddThemeObj");
-        long res = [dcapi comment_AddThemeObj:Theme openFlag:openFlag commentSpace:commentSpace];
+        long res = [dcapi comment_AddThemeObj:Theme openFlag:[openFlag longLongValue] commentSpace:[commentSpace longLongValue]];
         if(res > -1){
             dispatch_async(dispatch_get_main_queue(), ^{
                 successCallback(@[@(res)]);
@@ -66,11 +66,11 @@ RCT_EXPORT_METHOD(comment_AddThemeObj:(NSString*)Theme openFlag:(long*)openFlag 
 }
 
 // 为开通评论的对象增加评论空间，返回res-0:成功 1:评论空间没有配置 2:评论空间不足 3:评论数据同步中
-RCT_EXPORT_METHOD(comment_AddThemeSpace:(NSString*)Theme commentSpace:(long*)commentSpace 
+RCT_EXPORT_METHOD(comment_AddThemeSpace:(NSString*)Theme commentSpace:(NSString*)commentSpace
             successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         RCTLogInfo(@"comment_AddThemeSpace");
-        long res = [dcapi comment_AddThemeSpace:Theme addSpace:commentSpace];
+        long res = [dcapi comment_AddThemeSpace:Theme addSpace:[commentSpace longLongValue]];
         if(res > -1){
             dispatch_async(dispatch_get_main_queue(), ^{
                 successCallback(@[@(res)]);
@@ -96,11 +96,11 @@ RCT_EXPORT_METHOD(comment_DisableTheme:(NSString*)Theme successCallback:(RCTResp
 }
 
 // 举报恶意评论（会删除所有针对该对象的评论），返回res-0:成功 1:评论空间没有配置 2:评论空间不足 3:评论数据同步中
-RCT_EXPORT_METHOD(comment_ReportMaliciousComment:(NSString*)Theme commentBlockheight:(long)commentBlockheight commentCid:(NSString*)commentCid 
+RCT_EXPORT_METHOD(comment_ReportMaliciousComment:(NSString*)Theme commentBlockheight:(NSString*)commentBlockheight commentCid:(NSString*)commentCid
             successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         RCTLogInfo(@"comment_ReportMaliciousComment");
-        long res = [dcapi comment_ReportMaliciousComment:Theme commentBlockheight:commentBlockheight commentCid:commentCid];
+        long res = [dcapi comment_ReportMaliciousComment:Theme commentBlockheight:[commentBlockheight longLongValue] commentCid:commentCid];
         if(res > -1){
             dispatch_async(dispatch_get_main_queue(), ^{
                 successCallback(@[@(res)]);
@@ -115,11 +115,11 @@ RCT_EXPORT_METHOD(comment_ReportMaliciousComment:(NSString*)Theme commentBlockhe
 }
 
 // 精选评论，让评论可见，返回res-0:成功 1:评论空间没有配置 2:评论空间不足 3:评论数据同步中
-RCT_EXPORT_METHOD(comment_SetObjCommentPublic:(NSString*)Theme commentBlockheight:(long)commentBlockheight commentCid:(NSString*)commentCid 
+RCT_EXPORT_METHOD(comment_SetObjCommentPublic:(NSString*)Theme commentBlockheight:(NSString*)commentBlockheight commentCid:(NSString*)commentCid
             successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         RCTLogInfo(@"comment_SetObjCommentPublic");
-        long res = [dcapi comment_SetObjCommentPublic:Theme commentBlockheight:commentBlockheight commentCid:commentCid];
+        long res = [dcapi comment_SetObjCommentPublic:Theme commentBlockheight:[commentBlockheight longLongValue] commentCid:commentCid];
         if(res > -1){
             dispatch_async(dispatch_get_main_queue(), ^{
                 successCallback(@[@(res)]);
@@ -134,11 +134,11 @@ RCT_EXPORT_METHOD(comment_SetObjCommentPublic:(NSString*)Theme commentBlockheigh
 }
 
 // 发布对指定对象的评论，返回评论key,格式为:commentBlockHeight/commentCid
-RCT_EXPORT_METHOD(comment_PublishCommentToTheme :(NSString*)Theme objAuthor:(NSString*)objAuthor commentType:(long)commentType comment:(NSString*)comment referCommentkey:(NSString*)referCommentkey openFlag:(long*)openFlag
+RCT_EXPORT_METHOD(comment_PublishCommentToTheme :(NSString*)Theme objAuthor:(NSString*)objAuthor commentType:(NSString*)commentType comment:(NSString*)comment referCommentkey:(NSString*)referCommentkey openFlag:(NSString*)openFlag
             successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         RCTLogInfo(@"comment_PublishCommentToTheme ");
-        NSString *res = [dcapi comment_PublishCommentToTheme :Theme objAuthor:objAuthor commentType:commentType comment:comment referCommentkey:referCommentkey openFlag:openFlag];
+        NSString *res = [dcapi comment_PublishCommentToTheme :Theme objAuthor:objAuthor commentType:[commentType longLongValue] comment:comment referCommentkey:referCommentkey openFlag:[openFlag longLongValue]];
         if(res.length > 0){
             dispatch_async(dispatch_get_main_queue(), ^{
                 successCallback(@[res]);
@@ -173,13 +173,13 @@ RCT_EXPORT_METHOD(comment_DeleteSelfComment:(NSString*)Theme objAuthor:(NSString
 
 // 获取指定用户已开通评论的对象列表
 // 返回已开通评论的对象列表,格式：[{"objCid":"YmF...bXk=","appId":"dGVzdGFwcA==","blockheight":2904,"commentSpace":1000,"userPubkey":"YmJh...vZGU=","signature":"oCY1...Y8sO/lkDac/nLu...Rm/xm...CQ=="}]
-RCT_EXPORT_METHOD(comment_GetCommentableObj:(NSString*)objAuthor startBlockheight:(long)startBlockheight direction:(long)direction 
-        offset:(long)offset seekKey:(NSString*)seekKey limit:(long)limit 
+RCT_EXPORT_METHOD(comment_GetCommentableObj:(NSString*)objAuthor startBlockheight:(NSString*)startBlockheight direction:(NSString*)direction
+        offset:(NSString*)offset seekKey:(NSString*)seekKey limit:(NSString*)limit
         successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         RCTLogInfo(@"comment_GetCommentableObj");
-        NSString *res = [dcapi comment_GetCommentableObj:objAuthor startBlockheight:startBlockheight direction:direction 
-          offset:offset seekKey:seekKey limit:limit];
+        NSString *res = [dcapi comment_GetCommentableObj:objAuthor startBlockheight:[startBlockheight longLongValue] direction:[direction longLongValue]
+          offset:[offset longLongValue] seekKey:seekKey limit:[limit longLongValue]];
         if(res.length > 0){
             dispatch_async(dispatch_get_main_queue(), ^{
                 successCallback(@[res]);
@@ -195,13 +195,12 @@ RCT_EXPORT_METHOD(comment_GetCommentableObj:(NSString*)objAuthor startBlockheigh
 
 // 取指定已开通对象的评论列表
 // 返回已开通评论的对象列表,格式：[{"objCid":"YmF...bXk=","appId":"dGVzdGFwcA==","blockheight":2904,"commentSpace":1000,"userPubkey":"YmJh...vZGU=","signature":"oCY1...Y8sO/lkDac/nLu...Rm/xm...CQ=="}]
-RCT_EXPORT_METHOD(comment_GetThemeComments:Theme objAuthor:(NSString*)objAuthor startBlockheight:(long)startBlockheight direction:(long)direction 
-        offset:(long)offset seekKey:(NSString*)seekKey limit:(long)limit 
+RCT_EXPORT_METHOD(comment_GetThemeComments:Theme objAuthor:(NSString*)objAuthor startBlockheight:(NSString*)startBlockheight direction:(NSString*)direction
+        offset:(NSString*)offset seekKey:(NSString*)seekKey limit:(NSString*)limit
         successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         RCTLogInfo(@"comment_GetThemeComments");
-        NSString *res = [dcapi comment_GetThemeComments:Theme objAuthor:objAuthor startBlockheight:startBlockheight direction:direction 
-          offset:offset seekKey:seekKey limit:limit];
+        NSString *res = [dcapi comment_GetThemeComments:Theme objAuthor:objAuthor startBlockheight:[startBlockheight longLongValue] direction:[direction longLongValue] offset:[offset longLongValue] seekKey:seekKey limit:[limit longLongValue]];
         if(res.length > 0){
             dispatch_async(dispatch_get_main_queue(), ^{
                 successCallback(@[res]);
@@ -218,13 +217,13 @@ RCT_EXPORT_METHOD(comment_GetThemeComments:Theme objAuthor:(NSString*)objAuthor 
 // 获取指定用户发布过的评论，私密评论只有评论者和被评论者可见
 // 返回用户评论列表，格式：[{"ObjCid":"bafk...fpy","AppId":"testapp","ObjAuthor":"bbaa...jkhmm","Blockheight":3209,"UserPubkey":"bba...2hzm","CommentCid":"baf...2aygu","Comment":"hello
 // world","CommentSize":11,"Status":0,"Signature":"bkqy...b6dkda","Refercommentkey":"","CCount":0,"UpCount":0,"DownCount":0,"TCount":0}]
-RCT_EXPORT_METHOD(comment_GetUserComments:userPubkey startBlockheight:(long)startBlockheight direction:(long)direction 
-        offset:(long)offset seekKey:(NSString*)seekKey limit:(long)limit 
-        successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
+RCT_EXPORT_METHOD(comment_GetUserComments:userPubkey startBlockheight:(NSString*)startBlockheight direction:(NSString*)direction
+                  offset:(NSString*)offset seekKey:(NSString*)seekKey limit:(NSString*)limit
+                  successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         RCTLogInfo(@"comment_GetUserComments");
-        NSString *res = [dcapi comment_GetUserComments:userPubkey startBlockheight:startBlockheight direction:direction 
-          offset:offset seekKey:seekKey limit:limit];
+        NSString *res = [dcapi comment_GetUserComments:userPubkey startBlockheight:[startBlockheight longLongValue] direction:[direction longLongValue]
+          offset:[offset longLongValue] seekKey:seekKey limit:[limit longLongValue]];
         if(res.length > 0){
             dispatch_async(dispatch_get_main_queue(), ^{
                 successCallback(@[res]);
@@ -239,11 +238,11 @@ RCT_EXPORT_METHOD(comment_GetUserComments:userPubkey startBlockheight:(long)star
 }
 
 // 设置缓存key数据， value 缓存key对应的数据， expire 缓存key的过期时间，单位秒
-RCT_EXPORT_METHOD(comment_SetCacheKey:value expire:(long)expire 
+RCT_EXPORT_METHOD(comment_SetCacheKey:value expire:(NSString*)expire
         successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         RCTLogInfo(@"comment_SetCacheKey");
-        NSString *res = [dcapi comment_SetCacheKey:userPubkey expire:expire];
+        NSString *res = [dcapi comment_SetCacheKey:value expire:[expire longLongValue]];
         if(res.length > 0){
             dispatch_async(dispatch_get_main_queue(), ^{
                 successCallback(@[res]);

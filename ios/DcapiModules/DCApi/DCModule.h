@@ -9,7 +9,7 @@
 #import <React/RCTBridgeModule.h>
 #import <React/RCTEventEmitter.h>
 #import <Dcapi/Dcapi.h>
-#import "CustomEventsEmitter.h";
+#import "CustomEventsEmitter.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -19,7 +19,7 @@ extern DcapiDcapi *dcapi;
 extern CustomEventsEmitter *customEventsEmitter;
 
 @end
-@interface P2PHandlerModule : RCTEventEmitter<RCTBridgeModule, DcapiIf_FileTransmit>
+@interface P2PHandlerModule : RCTEventEmitter<RCTBridgeModule, DcapiIf_P2pMsgHandler>
 
 @end
 

@@ -9,6 +9,7 @@
 #import <React/RCTConvert.h>
 #import <Dcapi/Dcapi.h>
 #import "DcapiModules.h"
+#import "Net.pbobjc.h"
 
 
 @interface DCModule ()
@@ -478,7 +479,7 @@ RCT_EXPORT_METHOD(dc_RestartLocalWebServer:(RCTResponseSenderBlock)successCallba
 RCT_EXPORT_METHOD(dc_AccountToPubkey:(NSString*)account successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
    RCTLogInfo(@"dc_AccountToPubkey");
    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-       String basePubkey = [dcapi dc_AccountToPubkey:account];
+       NSString *basePubkey = [dcapi dc_AccountToPubkey:account];
        if(basePubkey.length > 0){
            dispatch_async(dispatch_get_main_queue(), ^{
                successCallback(@[basePubkey]);
@@ -496,7 +497,7 @@ RCT_EXPORT_METHOD(dc_AccountToPubkey:(NSString*)account successCallback:(RCTResp
 RCT_EXPORT_METHOD(dc_PubkeyToHexAccount:(NSString*)basePubkey successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
    RCTLogInfo(@"dc_PubkeyToHexAccount");
    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-       String account = [dcapi dc_PubkeyToHexAccount:basePubkey];
+       NSString *account = [dcapi dc_PubkeyToHexAccount:basePubkey];
        if(account.length > 0){
            dispatch_async(dispatch_get_main_queue(), ^{
                successCallback(@[account]);
@@ -511,16 +512,15 @@ RCT_EXPORT_METHOD(dc_PubkeyToHexAccount:(NSString*)basePubkey successCallback:(R
 }
 
 // 启动p2p通信服务
-RCT_EXPORT_METHOD(dc_EnableMessage:(long)model
+RCT_EXPORT_METHOD(dc_EnableMessage:(NSString*)model
             successCallback:(RCTResponseSenderBlock)successCallback
             errorCallback:(RCTResponseSenderBlock)errorCallback) {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         RCTLogInfo(@"dc_EnableMessage");
         P2PHandlerModule *p2pHandler = [P2PHandlerModule alloc] ;
-        P2PHandlerModule *streamHandler = [P2PHandlerModule alloc] ;
-        DcapiDc_P2pConnectOptions *options = [DcapiDc_P2pConnectOptions alloc];
-        BOOL success = [dcapi dc_EnableMessage:model msgHandler:p2pHandler streamHandler:streamHandler connectOptions:options];
+        BOOL success = [dcapi dc_EnableMessage:[model longLongValue] msgHandler:p2pHandler streamHandler:NULL connectOptions:NULL];
         if(success){
+            RCTLogInfo(@"success");
             dispatch_async(dispatch_get_main_queue(), ^{
                 successCallback(@[@true]);
             });
@@ -581,44 +581,50 @@ RCT_EXPORT_MODULE()
 /**
  * 订阅消息
  */
-- (void)PubSubMsgHandler:(NSString*)fromPeerId topic:(NSString*)topic byte:(NSArray*)msg {
-    NSLog(@"-------PubSubMsgHandler");
+- (void)pubSubEventHandler:(NSString * _Nullable)fromPeerId topic:(NSString * _Nullable)topic msg:(NSData * _Nullable)msg {
 }
-/**
- * 订阅消息收到消息
- */
-- (void)PubSubMsgResponseHandler:(NSString*)msgId fromPeerId:(NSString*)fromPeerId plaintextMsg:(NSString*)plaintextMsg topic:(NSString*)topic byte:(NSArray*)msg err:(NSString*)err {
-    NSLog(@"-------PubSubMsgResponseHandler");
+
+- (NSData * _Nullable)pubSubMsgHandler:(NSString * _Nullable)fromPeerId topic:(NSString * _Nullable)topic msg:(NSData * _Nullable)msg {
+    return msg;
 }
-/**
- * 订阅消息时间
- */
-- (void)PubSubEventHandler:(NSString*)fromPeerId topic:(NSString*)topic byte:(NSArray*)msg {
-    NSLog(@"-------PubSubEventHandler");
+
+- (void)pubSubMsgResponseHandler:(NSString * _Nullable)msgId fromPeerId:(NSString * _Nullable)fromPeerId topic:(NSString * _Nullable)topic msg:(NSData * _Nullable)msg err:(NSString * _Nullable)err {
 }
-/**
- * 收到p2p消息
- */
-- (void)ReceiveMsg:(NSString*)fromPeerId plaintextMsg:(NSString*)plaintextMsg byte:(NSArray*)msg {
+
+- (void)receiveMsg:(NSString * _Nullable)fromPeerId plaintextMsg:(NSData * _Nullable)plaintextMsg msg:(NSData * _Nullable)msg {
     NSLog(@"-------ReceiveMsg");
-    [customEventsEmitter sendEventName:@"receiveP2PMsg" body:[NSString stringWithFormat:@"{\"fromPeerId\": \"%@\",\"plaintextMsg\": \"%@\"}", fromPeerId, plaintextMsg]];
+    SendMsgRequest *msgRequest = [SendMsgRequest parseFromData:msg error:NULL];
+    
+//    SendMsgRequest *msgRequest = [NSKeyedUnarchiver unarchiveObjectWithData:msg];
+    NSLog(@"-------msgRequest");
+    NSString *senderPubkey = [[NSString alloc] initWithData:msgRequest.senderPubkey encoding:NSUTF8StringEncoding];
+    NSLog(@"-------senderPubkey: %@", senderPubkey);
+    NSString *msgStr = [[NSString alloc] initWithData:plaintextMsg encoding:NSUTF8StringEncoding];
+    NSLog(@"-------msgStr: %@", msgStr);
+//    NSDictionary *map = @{@"key1": @"value1", @"key2": @"value2"};
+    
+//    NSString *senderPubkey = @"";
+//    NSString *msgStr = @"";
+    
+    [customEventsEmitter sendEventName:@"receiveP2PMsg" body:[NSString stringWithFormat:@"{\"sender\": \"%@\",\"msg\": \"%@\"}", senderPubkey, msgStr]];
 }
 
 
 
 
 // If_P2pStreamHandler
-- (void)OnStreamConncetRequest:(NSString*)fromPeerId handle:(P2PHandlerModule*)handle {
-    NSLog(@"-------OnStreamConncetRequest");
-}
-- (void)OnDataRecv:(NSArray*)msg {
-    NSLog(@"-------OnDataRecv");
-}
-- (void)OnStreamClose:(NSString*)err {
-    NSLog(@"-------OnStreamClose");
-}
-- (void)updateTransmitSize:(long)status size:(int64_t)size { 
-    NSLog(@"-------updateTransmitSize");
-}
+//- (void)OnStreamConncetRequest:(NSString*)fromPeerId handle:(P2PHandlerModule*)handle {
+//    NSLog(@"-------OnStreamConncetRequest");
+//}
+//- (void)OnDataRecv:(NSArray*)msg {
+//    NSLog(@"-------OnDataRecv");
+//}
+//- (void)OnStreamClose:(NSString*)err {
+//    NSLog(@"-------OnStreamClose");
+//}
+//- (void)updateTransmitSize:(long)status size:(int64_t)size { 
+//    NSLog(@"-------updateTransmitSize");
+//}
+
 
 @end
