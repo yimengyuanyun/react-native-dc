@@ -533,6 +533,25 @@ RCT_EXPORT_METHOD(dc_EnableMessage:(NSString*)model
     });
 }
 
+//导出json格式的钱包私钥信息,返回json格式的钱包私钥信息,如果主账号存在，返回主账号的私钥信息，password 导出密码
+RCT_EXPORT_METHOD(dc_EncryptEthPrivKeyToJson:(NSString*)password successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
+   RCTLogInfo(@"dc_EncryptEthPrivKeyToJson");
+   dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+       NSString *info = [dcapi dc_EncryptEthPrivKeyToJson:password];
+       if(info.length > 0){
+           dispatch_async(dispatch_get_main_queue(), ^{
+               successCallback(@[info]);
+           });
+       }else {
+           NSString *lastError = [dcapi dc_GetLastErr];
+           dispatch_async(dispatch_get_main_queue(), ^{
+               errorCallback(@[lastError]);
+           });
+       }
+   });
+}
+
+
 
 #pragma mark - 向react-natvie 传递消息
 - (NSArray<NSString *> *)supportedEvents

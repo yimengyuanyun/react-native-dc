@@ -142,6 +142,26 @@ RCT_EXPORT_METHOD(file_DeleteFile:(NSString*)fid successCallback:(RCTResponseSen
     });
 }
 
+// 将指定的文件添加到当前连接的存储节点上,一个文件最多在网络中备份10份 cid 文件的cid 该cid对应的文件,必须是当前用户已经存储在dc网络的文件
+// 返回值：是否添加成功
+RCT_EXPORT_METHOD(file_AddFileBackUpToPeer:(NSString*)cid successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
+    RCTLogInfo(@"file_AddFileBackUpToPeer");
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        FileModuleFile *addFileBackUpToPeer = [[FileModuleFile alloc] initWithInfo:@"addFileBackUpToPeer" url:cid md5Str:@""];
+        NSString *cid = [dcapi file_AddFileBackUpToPeer:cid fileTransmit:addFileBackUpToPeer];
+        if(cid.length > 0){
+            dispatch_async(dispatch_get_main_queue(), ^{
+                successCallback(@[cid]);
+            });
+        }else {
+            NSString *lastError = [dcapi dc_GetLastErr];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                errorCallback(@[lastError]);
+            });
+        }
+    });
+}
+
 //#pragma mark - 向react-natvie 传递消息
 - (NSArray<NSString *> *)supportedEvents
 {
@@ -181,7 +201,7 @@ RCT_EXPORT_MODULE()
 
 - (NSArray<NSString *> *)supportedEvents
 {
-    return @[@"addFile", @"getFile"];
+    return @[@"addFile", @"getFile", @"addFileBackUpToPeer"];
 }
 
 
@@ -207,6 +227,9 @@ RCT_EXPORT_MODULE()
     }else if([self.filehandleType isEqualToString:@"addFile"]){
         NSLog(@"-------addFile updateTransmitSize");
         [customEventsEmitter sendEventName:@"addFile" body:[NSString stringWithFormat:@"{\"type\":\"%@\",\"md5Str\": \"%@\",\"status\": \"%@\",\"size\": \"%@\"}", self.filehandleType, self.md5Str, [NSString stringWithFormat: @"%ld", status], [NSString stringWithFormat: @"%lld", size]]];
+    }else if([self.filehandleType isEqualToString:@"addFileBackUpToPeer"]){
+        NSLog(@"-------addFile updateTransmitSize");
+        [customEventsEmitter sendEventName:@"addFileBackUpToPeer" body:[NSString stringWithFormat:@"{\"type\":\"%@\",\"cid\": \"%@\",\"status\": \"%@\",\"size\": \"%@\"}", self.filehandleType, self.fileUrl, [NSString stringWithFormat: @"%ld", status], [NSString stringWithFormat: @"%lld", size]]];
     }
 }
 @end

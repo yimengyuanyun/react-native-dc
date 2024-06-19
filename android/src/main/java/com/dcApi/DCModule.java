@@ -730,4 +730,29 @@ public class DCModule extends ReactContextBaseJavaModule {
             }
         }).start();
     }
+    
+    // 导出json格式的钱包私钥信息,返回json格式的钱包私钥信息,如果主账号存在，返回主账号的私钥信息，password 导出密码
+    @ReactMethod
+    public void dc_EncryptEthPrivKeyToJson(
+            String password,
+            Callback successCallback,
+            Callback errorCallback) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                System.out.println("---------------------------------start dc_EncryptEthPrivKeyToJson");
+                String res = dcClass.dc_EncryptEthPrivKeyToJson(password);
+                System.out.println("--------------------------------dc_EncryptEthPrivKeyToJson success：" + res);
+                if (res.length() > 0) {
+                    successCallback.invoke(res);
+                } else {
+                    String lastError = dcClass.dc_GetLastErr();
+                    System.out.println("---------------------------------dc_EncryptEthPrivKeyToJson: err");
+                    System.out.println(lastError);
+                    errorCallback.invoke(lastError);
+                }
+            }
+        }).start();
+    }
+
 }

@@ -205,4 +205,44 @@ public class FileModule extends ReactContextBaseJavaModule {
             }
         }).start();
     }
+
+    // 将指定的文件添加到当前连接的存储节点上,一个文件最多在网络中备份10份 cid 文件的cid 该cid对应的文件,必须是当前用户已经存储在dc网络的文件
+	//返回值：是否添加成功
+    @ReactMethod
+    public void file_AddFileBackUpToPeer(
+            String cid,
+            Callback successCallback,
+            Callback errorCallback) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String cid = dcClass.file_AddFileBackUpToPeer(cid, new If_FileTransmit() {
+                    @Override
+                    public void updateTransmitSize(long status, long size) {
+                        // FileDealStatus 0:成功 1:转化为ipfs对象操作中 2:文件传输中 3:传输失败 4:异常
+                        System.out.println("---------------------------------file_AddFileBackUpToPeer inform: " + status + "; " + size);
+                        // listenCallback.invoke();
+                        if (reactContext == null) {
+                            return;
+                        }
+                        String jsonStr = "{\"type\":\"file_AddFileBackUpToPeer\", \"cid\":\"" + cid + "\", \"status\":\"" + status
+                                + "\", \"size\":\"" + size + "\"}";
+                        reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                                .emit("addFileBackUpToPeer", jsonStr);
+                    }
+                });
+                System.out.println("---------------------------------file_AddFileBackUpToPeer: " + cid);
+                if (cid.equals("")) {
+                    String lastError = dcClass.dc_GetLastErr();
+                    System.out.println("---------------------------------file_AddFileBackUpToPeer: err");
+                    System.out.println(lastError);
+                    errorCallback.invoke(lastError);
+                } else {
+                    successCallback.invoke(cid);
+                }
+            }
+        }).start();
+
+    }
+
 }
