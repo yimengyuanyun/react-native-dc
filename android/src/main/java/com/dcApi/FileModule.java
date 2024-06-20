@@ -216,7 +216,7 @@ public class FileModule extends ReactContextBaseJavaModule {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                String cid = dcClass.file_AddFileBackUpToPeer(cid, new If_FileTransmit() {
+                Boolean bool = dcClass.file_AddFileBackUpToPeer(cid, new If_FileTransmit() {
                     @Override
                     public void updateTransmitSize(long status, long size) {
                         // FileDealStatus 0:成功 1:转化为ipfs对象操作中 2:文件传输中 3:传输失败 4:异常
@@ -231,14 +231,14 @@ public class FileModule extends ReactContextBaseJavaModule {
                                 .emit("addFileBackUpToPeer", jsonStr);
                     }
                 });
-                System.out.println("---------------------------------file_AddFileBackUpToPeer: " + cid);
-                if (cid.equals("")) {
+                System.out.println("---------------------------------file_AddFileBackUpToPeer: " + bool);
+                if (!bool) {
                     String lastError = dcClass.dc_GetLastErr();
                     System.out.println("---------------------------------file_AddFileBackUpToPeer: err");
                     System.out.println(lastError);
                     errorCallback.invoke(lastError);
                 } else {
-                    successCallback.invoke(cid);
+                    successCallback.invoke();
                 }
             }
         }).start();

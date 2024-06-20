@@ -78,7 +78,7 @@ RCT_EXPORT_METHOD(file_GetFile:(NSString*)fid savePath:(NSString*)savePath dkey:
         BOOL success = [dcapi file_GetFile:fid savePath:savePath dkey:dkey fileTransmit:getfile];
         if(success > 0){
             dispatch_async(dispatch_get_main_queue(), ^{
-                successCallback(@[]);
+                successCallback();
             });
         }else {
             NSString *lastError = [dcapi dc_GetLastErr];
@@ -131,7 +131,7 @@ RCT_EXPORT_METHOD(file_DeleteFile:(NSString*)fid successCallback:(RCTResponseSen
         BOOL success = [dcapi file_DeleteFile:fid];
         if(success){
             dispatch_async(dispatch_get_main_queue(), ^{
-                successCallback(@[]);
+                successCallback();
             });
         }else {
             NSString *lastError = [dcapi dc_GetLastErr];
@@ -148,10 +148,10 @@ RCT_EXPORT_METHOD(file_AddFileBackUpToPeer:(NSString*)cid successCallback:(RCTRe
     RCTLogInfo(@"file_AddFileBackUpToPeer");
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         FileModuleFile *addFileBackUpToPeer = [[FileModuleFile alloc] initWithInfo:@"addFileBackUpToPeer" url:cid md5Str:@""];
-        NSString *cid = [dcapi file_AddFileBackUpToPeer:cid fileTransmit:addFileBackUpToPeer];
-        if(cid.length > 0){
+        BOOL success = [dcapi file_AddFileBackUpToPeer:cid fileTransmit:addFileBackUpToPeer];
+        if(success){
             dispatch_async(dispatch_get_main_queue(), ^{
-                successCallback(@[cid]);
+                successCallback();
             });
         }else {
             NSString *lastError = [dcapi dc_GetLastErr];
