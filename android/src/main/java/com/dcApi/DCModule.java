@@ -655,6 +655,10 @@ public class DCModule extends ReactContextBaseJavaModule {
                 try {
                     Net.SendMsgRequest msgRequest = Net.SendMsgRequest.parseFrom(bytes1);
                     System.out.println("---------------------------------msgRequest");
+                    ByteString messageId = msgRequest.getMessageId();
+                    System.out.println("---------------------------------messageId");
+                    String messageIdStr = new String(messageId.toByteArray());
+                    System.out.println("---------------------------------messageIdStr : " + messageIdStr);
                     ByteString senderPubkey = msgRequest.getSenderPubkey();
                     System.out.println("---------------------------------senderPubkey");
                     String senderPubkeyStr = new String(senderPubkey.toByteArray());
@@ -662,6 +666,7 @@ public class DCModule extends ReactContextBaseJavaModule {
                     String msgStr = new String(bytes);
                     System.out.println("---------------------------------msgStr : " + msgStr);
                     Map<String,Object> map=new HashMap<>();
+                    map.put("messageId",messageIdStr);
                     map.put("sender",senderPubkeyStr);
                     map.put("msg",msgStr);
                     String jsonStr=  JSONObject.toJSONString(map);
