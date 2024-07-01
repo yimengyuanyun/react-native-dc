@@ -505,7 +505,9 @@ public class DCModule extends ReactContextBaseJavaModule {
         new Thread(new Runnable() {
             @Override
             public void run() {
+                System.out.println("---------------------------------dc_ReleaseDc: start");
                 dcClass.dc_ReleaseDc();
+                System.out.println("---------------------------------dc_ReleaseDc: end");
                 successCallback.invoke();
             }
         }).start();
