@@ -24,7 +24,7 @@ Pod::Spec.new do |s|
   s.requires_arc = true
 
   s.dependency "React"
-  s.dependency 'Protobuf', '3.3.0'
+  # s.dependency 'Protobuf', '3.3.0'
   # ...
   # s.dependency "..."
 
@@ -35,6 +35,7 @@ Pod::Spec.new do |s|
   # 设置framework的查找路径
   s.pod_target_xcconfig = {
     'FRAMEWORK_SEARCH_PATHS' => "$(PODS_ROOT)/**",
+    'OBJC_ARC' => 'NO'
   }
 end
 
