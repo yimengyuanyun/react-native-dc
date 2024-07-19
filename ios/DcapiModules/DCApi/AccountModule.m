@@ -85,6 +85,17 @@ RCT_EXPORT_METHOD(account_IfAppNftAccountBindSuccess:(NSString*)account  success
     });
 }
 
+//获取当前账号的nft账号
+RCT_EXPORT_METHOD(account_GetNFTAccount:(RCTResponseSenderBlock)successCallback) {
+    RCTLogInfo(@"account_GetNFTAccount");
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        NSString *nftAccount = [dcapi account_GetNFTAccount];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            successCallback(@[@(nftAccount)]);
+        });
+    });
+}
+
 //NFT账号登录
 RCT_EXPORT_METHOD(account_NFTAccountLogin:(NSString*)account password:(NSString*)password seccode:(NSString*)seccode  successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
     RCTLogInfo(@"account_NFTAccountLogin");

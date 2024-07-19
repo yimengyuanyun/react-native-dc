@@ -108,6 +108,20 @@ public class AccountModule extends ReactContextBaseJavaModule {
         }).start();
     }
     
+    // 获取当前账号的nft账号
+    @ReactMethod
+    public void account_GetNFTAccount(
+            Callback successCallback) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String nftAccount = dcClass.account_GetNFTAccount();
+                System.out.println("--------------------------------account_GetNFTAccount" + nftAccount);
+                successCallback.invoke(nftAccount);
+            }
+        }).start();
+    }
+
     // NFT账号登录
     @ReactMethod
     public void account_NFTAccountLogin(
