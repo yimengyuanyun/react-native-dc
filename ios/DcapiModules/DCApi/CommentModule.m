@@ -134,11 +134,11 @@ RCT_EXPORT_METHOD(comment_SetObjCommentPublic:(NSString*)Theme commentBlockheigh
 }
 
 // 发布对指定对象的评论，返回评论key,格式为:commentBlockHeight/commentCid
-RCT_EXPORT_METHOD(comment_PublishCommentToTheme :(NSString*)Theme objAuthor:(NSString*)objAuthor commentType:(NSString*)commentType comment:(NSString*)comment referCommentkey:(NSString*)referCommentkey openFlag:(NSString*)openFlag
+RCT_EXPORT_METHOD(comment_PublishCommentToTheme:(NSString*)Theme objAuthor:(NSString*)objAuthor commentType:(NSString*)commentType comment:(NSString*)comment referCommentkey:(NSString*)referCommentkey openFlag:(NSString*)openFlag
             successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         RCTLogInfo(@"comment_PublishCommentToTheme ");
-        NSString *res = [dcapi comment_PublishCommentToTheme :Theme objAuthor:objAuthor commentType:[commentType longLongValue] comment:comment referCommentkey:referCommentkey openFlag:[openFlag longLongValue]];
+        NSString *res = [dcapi comment_PublishCommentToTheme:Theme objAuthor:objAuthor commentType:[commentType longLongValue] comment:comment referCommentkey:referCommentkey openFlag:[openFlag longLongValue]];
         if(res.length > 0){
             dispatch_async(dispatch_get_main_queue(), ^{
                 successCallback(@[res]);
