@@ -551,6 +551,23 @@ RCT_EXPORT_METHOD(dc_EncryptEthPrivKeyToJson:(NSString*)password successCallback
    });
 }
 
+//刷新网络
+RCT_EXPORT_METHOD(dc_RefreshNet:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
+   RCTLogInfo(@"dc_RefreshNet");
+   dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+       BOOL success = [dcapi dc_RefreshNet];
+       if(success){
+           dispatch_async(dispatch_get_main_queue(), ^{
+                successCallback(@[@(success)]);
+           });
+       }else {
+           NSString *lastError = [dcapi dc_GetLastErr];
+           dispatch_async(dispatch_get_main_queue(), ^{
+               errorCallback(@[lastError]);
+           });
+       }
+   });
+}
 
 
 #pragma mark - 向react-natvie 传递消息

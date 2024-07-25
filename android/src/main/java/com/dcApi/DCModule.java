@@ -762,4 +762,26 @@ public class DCModule extends ReactContextBaseJavaModule {
         }).start();
     }
 
+    // 刷新网络
+    @ReactMethod
+    public void dc_RefreshNet(
+            Callback successCallback,
+            Callback errorCallback) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                System.out.println("---------------------------------start dc_RefreshNet");
+                Boolean bool = dcClass.dc_RefreshNet();
+                System.out.println("--------------------------------dc_RefreshNet success：" + res);
+                if (bool) {
+                    successCallback.invoke(true);
+                } else {
+                    String lastError = dcClass.dc_GetLastErr();
+                    System.out.println("---------------------------------dc_RefreshNet: err");
+                    System.out.println(lastError);
+                    errorCallback.invoke(lastError);
+                }
+            }
+        }).start();
+    }
 }
