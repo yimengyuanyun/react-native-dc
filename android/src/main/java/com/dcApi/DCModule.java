@@ -772,7 +772,7 @@ public class DCModule extends ReactContextBaseJavaModule {
             public void run() {
                 System.out.println("---------------------------------start dc_RefreshNet");
                 Boolean bool = dcClass.dc_RefreshNet();
-                System.out.println("--------------------------------dc_RefreshNet success：" + res);
+                System.out.println("--------------------------------dc_RefreshNet success：" + bool);
                 if (bool) {
                     successCallback.invoke(true);
                 } else {
