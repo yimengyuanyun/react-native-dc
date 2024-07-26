@@ -637,12 +637,25 @@ RCT_EXPORT_MODULE()
     NSLog(@"-------senderPubkey: %@", senderPubkey);
     NSString *msgStr = [[NSString alloc] initWithData:plaintextMsg encoding:NSUTF8StringEncoding];
     NSLog(@"-------msgStr: %@", msgStr);
-//    NSDictionary *map = @{@"key1": @"value1", @"key2": @"value2"};
+    // 创建一个JSON对象
+    NSDictionary *jsonObject = @{
+        @"sender": senderPubkey,
+        @"msg": msgStr,
+    };
+    // 将JSON对象转换为NSData
+    NSError *error;
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:jsonObject
+                                                       options:NSJSONWritingPrettyPrinted
+                                                         error:&error];
+    if (!jsonData) {
+        NSLog(@"Error creating JSON: %@", error);
+    } else {
+        // 将NSData转换为字符串
+        NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+        NSLog(@"JSON String: %@", jsonString);
+        [customEventsEmitter sendEventName:@"receiveP2PMsg" body:jsonString];
+    }
     
-//    NSString *senderPubkey = @"";
-//    NSString *msgStr = @"";
-    
-    [customEventsEmitter sendEventName:@"receiveP2PMsg" body:[NSString stringWithFormat:@"{\"sender\": \"%@\",\"msg\": \"%@\"}", senderPubkey, msgStr]];
 }
 
 
