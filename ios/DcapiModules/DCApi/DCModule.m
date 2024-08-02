@@ -552,6 +552,7 @@ RCT_EXPORT_METHOD(dc_EncryptEthPrivKeyToJson:(NSString*)password successCallback
 }
 
 //刷新网络
+//ipAddr表示wifi局域网ip地址,如果是移动网络,传空就好,netChangeFlag 在启动时传入false,网络切换时传true
 RCT_EXPORT_METHOD(dc_RefreshNet:(NSString*)ipAddr netChangeFlag:(NSString*)netChangeFlag successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
    RCTLogInfo(@"dc_RefreshNet");
    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
