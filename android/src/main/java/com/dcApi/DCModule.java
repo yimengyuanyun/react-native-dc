@@ -774,6 +774,8 @@ public class DCModule extends ReactContextBaseJavaModule {
             @Override
             public void run() {
                 System.out.println("---------------------------------start dc_RefreshNet");
+                System.out.println(ipAddr);
+                System.out.println(netChangeFlag);
                 Boolean bool = dcClass.dc_RefreshNet(ipAddr, Boolean.valueOf(netChangeFlag));
                 System.out.println("--------------------------------dc_RefreshNet success：" + bool);
                 if (bool) {
