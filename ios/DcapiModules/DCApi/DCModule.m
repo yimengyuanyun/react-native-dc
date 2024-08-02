@@ -552,10 +552,10 @@ RCT_EXPORT_METHOD(dc_EncryptEthPrivKeyToJson:(NSString*)password successCallback
 }
 
 //刷新网络
-RCT_EXPORT_METHOD(dc_RefreshNet:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
+RCT_EXPORT_METHOD(dc_RefreshNet:(NSString*)ipAddr netChangeFlag:(NSString*)netChangeFlag successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
    RCTLogInfo(@"dc_RefreshNet");
    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-       BOOL success = [dcapi dc_RefreshNet];
+       BOOL success = [dcapi dc_RefreshNet:ipAddr netChangeFlag:[[string isEqualToString:@"true"] ? YES : NO]];
        if(success){
            dispatch_async(dispatch_get_main_queue(), ^{
                 successCallback(@[@(success)]);

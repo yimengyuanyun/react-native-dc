@@ -763,15 +763,18 @@ public class DCModule extends ReactContextBaseJavaModule {
     }
 
     // 刷新网络
+    // ipAddr表示wifi局域网ip地址,如果是移动网络,传空就好,netChangeFlag 在启动时传入false,网络切换时传true
     @ReactMethod
     public void dc_RefreshNet(
+            String ipAddr,
+            String netChangeFlag,
             Callback successCallback,
             Callback errorCallback) {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 System.out.println("---------------------------------start dc_RefreshNet");
-                Boolean bool = dcClass.dc_RefreshNet();
+                Boolean bool = dcClass.dc_RefreshNet(ipAddr, Boolean.valueOf(netChangeFlag));
                 System.out.println("--------------------------------dc_RefreshNet success：" + bool);
                 if (bool) {
                     successCallback.invoke(true);
