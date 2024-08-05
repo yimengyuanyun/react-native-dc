@@ -92,7 +92,9 @@ RCT_EXPORT_METHOD(dc_DecryptData:(NSString*)baseData pin:(NSString*)pin successC
 RCT_EXPORT_METHOD(dc_ApiInit:(NSString*)DCAPPName dir:(NSString*)dir region:(NSString*)region  key:(NSString*)key successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback){
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         NSString *apppath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).firstObject;
+        RCTLogInfo(@"apppath: %d", apppath);
         NSString *userpath = [apppath stringByAppendingPathComponent:dir];
+        RCTLogInfo(@"userpath: %d", userpath);
         NSError *error = nil;
         BOOL success = YES;
         if (![[NSFileManager defaultManager] fileExistsAtPath:userpath]){
@@ -556,7 +558,7 @@ RCT_EXPORT_METHOD(dc_EncryptEthPrivKeyToJson:(NSString*)password successCallback
 RCT_EXPORT_METHOD(dc_RefreshNet:(NSString*)ipAddr netChangeFlag:(NSString*)netChangeFlag successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
    RCTLogInfo(@"dc_RefreshNet");
    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-       BOOL success = [dcapi dc_RefreshNet:ipAddr netChangeFlag:[[string isEqualToString:@"true"] ? YES : NO]];
+       BOOL success = [dcapi dc_RefreshNet:ipAddr netChangeFlag:[netChangeFlag isEqualToString:@"true"]];
        if(success){
            dispatch_async(dispatch_get_main_queue(), ^{
                 successCallback(@[@(success)]);
