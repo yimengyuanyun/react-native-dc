@@ -401,9 +401,13 @@ RCT_EXPORT_METHOD(dc_IfAppAcountExist:(RCTResponseSenderBlock)successCallback er
 
 //释放资源
 RCT_EXPORT_METHOD(dc_ReleaseDc:(RCTResponseSenderBlock)successCallback) {
-    RCTLogInfo(@"dc_ReleaseDc");
-    [dcapi dc_ReleaseDc];
-    successCallback(@[]);
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        RCTLogInfo(@"dc_ReleaseDc");
+        [dcapi dc_ReleaseDc];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            successCallback(@[]);
+        });
+    });
 }
 
 //删除文件夹

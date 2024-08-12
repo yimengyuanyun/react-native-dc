@@ -33,8 +33,10 @@ RCT_EXPORT_MODULE()
 
 //退出登录
 RCT_EXPORT_METHOD(account_Logout) {
-    RCTLogInfo(@"account_Logout");
-    [dcapi account_Logout];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        RCTLogInfo(@"account_Logout");
+        [dcapi account_Logout];
+    });
 }
 
 // 将私钥绑定NFT账号(NFT账号+密码) //0:绑定成功 1:用户已绑定其他nft账号 2:nft账号已经被其他用户绑定 3:区块链账号不存在
