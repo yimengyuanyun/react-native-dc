@@ -470,7 +470,7 @@ RCT_EXPORT_METHOD(dc_RestartLocalWebServer:(RCTResponseSenderBlock)successCallba
        BOOL success = [dcapi dc_RestartLocalWebServer];
        if(success){
            dispatch_async(dispatch_get_main_queue(), ^{
-               successCallback(@true);
+                successCallback(@[@true]);
            });
        }else {
            NSString *lastError = [dcapi dc_GetLastErr];
