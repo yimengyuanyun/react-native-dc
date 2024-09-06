@@ -229,7 +229,75 @@ RCT_EXPORT_METHOD(db_Find:(NSString*)threadid collectionName:(NSString*)collecti
     });
 }
 
+// 获取数据库的所有集合
+RCT_EXPORT_METHOD(listCollections:(NSString*)threadid successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
+    RCTLogInfo(@"listCollections");
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        NSString *jsonConfig = [dcapi listCollections:threadid];
+        if(jsonConfig.length > 0){
+            dispatch_async(dispatch_get_main_queue(), ^{
+                successCallback(@[jsonConfig]);
+            });
+        }else {
+            NSString *lastError = [dcapi dc_GetLastErr];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                errorCallback(@[lastError]);
+            });
+        }
+    });
+}
 
+// 获取数据表信息某个字段
+RCT_EXPORT_METHOD(getCollectionInfo:(NSString*)threadid name:(NSString*)name successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
+    RCTLogInfo(@"getCollectionInfo");
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        NSString *jsonConfig = [dcapi getCollectionInfo:threadid name:name];
+        if(jsonConfig.length > 0){
+            dispatch_async(dispatch_get_main_queue(), ^{
+                successCallback(@[jsonConfig]);
+            });
+        }else {
+            NSString *lastError = [dcapi dc_GetLastErr];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                errorCallback(@[lastError]);
+            });
+        }
+    });
+}
+// 创建数据表
+RCT_EXPORT_METHOD(newCollection:(NSString*)threadid jsonConfig:(NSString*)jsonConfig successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
+    RCTLogInfo(@"newCollection");
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        BOOL success = [dcapi newCollection:threadid jsonconfig:jsonConfig];
+        if(success){
+            dispatch_async(dispatch_get_main_queue(), ^{
+                successCallback(@[]);
+            });
+        }else {
+            NSString *lastError = [dcapi dc_GetLastErr];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                errorCallback(@[lastError]);
+            });
+        }
+    });
+}
+// 修改数据表
+RCT_EXPORT_METHOD(updateCollection:(NSString*)threadid jsonConfig:(NSString*)jsonConfig successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
+    RCTLogInfo(@"updateCollection");
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        BOOL success = [dcapi updateCollection:threadid jsonconfig:jsonConfig];
+        if(success){
+            dispatch_async(dispatch_get_main_queue(), ^{
+                successCallback(@[]);
+            });
+        }else {
+            NSString *lastError = [dcapi dc_GetLastErr];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                errorCallback(@[lastError]);
+            });
+        }
+    });
+}
 
 #pragma mark - 向react-natvie 传递消息
 - (NSArray<NSString *> *)supportedEvents

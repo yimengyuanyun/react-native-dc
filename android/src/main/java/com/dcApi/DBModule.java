@@ -447,55 +447,6 @@ public class DBModule extends ReactContextBaseJavaModule {
 //         mt1.start();
 //     }
 
-//     // 创建数据表
-//     // NewCollection creates a new collection.jsonconfig格式：{"name":"name1","schema":"schema1"},indexs:[{"path":"path1","unique":true},{"path":"path2","unique":false}]
-//     @ReactMethod
-//     public void newCollection(
-//             String threadid,
-//             String jsonconfig,
-//             Callback successCallback,
-//             Callback errorCallback ){
-//         Runnable mt = new Runnable() {
-//             @Override
-//             public void run() {
-//                 try {
-//                     dcClass.newCollection(threadid, jsonconfig);
-//                     System.out.println("---------------------------------newCollection: ");
-//                     successCallback.invoke();
-//                 } catch (Exception e) {
-//                     errorCallback.invoke(e.getMessage());
-//                     e.printStackTrace();
-//                 }
-//             };
-//         };
-//         Thread mt1 = new Thread(mt, "newCollection");
-//         mt1.start();
-//     }
-
-//     // 修改数据表
-//     // UpdateCollection updates an existing collection.
-//     @ReactMethod
-//     public void updateCollection(
-//             String threadid,
-//             String jsonconfig,
-//             Callback successCallback,
-//             Callback errorCallback ){
-//         Runnable mt = new Runnable() {
-//             @Override
-//             public void run() {
-//                 try {
-//                     dcClass.updateCollection(threadid, jsonconfig);
-//                     System.out.println("---------------------------------updateCollection: ");
-//                     successCallback.invoke();
-//                 } catch (Exception e) {
-//                     errorCallback.invoke(e.getMessage());
-//                     e.printStackTrace();
-//                 }
-//             };
-//         };
-//         Thread mt1 = new Thread(mt, "updateCollection");
-//         mt1.start();
-//     }
 
 //     // 删除数据表
 //     @ReactMethod
@@ -522,55 +473,103 @@ public class DBModule extends ReactContextBaseJavaModule {
 //     }
 
 
-//     // 获取数据库的所有集合
-//     // ListCollections returns information about all existing collections.
-//     @ReactMethod
-//     public void listCollections(
-//             String threadid,
-//             Callback successCallback,
-//             Callback errorCallback){
-//         Runnable mt = new Runnable() {
-//             @Override
-//             public void run() {
-//                 try {
-//                     String jsonConfig = dcClass.listCollections(threadid);
-//                     successCallback.invoke(jsonConfig);
-//                     System.out.println("---------------------------------listCollections: " + jsonConfig);
-//                 } catch (Exception e) {
-//                     errorCallback.invoke(e.getMessage());
-//                     e.printStackTrace();
-//                 }
-//             };
-//         };
-//         Thread mt1 = new Thread(mt, "listCollections");
-//         mt1.start();
-//     }
+    // 获取数据库的所有集合
+    // ListCollections returns information about all existing collections.
+    @ReactMethod
+    public void listCollections(
+            String threadid,
+            Callback successCallback,
+            Callback errorCallback){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String jsonConfig = dcClass.listCollections(threadid);
+                System.out.println("---------------------------------listCollections: " + jsonConfig);
+                if(jsonConfig.equals("")){
+                    String lastError = dcClass.dc_GetLastErr();
+                    System.out.println("---------------------------------listCollections: err");
+                    System.out.println(lastError);
+                    errorCallback.invoke(lastError);
+                }else {
+                    successCallback.invoke(jsonConfig);
+                }
+            }
+        }).start();
+    }
 
-//     // 获取数据表信息某个字段
-//     @ReactMethod
-//     public void getCollectionInfo(
-//             String threadid,
-//             String name,
-//             Callback successCallback,
-//             Callback errorCallback){
-//         Runnable mt = new Runnable() {
-//             @Override
-//             public void run() {
-//                 try {
-//                     String jsonConfig = dcClass.getCollectionInfo(threadid, name);
-//                     successCallback.invoke(jsonConfig);
-//                     System.out.println("---------------------------------getCollectionInfo: " + jsonConfig);
-//                 } catch (Exception e) {
-//                     System.out.println("---------------------------------getCollectionInfo error: " + e.getMessage());
-//                     errorCallback.invoke(e.getMessage());
-//                     e.printStackTrace();
-//                 }
-//             };
-//         };
-//         Thread mt1 = new Thread(mt, "getCollectionInfo");
-//         mt1.start();
-//     }
+    // 获取数据表信息某个字段
+    @ReactMethod
+    public void getCollectionInfo(
+            String threadid,
+            String name,
+            Callback successCallback,
+            Callback errorCallback){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String jsonConfig = dcClass.getCollectionInfo(threadid, name);
+                System.out.println("---------------------------------getCollectionInfo: " + jsonConfig);
+                if(jsonConfig.equals("")){
+                    String lastError = dcClass.dc_GetLastErr();
+                    System.out.println("---------------------------------getCollectionInfo: err");
+                    System.out.println(lastError);
+                    errorCallback.invoke(lastError);
+                }else {
+                    successCallback.invoke(jsonConfig);
+                }
+            }
+        }).start();
+    }
 
+    // 创建数据表
+    // NewCollection creates a new collection.jsonconfig格式：{"name":"name1","schema":"schema1"},indexs:[{"path":"path1","unique":true},{"path":"path2","unique":false}]
+    @ReactMethod
+    public void newCollection(
+            String threadid,
+            String jsonConfig,
+            Callback successCallback,
+            Callback errorCallback){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Boolean bool = dcClass.newCollection(threadid, jsonConfig);
+                System.out.println("---------------------------------newCollection: " + bool);
+                if(bool){
+                    successCallback.invoke();
+                }else {
+                    String lastError = dcClass.dc_GetLastErr();
+                    System.out.println("---------------------------------newCollection: err");
+                    System.out.println(lastError);
+                    errorCallback.invoke(lastError);
+                }
+            }
+        }).start();
+    }
+
+    // 修改数据表
+    // UpdateCollection updates an existing collection.
+    @ReactMethod
+    public void updateCollection(
+            String threadid,
+            String jsonConfig,
+            Callback successCallback,
+            Callback errorCallback){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Boolean bool = dcClass.updateCollection(threadid, jsonConfig);
+                System.out.println("---------------------------------newCollection: " + bool);
+                if(bool){
+                    successCallback.invoke();
+                }else {
+                    String lastError = dcClass.dc_GetLastErr();
+                    System.out.println("---------------------------------newCollection: err");
+                    System.out.println(lastError);
+                    errorCallback.invoke(lastError);
+                }
+            }
+        }).start();
+    }
 //     // 是否存在指定的数据表记录
 //     @ReactMethod
 //     public void hasInstance(
