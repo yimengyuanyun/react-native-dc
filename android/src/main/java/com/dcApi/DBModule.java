@@ -483,7 +483,7 @@ public class DBModule extends ReactContextBaseJavaModule {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                String jsonConfig = dcClass.listCollections(threadid);
+                String jsonConfig = dcClass.db_ListCollections(threadid);
                 System.out.println("---------------------------------listCollections: " + jsonConfig);
                 if(jsonConfig.equals("")){
                     String lastError = dcClass.dc_GetLastErr();
@@ -507,7 +507,7 @@ public class DBModule extends ReactContextBaseJavaModule {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                String jsonConfig = dcClass.getCollectionInfo(threadid, name);
+                String jsonConfig = dcClass.db_GetCollectionInfo(threadid, name);
                 System.out.println("---------------------------------getCollectionInfo: " + jsonConfig);
                 if(jsonConfig.equals("")){
                     String lastError = dcClass.dc_GetLastErr();
@@ -532,7 +532,7 @@ public class DBModule extends ReactContextBaseJavaModule {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                Boolean bool = dcClass.newCollection(threadid, jsonConfig);
+                Boolean bool = dcClass.db_NewCollection(threadid, jsonConfig);
                 System.out.println("---------------------------------newCollection: " + bool);
                 if(bool){
                     successCallback.invoke();
@@ -557,7 +557,7 @@ public class DBModule extends ReactContextBaseJavaModule {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                Boolean bool = dcClass.updateCollection(threadid, jsonConfig);
+                Boolean bool = dcClass.db_UpdateCollection(threadid, jsonConfig);
                 System.out.println("---------------------------------newCollection: " + bool);
                 if(bool){
                     successCallback.invoke();
