@@ -233,7 +233,7 @@ RCT_EXPORT_METHOD(db_Find:(NSString*)threadid collectionName:(NSString*)collecti
 RCT_EXPORT_METHOD(listCollections:(NSString*)threadid successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
     RCTLogInfo(@"listCollections");
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        NSString *jsonConfig = [dcapi listCollections:threadid];
+        NSString *jsonConfig = [dcapi db_ListCollections:threadid];
         if(jsonConfig.length > 0){
             dispatch_async(dispatch_get_main_queue(), ^{
                 successCallback(@[jsonConfig]);
@@ -251,7 +251,7 @@ RCT_EXPORT_METHOD(listCollections:(NSString*)threadid successCallback:(RCTRespon
 RCT_EXPORT_METHOD(getCollectionInfo:(NSString*)threadid name:(NSString*)name successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
     RCTLogInfo(@"getCollectionInfo");
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        NSString *jsonConfig = [dcapi getCollectionInfo:threadid name:name];
+        NSString *jsonConfig = [dcapi db_GetCollectionInfo:threadid name:name];
         if(jsonConfig.length > 0){
             dispatch_async(dispatch_get_main_queue(), ^{
                 successCallback(@[jsonConfig]);
@@ -268,7 +268,7 @@ RCT_EXPORT_METHOD(getCollectionInfo:(NSString*)threadid name:(NSString*)name suc
 RCT_EXPORT_METHOD(newCollection:(NSString*)threadid jsonConfig:(NSString*)jsonConfig successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
     RCTLogInfo(@"newCollection");
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        BOOL success = [dcapi newCollection:threadid jsonconfig:jsonConfig];
+        BOOL success = [dcapi db_NewCollection:threadid jsonconfig:jsonConfig];
         if(success){
             dispatch_async(dispatch_get_main_queue(), ^{
                 successCallback(@[]);
@@ -285,7 +285,7 @@ RCT_EXPORT_METHOD(newCollection:(NSString*)threadid jsonConfig:(NSString*)jsonCo
 RCT_EXPORT_METHOD(updateCollection:(NSString*)threadid jsonConfig:(NSString*)jsonConfig successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
     RCTLogInfo(@"updateCollection");
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        BOOL success = [dcapi updateCollection:threadid jsonconfig:jsonConfig];
+        BOOL success = [dcapi db_UpdateCollection:threadid jsonconfig:jsonConfig];
         if(success){
             dispatch_async(dispatch_get_main_queue(), ^{
                 successCallback(@[]);
