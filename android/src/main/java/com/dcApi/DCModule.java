@@ -597,6 +597,29 @@ public class DCModule extends ReactContextBaseJavaModule {
         }).start();
     }
 
+    // 关闭本地文件网络访问服务
+    @ReactMethod
+    public void dc_CloseLocalWebServer(
+            Callback successCallback,
+            Callback errorCallback) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                System.out.println("---------------------------------start dc_CloseLocalWebServer");
+                Boolean bool = dcClass.dc_CloseLocalWebServer();
+                System.out.println("--------------------------------dc_CloseLocalWebServer success：" + bool);
+                if (bool) {
+                    successCallback.invoke(bool);
+                } else {
+                    String lastError = dcClass.dc_GetLastErr();
+                    System.out.println("---------------------------------dc_CloseLocalWebServer: err");
+                    System.out.println(lastError);
+                    errorCallback.invoke(lastError);
+                }
+            }
+        }).start();
+    }
+    
     // 16进制区块链账号转换为base32公钥
     @ReactMethod
     public void dc_AccountToPubkey(
