@@ -80,7 +80,6 @@ public class BCModule extends ReactContextBaseJavaModule {
             public void run() {
                 System.out.println("---------------------------------generateBCAccount: start");
                 String mnemonic = dcClass.bc_GenerateBCAccount(val);
-                System.out.println("---------------------------------generateBCAccount: " + mnemonic);
                 if(mnemonic.equals("")){
                     String lastError = dcClass.dc_GetLastErr();
                     System.out.println("---------------------------------generateBCAccount: err");

@@ -403,7 +403,6 @@ public class DCModule extends ReactContextBaseJavaModule {
             public void run() {
                 String mnemonic = dcClass.dc_GetMnemonic();
                 successCallback.invoke(mnemonic);
-                System.out.println("---------------------------------getMnemonic: " + mnemonic);
             }
         }).start();
     }
