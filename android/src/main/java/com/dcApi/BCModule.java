@@ -39,11 +39,11 @@ public class BCModule extends ReactContextBaseJavaModule {
             @Override
             public void run() {
                 long blockHeight = dcClass.bc_GetBlockHeight();
-                System.out.println("---------------------------------getBlockHeight: " + blockHeight);
+                //System.out.println("---------------------------------getBlockHeight: " + blockHeight);
                 if(blockHeight <= 0){
                     String lastError = dcClass.dc_GetLastErr();
-                    System.out.println("---------------------------------getBlockHeight: err");
-                    System.out.println(lastError);
+                    //System.out.println("---------------------------------getBlockHeight: err");
+                    //System.out.println(lastError);
                     errorCallback.invoke(lastError);
                 }else {
                     successCallback.invoke(Long.toString(blockHeight));
@@ -60,9 +60,9 @@ public class BCModule extends ReactContextBaseJavaModule {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                System.out.println("---------------------------------peerState" + peer);
+                //System.out.println("---------------------------------peerState" + peer);
                 String state = dcClass.bc_PeerState(peer);
-                System.out.println("---------------------------------peerState" + state);
+                //System.out.println("---------------------------------peerState" + state);
                 successCallback.invoke(state);
             }
         }).start();
@@ -78,12 +78,12 @@ public class BCModule extends ReactContextBaseJavaModule {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                System.out.println("---------------------------------generateBCAccount: start");
+                //System.out.println("---------------------------------generateBCAccount: start");
                 String mnemonic = dcClass.bc_GenerateBCAccount(val);
                 if(mnemonic.equals("")){
                     String lastError = dcClass.dc_GetLastErr();
-                    System.out.println("---------------------------------generateBCAccount: err");
-                    System.out.println(lastError);
+                    //System.out.println("---------------------------------generateBCAccount: err");
+                    //System.out.println(lastError);
                     errorCallback.invoke(lastError);
                 }else {
                     successCallback.invoke(mnemonic);
@@ -101,11 +101,11 @@ public class BCModule extends ReactContextBaseJavaModule {
             @Override
             public void run() {
                 String jsonStroragePrices = dcClass.bc_GetStoragePrices();
-                System.out.println("--------------------------------getStroagePrices：" + jsonStroragePrices);
+                //System.out.println("--------------------------------getStroagePrices：" + jsonStroragePrices);
                 if (jsonStroragePrices.equals("")) {
                     String lastError = dcClass.dc_GetLastErr();
-                    System.out.println("---------------------------------getStroagePrices: err");
-                    System.out.println(lastError);
+                    //System.out.println("---------------------------------getStroagePrices: err");
+                    //System.out.println(lastError);
                     errorCallback.invoke(lastError);
                 } else {
                     successCallback.invoke(jsonStroragePrices);
@@ -124,11 +124,11 @@ public class BCModule extends ReactContextBaseJavaModule {
             @Override
             public void run() {
                 Boolean bool = dcClass.bc_SubscribeStorage(pricetype);
-                System.out.println("--------------------------------subscribeStorage success：" + pricetype);
+                //System.out.println("--------------------------------subscribeStorage success：" + pricetype);
                 if (!bool) {
                     String lastError = dcClass.dc_GetLastErr();
-                    System.out.println("---------------------------------subscribeStorage: err");
-                    System.out.println(lastError);
+                    //System.out.println("---------------------------------subscribeStorage: err");
+                    //System.out.println(lastError);
                     errorCallback.invoke(lastError);
                 } else {
                     successCallback.invoke();

@@ -44,13 +44,13 @@ public class DBModule extends ReactContextBaseJavaModule {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                System.out.println("---------------------------------start newDB: " + dbname);
+                //System.out.println("---------------------------------start newDB: " + dbname);
                 String threadid = dcClass.db_NewThreadDB(dbname, rk, sk, jsonCollections);
-                System.out.println("---------------------------------newDB threadid: " + threadid);
+                //System.out.println("---------------------------------newDB threadid: " + threadid);
                 if (threadid.equals("")) {
                     String lastError = dcClass.dc_GetLastErr();
-                    System.out.println("---------------------------------newDB: err");
-                    System.out.println(lastError);
+                    //System.out.println("---------------------------------newDB: err");
+                    //System.out.println(lastError);
                     errorCallback.invoke(lastError);
                 } else {
                     successCallback.invoke(threadid);
@@ -75,12 +75,12 @@ public class DBModule extends ReactContextBaseJavaModule {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                System.out.println("---------------------------------start syncDBFromDC: " + threadid);
+                //System.out.println("---------------------------------start syncDBFromDC: " + threadid);
                 Boolean bool = dcClass.db_SyncDBFromDC(threadid, dbname, dbAddr, rk, sk, block, jsonCollections);
                 if (!bool) {
                     String lastError = dcClass.dc_GetLastErr();
-                    System.out.println("---------------------------------syncDBFromDC: err");
-                    System.out.println(lastError);
+                    //System.out.println("---------------------------------syncDBFromDC: err");
+                    //System.out.println(lastError);
                     errorCallback.invoke(lastError);
                 } else {
                     successCallback.invoke();
@@ -101,11 +101,11 @@ public class DBModule extends ReactContextBaseJavaModule {
             @Override
             public void run() {
                 Boolean bool = dcClass.db_RefreshDBFromDC(threadid);
-                System.out.println("---------------------------------Db_RefreshDBFromDC : " + bool);
+                //System.out.println("---------------------------------Db_RefreshDBFromDC : " + bool);
                 if (!bool) {
                     String lastError = dcClass.dc_GetLastErr();
-                    System.out.println("---------------------------------Db_RefreshDBFromDC: err");
-                    System.out.println(lastError);
+                    //System.out.println("---------------------------------Db_RefreshDBFromDC: err");
+                    //System.out.println(lastError);
                     errorCallback.invoke(lastError);
                 } else {
                     successCallback.invoke(true);
@@ -125,11 +125,11 @@ public class DBModule extends ReactContextBaseJavaModule {
             @Override
             public void run() {
                 Boolean bool = dcClass.db_IfSyncDBToDCSuccess(threadid);
-                System.out.println("---------------------------------ifSyncDBToDCSuccess : " + bool);
+                //System.out.println("---------------------------------ifSyncDBToDCSuccess : " + bool);
                 if(!bool){
                     String lastError = dcClass.dc_GetLastErr();
-                    System.out.println("---------------------------------ifSyncDBToDCSuccess: err");
-                    System.out.println(lastError);
+                    //System.out.println("---------------------------------ifSyncDBToDCSuccess: err");
+                    //System.out.println(lastError);
                     errorCallback.invoke(lastError);
                 }else {
                     successCallback.invoke(true);
@@ -149,11 +149,11 @@ public class DBModule extends ReactContextBaseJavaModule {
             @Override
             public void run() {
                 Boolean bool = dcClass.db_SyncDBToDC(threadid);
-                System.out.println("---------------------------------syncDBToDC : " + bool);
+                //System.out.println("---------------------------------syncDBToDC : " + bool);
                 if (!bool) {
                     String lastError = dcClass.dc_GetLastErr();
-                    System.out.println("---------------------------------syncDBToDC: err");
-                    System.out.println(lastError);
+                    //System.out.println("---------------------------------syncDBToDC: err");
+                    //System.out.println(lastError);
                     errorCallback.invoke(lastError);
                 } else {
                     successCallback.invoke(true);
@@ -172,12 +172,12 @@ public class DBModule extends ReactContextBaseJavaModule {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                System.out.println("---------------------------------start getDB: " + threadid);
+                //System.out.println("---------------------------------start getDB: " + threadid);
                 String jsonDBInfo = dcClass.db_GetDBInfo(threadid);
                 if (jsonDBInfo.equals("")) {
                     String lastError = dcClass.dc_GetLastErr();
-                    System.out.println("---------------------------------getDB: err");
-                    System.out.println(lastError);
+                    //System.out.println("---------------------------------getDB: err");
+                    //System.out.println(lastError);
                     errorCallback.invoke(lastError);
                 } else {
                     successCallback.invoke(jsonDBInfo);
@@ -198,11 +198,11 @@ public class DBModule extends ReactContextBaseJavaModule {
             @Override
             public void run() {
                 String jsonInstanceids = dcClass.db_Create(threadid, collectionName, jsonInstances);
-                System.out.println("---------------------------------create2: " + jsonInstanceids);
+                //System.out.println("---------------------------------create2: " + jsonInstanceids);
                 if(jsonInstanceids.equals("")){
                     String lastError = dcClass.dc_GetLastErr();
-                    System.out.println("---------------------------------create: err");
-                    System.out.println(lastError);
+                    //System.out.println("---------------------------------create: err");
+                    //System.out.println(lastError);
                     errorCallback.invoke(lastError);
                 }else {
                     successCallback.invoke(jsonInstanceids);
@@ -223,11 +223,11 @@ public class DBModule extends ReactContextBaseJavaModule {
             @Override
             public void run() {
                 Boolean bool = dcClass.db_Delete(threadid, collectionName, instanceID);
-                System.out.println("---------------------------------delete: " + bool);
+                //System.out.println("---------------------------------delete: " + bool);
                 if(!bool){
                     String lastError = dcClass.dc_GetLastErr();
-                    System.out.println("---------------------------------delete: err");
-                    System.out.println(lastError);
+                    //System.out.println("---------------------------------delete: err");
+                    //System.out.println(lastError);
                     errorCallback.invoke(lastError);
                 }else {
                     successCallback.invoke();
@@ -248,11 +248,11 @@ public class DBModule extends ReactContextBaseJavaModule {
             @Override
             public void run() {
                 Boolean bool = dcClass.db_Save(threadid, collectionName, instance);
-                System.out.println("---------------------------------saveInstance: " + threadid + "," + collectionName + "," + bool);
+                //System.out.println("---------------------------------saveInstance: " + threadid + "," + collectionName + "," + bool);
                 if(!bool){
                     String lastError = dcClass.dc_GetLastErr();
-                    System.out.println("---------------------------------saveInstance: err");
-                    System.out.println(lastError);
+                    //System.out.println("---------------------------------saveInstance: err");
+                    //System.out.println(lastError);
                     errorCallback.invoke(lastError);
                 }else {
                     successCallback.invoke();
@@ -273,11 +273,11 @@ public class DBModule extends ReactContextBaseJavaModule {
             @Override
             public void run() {
                 Boolean bool = dcClass.db_DeleteMany(threadid, collectionName, instanceIDs);
-                System.out.println("---------------------------------deleteManyInstance: " + bool);
+                //System.out.println("---------------------------------deleteManyInstance: " + bool);
                 if(!bool){
                     String lastError = dcClass.dc_GetLastErr();
-                    System.out.println("---------------------------------deleteManyInstance: err");
-                    System.out.println(lastError);
+                    //System.out.println("---------------------------------deleteManyInstance: err");
+                    //System.out.println(lastError);
                     errorCallback.invoke(lastError);
                 }else {
                     successCallback.invoke();
@@ -299,11 +299,11 @@ public class DBModule extends ReactContextBaseJavaModule {
             @Override
             public void run() {
                 String jsonInstances = dcClass.db_Find(threadid, collectionName, queryString);
-                System.out.println("---------------------------------findInstance: " + jsonInstances);
+                //System.out.println("---------------------------------findInstance: " + jsonInstances);
                 if(jsonInstances.equals("")){
                     String lastError = dcClass.dc_GetLastErr();
-                    System.out.println("---------------------------------findInstance: err");
-                    System.out.println(lastError);
+                    //System.out.println("---------------------------------findInstance: err");
+                    //System.out.println(lastError);
                     errorCallback.invoke(lastError);
                 }else {
                     successCallback.invoke(jsonInstances);
@@ -326,7 +326,7 @@ public class DBModule extends ReactContextBaseJavaModule {
 //                 try {
 //                     String jsonInstance = dcClass.findByID(threadid, collectionName, instanceID);
 //                     successCallback.invoke(jsonInstance);
-//                     System.out.println("---------------------------------findByID: " + jsonInstance);
+//                     //System.out.println("---------------------------------findByID: " + jsonInstance);
 //                 } catch (Exception e) {
 //                     errorCallback.invoke(e.getMessage());
 //                     e.printStackTrace();
@@ -351,13 +351,13 @@ public class DBModule extends ReactContextBaseJavaModule {
 // //                String handle = dcClass.listen(threadid, collectionName, listenOptions, new dc.Callback() {
 // //                    @Override
 // //                    public void inform(long l, String s, String s1) {
-// //                        System.out.println("---------------------------------inform: ");
+// //                        //System.out.println("---------------------------------inform: ");
 // //                        callback.invoke(l, s, s1);
 // //                    }
 // //                });
-// //                System.out.println("---------------------------------listen1: " + handle);
+// //                //System.out.println("---------------------------------listen1: " + handle);
 // //                successCallback.invoke(handle);
-// //                System.out.println("---------------------------------listen2: " + handle);
+// //                //System.out.println("---------------------------------listen2: " + handle);
 // //            };
 // //        };
 // //        Thread mt1 = new Thread(mt, "listenInstance");
@@ -374,7 +374,7 @@ public class DBModule extends ReactContextBaseJavaModule {
 //             @Override
 //             public void run() {
 //                 dcClass.cancelDbListen(handle);
-//                 System.out.println("---------------------------------cancelDbListen: " + handle);
+//                 //System.out.println("---------------------------------cancelDbListen: " + handle);
 //             };
 //         };
 //         Thread mt1 = new Thread(mt, "cancelDbListen");
@@ -392,7 +392,7 @@ public class DBModule extends ReactContextBaseJavaModule {
 // //    ){
 // //        try {
 // //            dcClass.addDbRecordToDcPeer(threadid, sk);
-// //            System.out.println("--------------------------------addDbRecordToDcPeer：");
+// //            //System.out.println("--------------------------------addDbRecordToDcPeer：");
 // //        } catch (Exception e) {
 // //            errorCallback.invoke(e.getMessage());
 // //            e.printStackTrace();
@@ -412,7 +412,7 @@ public class DBModule extends ReactContextBaseJavaModule {
 //                 try {
 //                     String jsonDBInfos = dcClass.listDBs();
 //                     successCallback.invoke(jsonDBInfos);
-//                     System.out.println("---------------------------------listDBs : " + jsonDBInfos);
+//                     //System.out.println("---------------------------------listDBs : " + jsonDBInfos);
 //                 } catch (Exception e) {
 //                     errorCallback.invoke(e.getMessage());
 //                     e.printStackTrace();
@@ -435,7 +435,7 @@ public class DBModule extends ReactContextBaseJavaModule {
 //             public void run() {
 //                 try {
 //                     dcClass.deleteDB(threadid);
-//                     System.out.println("---------------------------------deleteDB: ");
+//                     //System.out.println("---------------------------------deleteDB: ");
 //                     successCallback.invoke();
 //                 } catch (Exception e) {
 //                     errorCallback.invoke(e.getMessage());
@@ -460,7 +460,7 @@ public class DBModule extends ReactContextBaseJavaModule {
 //             public void run() {
 //                 try {
 //                     dcClass.deleteCollection(threadid, name);
-//                     System.out.println("---------------------------------deleteCollection: ");
+//                     //System.out.println("---------------------------------deleteCollection: ");
 //                     successCallback.invoke();
 //                 } catch (Exception e) {
 //                     errorCallback.invoke(e.getMessage());
@@ -484,11 +484,11 @@ public class DBModule extends ReactContextBaseJavaModule {
             @Override
             public void run() {
                 String jsonConfig = dcClass.db_ListCollections(threadid);
-                System.out.println("---------------------------------listCollections: " + jsonConfig);
+                //System.out.println("---------------------------------listCollections: " + jsonConfig);
                 if(jsonConfig.equals("")){
                     String lastError = dcClass.dc_GetLastErr();
-                    System.out.println("---------------------------------listCollections: err");
-                    System.out.println(lastError);
+                    //System.out.println("---------------------------------listCollections: err");
+                    //System.out.println(lastError);
                     errorCallback.invoke(lastError);
                 }else {
                     successCallback.invoke(jsonConfig);
@@ -508,11 +508,11 @@ public class DBModule extends ReactContextBaseJavaModule {
             @Override
             public void run() {
                 String jsonConfig = dcClass.db_GetCollectionInfo(threadid, name);
-                System.out.println("---------------------------------getCollectionInfo: " + jsonConfig);
+                //System.out.println("---------------------------------getCollectionInfo: " + jsonConfig);
                 if(jsonConfig.equals("")){
                     String lastError = dcClass.dc_GetLastErr();
-                    System.out.println("---------------------------------getCollectionInfo: err");
-                    System.out.println(lastError);
+                    //System.out.println("---------------------------------getCollectionInfo: err");
+                    //System.out.println(lastError);
                     errorCallback.invoke(lastError);
                 }else {
                     successCallback.invoke(jsonConfig);
@@ -533,13 +533,13 @@ public class DBModule extends ReactContextBaseJavaModule {
             @Override
             public void run() {
                 Boolean bool = dcClass.db_NewCollection(threadid, jsonConfig);
-                System.out.println("---------------------------------newCollection: " + bool);
+                //System.out.println("---------------------------------newCollection: " + bool);
                 if(bool){
                     successCallback.invoke();
                 }else {
                     String lastError = dcClass.dc_GetLastErr();
-                    System.out.println("---------------------------------newCollection: err");
-                    System.out.println(lastError);
+                    //System.out.println("---------------------------------newCollection: err");
+                    //System.out.println(lastError);
                     errorCallback.invoke(lastError);
                 }
             }
@@ -558,13 +558,13 @@ public class DBModule extends ReactContextBaseJavaModule {
             @Override
             public void run() {
                 Boolean bool = dcClass.db_UpdateCollection(threadid, jsonConfig);
-                System.out.println("---------------------------------newCollection: " + bool);
+                //System.out.println("---------------------------------newCollection: " + bool);
                 if(bool){
                     successCallback.invoke();
                 }else {
                     String lastError = dcClass.dc_GetLastErr();
-                    System.out.println("---------------------------------newCollection: err");
-                    System.out.println(lastError);
+                    //System.out.println("---------------------------------newCollection: err");
+                    //System.out.println(lastError);
                     errorCallback.invoke(lastError);
                 }
             }
@@ -582,7 +582,7 @@ public class DBModule extends ReactContextBaseJavaModule {
 //             public void run() {
 //                 Boolean exist = dcClass.has(threadid, collectionName, instanceIDs);
 //                 successCallback.invoke(exist);
-//                 System.out.println("---------------------------------has: " + exist);
+//                 //System.out.println("---------------------------------has: " + exist);
 //             };
 //         };
 //         Thread mt1 = new Thread(mt, "hasInstance");

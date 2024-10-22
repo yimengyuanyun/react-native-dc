@@ -52,15 +52,15 @@ public class DCModule extends ReactContextBaseJavaModule {
         // 判断文件夹是否存在,如果不存在则创建文件夹
         if (!file.exists()) {
             Boolean mkSuccess = new File(path).mkdirs();
-            System.out.println("---------------------------------不存在路径" + path);
+            //System.out.println("---------------------------------不存在路径" + path);
             if (!file.exists()) {
-                System.out.println("---------------------------------不存在路径2" + path);
+                //System.out.println("---------------------------------不存在路径2" + path);
             } else {
-                System.out.println("---------------------------------存在路径2" + path);
+                //System.out.println("---------------------------------存在路径2" + path);
             }
             return mkSuccess;
         } else {
-            System.out.println("---------------------------------存在路径" + path);
+            //System.out.println("---------------------------------存在路径" + path);
             return true;
         }
     }
@@ -87,8 +87,8 @@ public class DCModule extends ReactContextBaseJavaModule {
                         pin.getBytes(StandardCharsets.UTF_8));
                 if (key == null) {
                     String lastError = dcClass.dc_GetLastErr();
-                    System.out.println("---------------------------------encryptData: err");
-                    System.out.println(lastError);
+                    //System.out.println("---------------------------------encryptData: err");
+                    //System.out.println(lastError);
                     errorCallback.invoke(lastError);
                 } else {
                     successCallback.invoke(Base64.getEncoder().encodeToString(key));
@@ -107,8 +107,8 @@ public class DCModule extends ReactContextBaseJavaModule {
                         pin.getBytes(StandardCharsets.UTF_8));
                 if (key == null) {
                     String lastError = dcClass.dc_GetLastErr();
-                    System.out.println("---------------------------------decryptData: err");
-                    System.out.println(lastError);
+                    //System.out.println("---------------------------------decryptData: err");
+                    //System.out.println(lastError);
                     errorCallback.invoke(lastError);
                 } else {
                     successCallback.invoke(new String(key, StandardCharsets.UTF_8));
@@ -132,16 +132,16 @@ public class DCModule extends ReactContextBaseJavaModule {
                 String userpath = apppath + "/" + dir;
                 Boolean mkSuccess = mkUserDir(userpath);
                 if (mkSuccess) {
-                    System.out.println("---------------------------------apppath : " + apppath);
-                    System.out.println("---------------------------------userpath : " + userpath);
-                    System.out.println("---------------------------------region : " + region);
-                    System.out.println("---------------------------------key : " + key);
+                    //System.out.println("---------------------------------apppath : " + apppath);
+                    //System.out.println("---------------------------------userpath : " + userpath);
+                    //System.out.println("---------------------------------region : " + region);
+                    //System.out.println("---------------------------------key : " + key);
                     String webport = dcClass.dc_ApiInit(DCAPPName, region, key, apppath, dir, true, true);
-                    System.out.println("---------------------------------init: " + webport);
+                    //System.out.println("---------------------------------init: " + webport);
                     if (webport.equals("")) {
                         String lastError = dcClass.dc_GetLastErr();
-                        System.out.println("---------------------------------init: err");
-                        System.out.println(lastError);
+                        //System.out.println("---------------------------------init: err");
+                        //System.out.println(lastError);
                         errorCallback.invoke(lastError);
                     } else {
                         successCallback.invoke(webport);
@@ -162,11 +162,11 @@ public class DCModule extends ReactContextBaseJavaModule {
             @Override
             public void run() {
                 Boolean load = dcClass.dc_LoadDefaultUserInfo();
-                System.out.println("---------------------------------loadDefaultUserInfo" + load);
+                //System.out.println("---------------------------------loadDefaultUserInfo" + load);
                 if (!load) {
                     String lastError = dcClass.dc_GetLastErr();
-                    System.out.println("---------------------------------loadDefaultUserInfo: err");
-                    System.out.println(lastError);
+                    //System.out.println("---------------------------------loadDefaultUserInfo: err");
+                    //System.out.println(lastError);
                     errorCallback.invoke(lastError);
                 } else {
                     successCallback.invoke(true);
@@ -187,12 +187,12 @@ public class DCModule extends ReactContextBaseJavaModule {
             @Override
             public void run() {
                 Boolean bool = dcClass.dc_SetUserDefaultDB(threadid, rk, sk);
-                System.out.println("---------------------------------setUserDefaultDB: " + bool + "...." + threadid
+                //System.out.println("---------------------------------setUserDefaultDB: " + bool + "...." + threadid
                         + ", " + rk + ", " + sk);
                 if (!bool) {
                     String lastError = dcClass.dc_GetLastErr();
-                    System.out.println("---------------------------------setUserDefaultDB: err");
-                    System.out.println(lastError);
+                    //System.out.println("---------------------------------setUserDefaultDB: err");
+                    //System.out.println(lastError);
                     errorCallback.invoke(lastError);
                 } else {
                     successCallback.invoke(threadid);
@@ -210,11 +210,11 @@ public class DCModule extends ReactContextBaseJavaModule {
             @Override
             public void run() {
                 String localWebports = dcClass.dc_GetLocalWebports();
-                System.out.println("---------------------------------getLocalWebports" + localWebports);
+                //System.out.println("---------------------------------getLocalWebports" + localWebports);
                 if (localWebports.equals("")) {
                     String lastError = dcClass.dc_GetLastErr();
-                    System.out.println("---------------------------------localWebports: err");
-                    System.out.println(lastError);
+                    //System.out.println("---------------------------------localWebports: err");
+                    //System.out.println(lastError);
                     errorCallback.invoke(lastError);
                 } else {
                     successCallback.invoke(localWebports);
@@ -234,11 +234,11 @@ public class DCModule extends ReactContextBaseJavaModule {
             public void run() {
                 Boolean bool = dcClass.dc_SetDefaultChainProxy(chainProxyUrl);
                 String apppath = reactContext.getFilesDir().getAbsolutePath();
-                System.out.println("---------------------------------setDefaultChainProxy: " + chainProxyUrl);
+                //System.out.println("---------------------------------setDefaultChainProxy: " + chainProxyUrl);
                 if (!bool) {
                     String lastError = dcClass.dc_GetLastErr();
-                    System.out.println("---------------------------------setDefaultChainProxy: err");
-                    System.out.println(lastError);
+                    //System.out.println("---------------------------------setDefaultChainProxy: err");
+                    //System.out.println(lastError);
                     errorCallback.invoke(lastError);
                 } else {
                     successCallback.invoke(true);
@@ -255,7 +255,7 @@ public class DCModule extends ReactContextBaseJavaModule {
             public void run() {
                 String defaultChainProxy = dcClass.dc_GetDefaultChainProxy();
                 successCallback.invoke(defaultChainProxy);
-                System.out.println("---------------------------------defaultChainProxy: " + defaultChainProxy);
+                //System.out.println("---------------------------------defaultChainProxy: " + defaultChainProxy);
             }
         }).start();
     }
@@ -268,7 +268,7 @@ public class DCModule extends ReactContextBaseJavaModule {
             public void run() {
                 String chainProxys = dcClass.dc_GetChainProxys();
                 successCallback.invoke(chainProxys);
-                System.out.println("---------------------------------getChainProxys: " + chainProxys);
+                //System.out.println("---------------------------------getChainProxys: " + chainProxys);
             }
         }).start();
     }
@@ -281,7 +281,7 @@ public class DCModule extends ReactContextBaseJavaModule {
             public void run() {
                 String onlinePeers = dcClass.dc_GetOnlinePeers();
                 successCallback.invoke(onlinePeers);
-                System.out.println("---------------------------------getOnlinePeers: " + onlinePeers);
+                //System.out.println("---------------------------------getOnlinePeers: " + onlinePeers);
             }
         }).start();
     }
@@ -294,7 +294,7 @@ public class DCModule extends ReactContextBaseJavaModule {
             public void run() {
                 String multiaddrs = dcClass.dc_GetBootPeers();
                 successCallback.invoke(multiaddrs);
-                System.out.println("---------------------------------getBootPeers: " + multiaddrs);
+                //System.out.println("---------------------------------getBootPeers: " + multiaddrs);
             }
         }).start();
     }
@@ -309,11 +309,11 @@ public class DCModule extends ReactContextBaseJavaModule {
             @Override
             public void run() {
                 Boolean bool = dcClass.dc_AddBootAddrs(multiaddr);
-                System.out.println("---------------------------------addBootAddrs: " + bool);
+                //System.out.println("---------------------------------addBootAddrs: " + bool);
                 if (!bool) {
                     String lastError = dcClass.dc_GetLastErr();
-                    System.out.println("---------------------------------addBootAddrs: err");
-                    System.out.println(lastError);
+                    //System.out.println("---------------------------------addBootAddrs: err");
+                    //System.out.println(lastError);
                     errorCallback.invoke(lastError);
                 } else {
                     successCallback.invoke(true);
@@ -345,11 +345,11 @@ public class DCModule extends ReactContextBaseJavaModule {
             @Override
             public void run() {
                 Boolean bool = dcClass.dc_SwitchDcServer(multiaddr);
-                System.out.println("---------------------------------switchDcServer: " + multiaddr + ", " + bool);
+                //System.out.println("---------------------------------switchDcServer: " + multiaddr + ", " + bool);
                 if (!bool) {
                     String lastError = dcClass.dc_GetLastErr();
-                    System.out.println("---------------------------------switchDcServer: err");
-                    System.out.println(lastError);
+                    //System.out.println("---------------------------------switchDcServer: err");
+                    //System.out.println(lastError);
                     errorCallback.invoke(lastError);
                 } else {
                     successCallback.invoke(true);
@@ -366,7 +366,7 @@ public class DCModule extends ReactContextBaseJavaModule {
             @Override
             public void run() {
                 String dcNetInfo = dcClass.dc_GetConnectedDcNetInfo();
-                System.out.println("---------------------------------getConnectedDcNetInfo" + dcNetInfo);
+                //System.out.println("---------------------------------getConnectedDcNetInfo" + dcNetInfo);
                 successCallback.invoke(dcNetInfo);
             }
         }).start();
@@ -381,11 +381,11 @@ public class DCModule extends ReactContextBaseJavaModule {
             @Override
             public void run() {
                 String privateKey = dcClass.dc_GetEd25519AppPrivateKey();
-                System.out.println("---------------------------------getEd25519AppPrivateKey: " + privateKey);
+                //System.out.println("---------------------------------getEd25519AppPrivateKey: " + privateKey);
                 if (privateKey.equals("")) {
                     String lastError = dcClass.dc_GetLastErr();
-                    System.out.println("---------------------------------getEd25519AppPrivateKey: err");
-                    System.out.println(lastError);
+                    //System.out.println("---------------------------------getEd25519AppPrivateKey: err");
+                    //System.out.println(lastError);
                     errorCallback.invoke(lastError);
                 } else {
                     successCallback.invoke(privateKey);
@@ -417,13 +417,13 @@ public class DCModule extends ReactContextBaseJavaModule {
             @Override
             public void run() {
                 Boolean bool = dcClass.dc_ImportEd25519PrivateKey(privateKey);
-                System.out.println("--------------------------------importEd25519PrivateKey");
+                //System.out.println("--------------------------------importEd25519PrivateKey");
                 if (bool) {
                     successCallback.invoke(true);
                 } else {
                     String lastError = dcClass.dc_GetLastErr();
-                    System.out.println("---------------------------------importEd25519PrivateKey: err");
-                    System.out.println(lastError);
+                    //System.out.println("---------------------------------importEd25519PrivateKey: err");
+                    //System.out.println(lastError);
                     errorCallback.invoke(lastError);
                 }
             }
@@ -440,13 +440,13 @@ public class DCModule extends ReactContextBaseJavaModule {
             @Override
             public void run() {
                 Boolean bool = dcClass.dc_ImportMnemonic(mnemonic);
-                System.out.println("--------------------------------importMnemonic");
+                //System.out.println("--------------------------------importMnemonic");
                 if (bool) {
                     successCallback.invoke(true);
                 } else {
                     String lastError = dcClass.dc_GetLastErr();
-                    System.out.println("---------------------------------importMnemonic: err");
-                    System.out.println(lastError);
+                    //System.out.println("---------------------------------importMnemonic: err");
+                    //System.out.println(lastError);
                     errorCallback.invoke(lastError);
                 }
             }
@@ -462,11 +462,11 @@ public class DCModule extends ReactContextBaseJavaModule {
             @Override
             public void run() {
                 String jsonUserInfo = dcClass.dc_GetUserInfo();
-                System.out.println("--------------------------------getUserInfo：" + jsonUserInfo);
+                //System.out.println("--------------------------------getUserInfo：" + jsonUserInfo);
                 if (jsonUserInfo.equals("")) {
                     String lastError = dcClass.dc_GetLastErr();
-                    System.out.println("---------------------------------getUserInfo: err");
-                    System.out.println(lastError);
+                    //System.out.println("---------------------------------getUserInfo: err");
+                    //System.out.println(lastError);
                     errorCallback.invoke(lastError);
                 } else {
                     successCallback.invoke(jsonUserInfo);
@@ -484,11 +484,11 @@ public class DCModule extends ReactContextBaseJavaModule {
             @Override
             public void run() {
                 Boolean bool = dcClass.dc_IfAppAcountExist();
-                System.out.println("--------------------------------ifAppAccountExist success：" + bool);
+                //System.out.println("--------------------------------ifAppAccountExist success：" + bool);
                 if (!bool) {
                     String lastError = dcClass.dc_GetLastErr();
-                    System.out.println("---------------------------------ifAppAccountExist: err");
-                    System.out.println(lastError);
+                    //System.out.println("---------------------------------ifAppAccountExist: err");
+                    //System.out.println(lastError);
                     errorCallback.invoke(lastError);
                 } else {
                     successCallback.invoke(true);
@@ -504,9 +504,9 @@ public class DCModule extends ReactContextBaseJavaModule {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                System.out.println("---------------------------------dc_ReleaseDc: start");
+                //System.out.println("---------------------------------dc_ReleaseDc: start");
                 dcClass.dc_ReleaseDc();
-                System.out.println("---------------------------------dc_ReleaseDc: end");
+                //System.out.println("---------------------------------dc_ReleaseDc: end");
                 successCallback.invoke();
             }
         }).start();
@@ -538,11 +538,11 @@ public class DCModule extends ReactContextBaseJavaModule {
             @Override
             public void run() {
                 String basePrivKey = dcClass.dc_GenerateAppAccount(appId);
-                System.out.println("--------------------------------generateAppAccount success：" + basePrivKey);
+                //System.out.println("--------------------------------generateAppAccount success：" + basePrivKey);
                 if (basePrivKey.equals("")) {
                     String lastError = dcClass.dc_GetLastErr();
-                    System.out.println("---------------------------------generateAppAccount: err");
-                    System.out.println(lastError);
+                    //System.out.println("---------------------------------generateAppAccount: err");
+                    //System.out.println(lastError);
                     errorCallback.invoke(lastError);
                 } else {
                     successCallback.invoke(basePrivKey);
@@ -560,11 +560,11 @@ public class DCModule extends ReactContextBaseJavaModule {
             @Override
             public void run() {
                 String address = dcClass.dc_GetEthAddress();
-                System.out.println("--------------------------------dc_GetEthAddress success：" + address);
+                //System.out.println("--------------------------------dc_GetEthAddress success：" + address);
                 if (address.equals("")) {
                     String lastError = dcClass.dc_GetLastErr();
-                    System.out.println("---------------------------------dc_GetEthAddress: err");
-                    System.out.println(lastError);
+                    //System.out.println("---------------------------------dc_GetEthAddress: err");
+                    //System.out.println(lastError);
                     errorCallback.invoke(lastError);
                 } else {
                     successCallback.invoke(address);
@@ -581,15 +581,15 @@ public class DCModule extends ReactContextBaseJavaModule {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                System.out.println("---------------------------------start dc_RestartLocalWebServer");
+                //System.out.println("---------------------------------start dc_RestartLocalWebServer");
                 Boolean bool = dcClass.dc_RestartLocalWebServer();
-                System.out.println("--------------------------------dc_RestartLocalWebServer success：" + bool);
+                //System.out.println("--------------------------------dc_RestartLocalWebServer success：" + bool);
                 if (bool) {
                     successCallback.invoke(bool);
                 } else {
                     String lastError = dcClass.dc_GetLastErr();
-                    System.out.println("---------------------------------dc_RestartLocalWebServer: err");
-                    System.out.println(lastError);
+                    //System.out.println("---------------------------------dc_RestartLocalWebServer: err");
+                    //System.out.println(lastError);
                     errorCallback.invoke(lastError);
                 }
             }
@@ -604,15 +604,15 @@ public class DCModule extends ReactContextBaseJavaModule {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                System.out.println("---------------------------------start dc_CloseLocalWebServer");
+                //System.out.println("---------------------------------start dc_CloseLocalWebServer");
                 Boolean bool = dcClass.dc_CloseLocalWebServer();
-                System.out.println("--------------------------------dc_CloseLocalWebServer success：" + bool);
+                //System.out.println("--------------------------------dc_CloseLocalWebServer success：" + bool);
                 if (bool) {
                     successCallback.invoke(bool);
                 } else {
                     String lastError = dcClass.dc_GetLastErr();
-                    System.out.println("---------------------------------dc_CloseLocalWebServer: err");
-                    System.out.println(lastError);
+                    //System.out.println("---------------------------------dc_CloseLocalWebServer: err");
+                    //System.out.println(lastError);
                     errorCallback.invoke(lastError);
                 }
             }
@@ -628,15 +628,15 @@ public class DCModule extends ReactContextBaseJavaModule {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                System.out.println("---------------------------------start dc_AccountToPubkey");
+                //System.out.println("---------------------------------start dc_AccountToPubkey");
                 String res = dcClass.dc_AccountToPubkey(account);
-                System.out.println("--------------------------------dc_AccountToPubkey success：" + res);
+                //System.out.println("--------------------------------dc_AccountToPubkey success：" + res);
                 if (res.length() > 0) {
                     successCallback.invoke(res);
                 } else {
                     String lastError = dcClass.dc_GetLastErr();
-                    System.out.println("---------------------------------dc_AccountToPubkey: err");
-                    System.out.println(lastError);
+                    //System.out.println("---------------------------------dc_AccountToPubkey: err");
+                    //System.out.println(lastError);
                     errorCallback.invoke(lastError);
                 }
             }
@@ -652,15 +652,15 @@ public class DCModule extends ReactContextBaseJavaModule {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                System.out.println("---------------------------------start dc_PubkeyToHexAccount");
+                //System.out.println("---------------------------------start dc_PubkeyToHexAccount");
                 String res = dcClass.dc_PubkeyToHexAccount(basePubkey);
-                System.out.println("--------------------------------dc_PubkeyToHexAccount success：" + res);
+                //System.out.println("--------------------------------dc_PubkeyToHexAccount success：" + res);
                 if (res.length() > 0) {
                     successCallback.invoke(res);
                 } else {
                     String lastError = dcClass.dc_GetLastErr();
-                    System.out.println("---------------------------------dc_PubkeyToHexAccount: err");
-                    System.out.println(lastError);
+                    //System.out.println("---------------------------------dc_PubkeyToHexAccount: err");
+                    //System.out.println(lastError);
                     errorCallback.invoke(lastError);
                 }
             }
@@ -675,20 +675,20 @@ public class DCModule extends ReactContextBaseJavaModule {
 
             @Override
             public void receiveMsg(String fromPeerId, byte[] bytes, byte[] bytes1) {
-                System.out.println("---------------------------------receiveMsg");
+                //System.out.println("---------------------------------receiveMsg");
                 try {
                     Net.SendMsgRequest msgRequest = Net.SendMsgRequest.parseFrom(bytes1);
-                    System.out.println("---------------------------------msgRequest");
+                    //System.out.println("---------------------------------msgRequest");
                     ByteString messageId = msgRequest.getMessageId();
-                    System.out.println("---------------------------------messageId");
+                    //System.out.println("---------------------------------messageId");
                     String messageIdStr = new String(messageId.toByteArray());
-                    System.out.println("---------------------------------messageIdStr : " + messageIdStr);
+                    //System.out.println("---------------------------------messageIdStr : " + messageIdStr);
                     ByteString senderPubkey = msgRequest.getSenderPubkey();
-                    System.out.println("---------------------------------senderPubkey");
+                    //System.out.println("---------------------------------senderPubkey");
                     String senderPubkeyStr = new String(senderPubkey.toByteArray());
-                    System.out.println("---------------------------------senderPubkeyStr : " + senderPubkeyStr);
+                    //System.out.println("---------------------------------senderPubkeyStr : " + senderPubkeyStr);
                     String msgStr = new String(bytes);
-                    System.out.println("---------------------------------msgStr : " + msgStr);
+                    //System.out.println("---------------------------------msgStr : " + msgStr);
                     Map<String,Object> map=new HashMap<>();
                     map.put("messageId",messageIdStr);
                     map.put("sender",senderPubkeyStr);
@@ -701,7 +701,7 @@ public class DCModule extends ReactContextBaseJavaModule {
 //                    jo.put("msg",msgStr);
 //                    String jsonStr= jo.toString();
 
-                    System.out.println("---------------------------------jsonStr : " + jsonStr);
+                    //System.out.println("---------------------------------jsonStr : " + jsonStr);
                     reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
                             .emit("receiveP2PMsg", jsonStr);
                 } catch (InvalidProtocolBufferException e) {
@@ -729,7 +729,7 @@ public class DCModule extends ReactContextBaseJavaModule {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                System.out.println("---------------------------------start dc_EnableMessage");
+                //System.out.println("---------------------------------start dc_EnableMessage");
                 Dc_P2pConnectOptions options = new Dc_P2pConnectOptions();
                 Boolean bool = dcClass.dc_EnableMessage(Long.parseLong(model), msgHandler, new If_P2pStreamHandler() {
                     @Override
@@ -747,13 +747,13 @@ public class DCModule extends ReactContextBaseJavaModule {
 
                     }
                 }, options);
-                System.out.println("---------------------------------dc_EnableMessage");
+                //System.out.println("---------------------------------dc_EnableMessage");
                 if (bool) {
                     successCallback.invoke(bool);
                 } else {
                     String lastError = dcClass.dc_GetLastErr();
-                    System.out.println("---------------------------------dc_EnableMessage: err");
-                    System.out.println(lastError);
+                    //System.out.println("---------------------------------dc_EnableMessage: err");
+                    //System.out.println(lastError);
                     errorCallback.invoke(lastError);
                 }
             }
@@ -769,15 +769,15 @@ public class DCModule extends ReactContextBaseJavaModule {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                System.out.println("---------------------------------start dc_EncryptEthPrivKeyToJson");
+                //System.out.println("---------------------------------start dc_EncryptEthPrivKeyToJson");
                 String res = dcClass.dc_EncryptEthPrivKeyToJson(password);
-                System.out.println("--------------------------------dc_EncryptEthPrivKeyToJson success：" + res);
+                //System.out.println("--------------------------------dc_EncryptEthPrivKeyToJson success：" + res);
                 if (res.length() > 0) {
                     successCallback.invoke(res);
                 } else {
                     String lastError = dcClass.dc_GetLastErr();
-                    System.out.println("---------------------------------dc_EncryptEthPrivKeyToJson: err");
-                    System.out.println(lastError);
+                    //System.out.println("---------------------------------dc_EncryptEthPrivKeyToJson: err");
+                    //System.out.println(lastError);
                     errorCallback.invoke(lastError);
                 }
             }
@@ -795,17 +795,17 @@ public class DCModule extends ReactContextBaseJavaModule {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                System.out.println("---------------------------------start dc_RefreshNet");
-                System.out.println(ipAddr);
-                System.out.println(netChangeFlag);
+                //System.out.println("---------------------------------start dc_RefreshNet");
+                //System.out.println(ipAddr);
+                //System.out.println(netChangeFlag);
                 Boolean bool = dcClass.dc_RefreshNet(ipAddr, Boolean.valueOf(netChangeFlag));
-                System.out.println("--------------------------------dc_RefreshNet success：" + bool);
+                //System.out.println("--------------------------------dc_RefreshNet success：" + bool);
                 if (bool) {
                     successCallback.invoke(true);
                 } else {
                     String lastError = dcClass.dc_GetLastErr();
-                    System.out.println("---------------------------------dc_RefreshNet: err");
-                    System.out.println(lastError);
+                    //System.out.println("---------------------------------dc_RefreshNet: err");
+                    //System.out.println(lastError);
                     errorCallback.invoke(lastError);
                 }
             }

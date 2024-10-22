@@ -39,15 +39,15 @@ public class MsgModule extends ReactContextBaseJavaModule {
     new Thread(new Runnable() {
       @Override
       public void run() {
-        System.out.println("---------------------------------start msg_SendMsg");
+        //System.out.println("---------------------------------start msg_SendMsg");
         long res = dcClass.msg_SendMsg(receiver, msg);
-        System.out.println("---------------------------------msg_SendMsg");
+        //System.out.println("---------------------------------msg_SendMsg");
         if (res > -1) {
           successCallback.invoke(Long.toString(res));
         } else {
           String lastError = dcClass.dc_GetLastErr();
-          System.out.println("---------------------------------msg_SendMsg: err");
-          System.out.println(lastError);
+          //System.out.println("---------------------------------msg_SendMsg: err");
+          //System.out.println(lastError);
           errorCallback.invoke(lastError);
         }
       }
@@ -63,15 +63,15 @@ public class MsgModule extends ReactContextBaseJavaModule {
     new Thread(new Runnable() {
       @Override
       public void run() {
-        System.out.println("---------------------------------start msg_GetMsgFromUserBox");
+        //System.out.println("---------------------------------start msg_GetMsgFromUserBox");
         String res = dcClass.msg_GetMsgFromUserBox(Long.parseLong(limit));
-        System.out.println("---------------------------------msg_GetMsgFromUserBox");
+        //System.out.println("---------------------------------msg_GetMsgFromUserBox");
         if (res.length() > 0) {
           successCallback.invoke(res);
         } else {
           String lastError = dcClass.dc_GetLastErr();
-          System.out.println("---------------------------------msg_GetMsgFromUserBox: err");
-          System.out.println(lastError);
+          //System.out.println("---------------------------------msg_GetMsgFromUserBox: err");
+          //System.out.println(lastError);
           if(lastError.length() > 0) {
             errorCallback.invoke(lastError);
           } else {

@@ -35,7 +35,7 @@ public class AccountModule extends ReactContextBaseJavaModule {
             @Override
             public void run() {
                 dcClass.account_Logout();
-                System.out.println("---------------------------------loginOut");
+                //System.out.println("---------------------------------loginOut");
             }
         }).start();
     }
@@ -52,9 +52,9 @@ public class AccountModule extends ReactContextBaseJavaModule {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                System.out.println("--------------------------------bindNFTAccount：" + account + "，" + password);
+                //System.out.println("--------------------------------bindNFTAccount：" + account + "，" + password);
                 long sdkStatus = dcClass.account_BindNFTAccount(account, password, code);
-                System.out.println("--------------------------------bindNFTAccount：" + sdkStatus);
+                //System.out.println("--------------------------------bindNFTAccount：" + sdkStatus);
                 successCallback.invoke(Long.toString(sdkStatus));
             }
         }).start();
@@ -72,9 +72,9 @@ public class AccountModule extends ReactContextBaseJavaModule {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                System.out.println("--------------------------------account_BindNFTAccountWithAppBcAccount" + account + "，" + password);
+                //System.out.println("--------------------------------account_BindNFTAccountWithAppBcAccount" + account + "，" + password);
                 long sdkStatus = dcClass.account_BindNFTAccountWithAppBcAccount(account, password, code);
-                System.out.println("--------------------------------account_BindNFTAccountWithAppBcAccount" + sdkStatus);
+                //System.out.println("--------------------------------account_BindNFTAccountWithAppBcAccount" + sdkStatus);
                 successCallback.invoke(Long.toString(sdkStatus));
             }
         }).start();
@@ -88,7 +88,7 @@ public class AccountModule extends ReactContextBaseJavaModule {
             @Override
             public void run() {
                 Boolean bindFlag = dcClass.ifNftAccountBindSuccess(account);
-                System.out.println("--------------------------------ifNftAccountBindSuccess：" + bindFlag);
+                //System.out.println("--------------------------------ifNftAccountBindSuccess：" + bindFlag);
                 successCallback.invoke(bindFlag);
             }
         }).start();
@@ -102,7 +102,7 @@ public class AccountModule extends ReactContextBaseJavaModule {
             @Override
             public void run() {
                 Boolean bindFlag = dcClass.ifAppNftAccountBindSuccess(account);
-                System.out.println("--------------------------------ifAppNftAccountBindSuccess" + bindFlag);
+                //System.out.println("--------------------------------ifAppNftAccountBindSuccess" + bindFlag);
                 successCallback.invoke(bindFlag);
             }
         }).start();
@@ -116,7 +116,7 @@ public class AccountModule extends ReactContextBaseJavaModule {
             @Override
             public void run() {
                 String nftAccount = dcClass.account_GetNFTAccount();
-                System.out.println("--------------------------------account_GetNFTAccount" + nftAccount);
+                //System.out.println("--------------------------------account_GetNFTAccount" + nftAccount);
                 successCallback.invoke(nftAccount);
             }
         }).start();
@@ -133,13 +133,13 @@ public class AccountModule extends ReactContextBaseJavaModule {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                System.out.println("--------------------------------nftAccountLogin：" + account + "， " + password);
+                //System.out.println("--------------------------------nftAccountLogin：" + account + "， " + password);
                 long login = dcClass.account_NFTAccountLogin(account, password, code);
-                System.out.println("---------------------------------nftAccountLogin:  " + login);
+                //System.out.println("---------------------------------nftAccountLogin:  " + login);
                 if (login != 0) {
                     String lastError = dcClass.dc_GetLastErr();
-                    System.out.println("---------------------------------nftAccountLogin: err " + login);
-                    System.out.println(lastError);
+                    //System.out.println("---------------------------------nftAccountLogin: err " + login);
+                    //System.out.println(lastError);
                     if (lastError.equals("")) {
                         successCallback.invoke(Long.toString(login));
                     } else {
@@ -164,7 +164,7 @@ public class AccountModule extends ReactContextBaseJavaModule {
             public void run() {
                 long sdkStatus = dcClass.account_NFTAccountPasswordModify(account, password, code);
                 successCallback.invoke(Long.toString(sdkStatus));
-                System.out.println("--------------------------------nftAcountPasswordModify：" + sdkStatus);
+                //System.out.println("--------------------------------nftAcountPasswordModify：" + sdkStatus);
             };
         }).start();
     }
@@ -181,7 +181,7 @@ public class AccountModule extends ReactContextBaseJavaModule {
             public void run() {
                 long sdkStatus = dcClass.account_AppNFTAccountPasswordModify(account, password, code);
                 successCallback.invoke(Long.toString(sdkStatus));
-                System.out.println("--------------------------------Account_AppNFTAccountPasswordModify" + sdkStatus);
+                //System.out.println("--------------------------------Account_AppNFTAccountPasswordModify" + sdkStatus);
             };
         }).start();
     }
@@ -196,7 +196,7 @@ public class AccountModule extends ReactContextBaseJavaModule {
             public void run() {
                 long transfer = dcClass.account_NFTAccountTransfer(tpubkey);
                 successCallback.invoke(Long.toString(transfer));
-                System.out.println("--------------------------------nftAcountTransfer：" + transfer);
+                //System.out.println("--------------------------------nftAcountTransfer：" + transfer);
             };
         };
         Thread mt1 = new Thread(mt, "nftAcountTransfer");

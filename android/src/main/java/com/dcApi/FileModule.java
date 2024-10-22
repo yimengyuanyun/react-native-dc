@@ -61,11 +61,11 @@ public class FileModule extends ReactContextBaseJavaModule {
             @Override
             public void run() {
                 String fileInfo = dcClass.file_GetFileInfo(fid);
-                System.out.println("---------------------------------GetFileInfo: " + fileInfo);
+                //System.out.println("---------------------------------GetFileInfo: " + fileInfo);
                 if (fileInfo.equals("")) {
                     String lastError = dcClass.dc_GetLastErr();
-                    System.out.println("---------------------------------GetFileInfo: err");
-                    System.out.println(lastError);
+                    //System.out.println("---------------------------------GetFileInfo: err");
+                    //System.out.println(lastError);
                     errorCallback.invoke(lastError);
                 } else {
                     successCallback.invoke(fileInfo);
@@ -94,7 +94,7 @@ public class FileModule extends ReactContextBaseJavaModule {
                     @Override
                     public void updateTransmitSize(long status, long size) {
                         // FileDealStatus 0:成功 1:转化为ipfs对象操作中 2:文件传输中 3:传输失败 4:异常
-                        System.out.println("---------------------------------addFile inform: " + status + "; " + size);
+                        //System.out.println("---------------------------------addFile inform: " + status + "; " + size);
                         // listenCallback.invoke();
                         if (reactContext == null) {
                             return;
@@ -105,11 +105,11 @@ public class FileModule extends ReactContextBaseJavaModule {
                                 .emit("addFile", jsonStr);
                     }
                 });
-                System.out.println("---------------------------------addFile: " + cid);
+                //System.out.println("---------------------------------addFile: " + cid);
                 if (cid.equals("")) {
                     String lastError = dcClass.dc_GetLastErr();
-                    System.out.println("---------------------------------addFile: err");
-                    System.out.println(lastError);
+                    //System.out.println("---------------------------------addFile: err");
+                    //System.out.println(lastError);
                     errorCallback.invoke(lastError);
                 } else {
                     successCallback.invoke(cid);
@@ -137,7 +137,7 @@ public class FileModule extends ReactContextBaseJavaModule {
                     @Override
                     public void updateTransmitSize(long status, long size) {
                         // FileDealStatus 0:成功 1:转化为ipfs对象操作中 2:文件传输中 3:传输失败 4:异常
-                        System.out.println("---------------------------------getFile inform: " + status + "; " + size);
+                        //System.out.println("---------------------------------getFile inform: " + status + "; " + size);
                         // listenCallback.invoke(Long.toString(status), Long.toString(size));
                         if (reactContext == null) {
                             return;
@@ -148,11 +148,11 @@ public class FileModule extends ReactContextBaseJavaModule {
                                 .emit("getFile", jsonStr);
                     }
                 });
-                System.out.println("---------------------------------getFile: " + bool);
+                //System.out.println("---------------------------------getFile: " + bool);
                 if (!bool) {
                     String lastError = dcClass.dc_GetLastErr();
-                    System.out.println("---------------------------------getFile: err");
-                    System.out.println(lastError);
+                    //System.out.println("---------------------------------getFile: err");
+                    //System.out.println(lastError);
                     errorCallback.invoke(lastError);
                 } else {
                     successCallback.invoke();
@@ -171,11 +171,11 @@ public class FileModule extends ReactContextBaseJavaModule {
             @Override
             public void run() {
                 Boolean bool = dcClass.file_DeleteFile(fid);
-                System.out.println("---------------------------------deleteFile: " + bool + "...." + fid);
+                //System.out.println("---------------------------------deleteFile: " + bool + "...." + fid);
                 if (!bool) {
                     String lastError = dcClass.dc_GetLastErr();
-                    System.out.println("---------------------------------deleteFile: err");
-                    System.out.println(lastError);
+                    //System.out.println("---------------------------------deleteFile: err");
+                    //System.out.println(lastError);
                     errorCallback.invoke(lastError);
                 } else {
                     successCallback.invoke();
@@ -193,11 +193,11 @@ public class FileModule extends ReactContextBaseJavaModule {
             @Override
             public void run() {
                 Boolean bool = dcClass.file_CleanFile();
-                System.out.println("---------------------------------cleanFile: " + bool);
+                //System.out.println("---------------------------------cleanFile: " + bool);
                 if (!bool) {
                     String lastError = dcClass.dc_GetLastErr();
-                    System.out.println("---------------------------------cleanFile: err");
-                    System.out.println(lastError);
+                    //System.out.println("---------------------------------cleanFile: err");
+                    //System.out.println(lastError);
                     errorCallback.invoke(lastError);
                 } else {
                     successCallback.invoke(true);
@@ -220,7 +220,7 @@ public class FileModule extends ReactContextBaseJavaModule {
                     @Override
                     public void updateTransmitSize(long status, long size) {
                         // FileDealStatus 0:成功 1:转化为ipfs对象操作中 2:文件传输中 3:传输失败 4:异常
-                        System.out.println("---------------------------------file_AddFileBackUpToPeer inform: " + status + "; " + size);
+                        //System.out.println("---------------------------------file_AddFileBackUpToPeer inform: " + status + "; " + size);
                         // listenCallback.invoke();
                         if (reactContext == null) {
                             return;
@@ -231,11 +231,11 @@ public class FileModule extends ReactContextBaseJavaModule {
                                 .emit("addFileBackUpToPeer", jsonStr);
                     }
                 });
-                System.out.println("---------------------------------file_AddFileBackUpToPeer: " + bool);
+                //System.out.println("---------------------------------file_AddFileBackUpToPeer: " + bool);
                 if (!bool) {
                     String lastError = dcClass.dc_GetLastErr();
-                    System.out.println("---------------------------------file_AddFileBackUpToPeer: err");
-                    System.out.println(lastError);
+                    //System.out.println("---------------------------------file_AddFileBackUpToPeer: err");
+                    //System.out.println(lastError);
                     errorCallback.invoke(lastError);
                 } else {
                     successCallback.invoke();

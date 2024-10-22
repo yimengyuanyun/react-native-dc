@@ -37,15 +37,15 @@ public class CommentModule extends ReactContextBaseJavaModule {
     new Thread(new Runnable() {
       @Override
       public void run() {
-        System.out.println("---------------------------------start comment_AddUserOffChainSpace");
+        //System.out.println("---------------------------------start comment_AddUserOffChainSpace");
         Boolean bool = dcClass.comment_AddUserOffChainSpace();
-        System.out.println("---------------------------------comment_AddUserOffChainSpace");
+        //System.out.println("---------------------------------comment_AddUserOffChainSpace");
         if (bool) {
           successCallback.invoke(bool);
         } else {
           String lastError = dcClass.dc_GetLastErr();
-          System.out.println("---------------------------------comment_AddUserOffChainSpace: err");
-          System.out.println(lastError);
+          //System.out.println("---------------------------------comment_AddUserOffChainSpace: err");
+          //System.out.println(lastError);
           errorCallback.invoke(lastError);
         }
       }
@@ -63,15 +63,15 @@ public class CommentModule extends ReactContextBaseJavaModule {
     new Thread(new Runnable() {
       @Override
       public void run() {
-        System.out.println("---------------------------------start comment_AddThemeObj");
+        //System.out.println("---------------------------------start comment_AddThemeObj");
         long res = dcClass.comment_AddThemeObj(Theme, Long.parseLong(openFlag), Long.parseLong(commentSpace));
-        System.out.println("---------------------------------comment_AddThemeObj");
+        //System.out.println("---------------------------------comment_AddThemeObj");
         if (res > -1) {
           successCallback.invoke(Long.toString(res));
         } else {
           String lastError = dcClass.dc_GetLastErr();
-          System.out.println("---------------------------------comment_AddUserOffChainSpace: err");
-          System.out.println(lastError);
+          //System.out.println("---------------------------------comment_AddUserOffChainSpace: err");
+          //System.out.println(lastError);
           errorCallback.invoke(lastError);
         }
       }
@@ -88,15 +88,15 @@ public class CommentModule extends ReactContextBaseJavaModule {
     new Thread(new Runnable() {
       @Override
       public void run() {
-        System.out.println("---------------------------------start comment_AddThemeSpace");
+        //System.out.println("---------------------------------start comment_AddThemeSpace");
         long res = dcClass.comment_AddThemeSpace(Theme, Long.parseLong(commentSpace));
-        System.out.println("---------------------------------comment_AddThemeSpace");
+        //System.out.println("---------------------------------comment_AddThemeSpace");
         if (res > -1) {
           successCallback.invoke(Long.toString(res));
         } else {
           String lastError = dcClass.dc_GetLastErr();
-          System.out.println("---------------------------------comment_AddThemeSpace: err");
-          System.out.println(lastError);
+          //System.out.println("---------------------------------comment_AddThemeSpace: err");
+          //System.out.println(lastError);
           errorCallback.invoke(lastError);
         }
       }
@@ -112,15 +112,15 @@ public class CommentModule extends ReactContextBaseJavaModule {
     new Thread(new Runnable() {
       @Override
       public void run() {
-        System.out.println("---------------------------------start comment_DisableTheme");
+        //System.out.println("---------------------------------start comment_DisableTheme");
         long res = dcClass.comment_DisableTheme(Theme);
-        System.out.println("---------------------------------comment_DisableTheme");
+        //System.out.println("---------------------------------comment_DisableTheme");
         if (res > -1) {
           successCallback.invoke(Long.toString(res));
         } else {
           String lastError = dcClass.dc_GetLastErr();
-          System.out.println("---------------------------------comment_DisableTheme: err");
-          System.out.println(lastError);
+          //System.out.println("---------------------------------comment_DisableTheme: err");
+          //System.out.println(lastError);
           errorCallback.invoke(lastError);
         }
       }
@@ -138,15 +138,15 @@ public class CommentModule extends ReactContextBaseJavaModule {
     new Thread(new Runnable() {
       @Override
       public void run() {
-        System.out.println("---------------------------------start comment_ReportMaliciousComment");
+        //System.out.println("---------------------------------start comment_ReportMaliciousComment");
         long res = dcClass.comment_ReportMaliciousComment(Theme, Long.parseLong(commentBlockheight), commentCid);
-        System.out.println("---------------------------------comment_ReportMaliciousComment");
+        //System.out.println("---------------------------------comment_ReportMaliciousComment");
         if (res > -1) {
           successCallback.invoke(Long.toString(res));
         } else {
           String lastError = dcClass.dc_GetLastErr();
-          System.out.println("---------------------------------comment_ReportMaliciousComment: err");
-          System.out.println(lastError);
+          //System.out.println("---------------------------------comment_ReportMaliciousComment: err");
+          //System.out.println(lastError);
           errorCallback.invoke(lastError);
         }
       }
@@ -164,15 +164,15 @@ public class CommentModule extends ReactContextBaseJavaModule {
     new Thread(new Runnable() {
       @Override
       public void run() {
-        System.out.println("---------------------------------start comment_SetObjCommentPublic");
+        //System.out.println("---------------------------------start comment_SetObjCommentPublic");
         long res = dcClass.comment_SetObjCommentPublic(Theme, Long.parseLong(commentBlockheight), commentCid);
-        System.out.println("---------------------------------comment_SetObjCommentPublic");
+        //System.out.println("---------------------------------comment_SetObjCommentPublic");
         if (res > -1) {
           successCallback.invoke(Long.toString(res));
         } else {
           String lastError = dcClass.dc_GetLastErr();
-          System.out.println("---------------------------------comment_SetObjCommentPublic: err");
-          System.out.println(lastError);
+          //System.out.println("---------------------------------comment_SetObjCommentPublic: err");
+          //System.out.println(lastError);
           errorCallback.invoke(lastError);
         }
       }
@@ -193,16 +193,16 @@ public class CommentModule extends ReactContextBaseJavaModule {
     new Thread(new Runnable() {
       @Override
       public void run() {
-        System.out.println("---------------------------------start comment_PublishCommentToTheme ");
+        //System.out.println("---------------------------------start comment_PublishCommentToTheme ");
         String res = dcClass.comment_PublishCommentToTheme (Theme, objAuthor, Long.parseLong(commentType), comment, referCommentkey,
           Long.parseLong(openFlag));
-        System.out.println("---------------------------------comment_PublishCommentToTheme ");
+        //System.out.println("---------------------------------comment_PublishCommentToTheme ");
         if (res.length() >0) {
           successCallback.invoke(res);
         } else {
           String lastError = dcClass.dc_GetLastErr();
-          System.out.println("---------------------------------comment_PublishCommentToTheme : err");
-          System.out.println(lastError);
+          //System.out.println("---------------------------------comment_PublishCommentToTheme : err");
+          //System.out.println(lastError);
           errorCallback.invoke(lastError);
         }
       }
@@ -220,15 +220,15 @@ public class CommentModule extends ReactContextBaseJavaModule {
     new Thread(new Runnable() {
       @Override
       public void run() {
-        System.out.println("---------------------------------start comment_DeleteSelfComment");
+        //System.out.println("---------------------------------start comment_DeleteSelfComment");
         Boolean bool = dcClass.comment_DeleteSelfComment(Theme, objAuthor, commentKey);
-        System.out.println("---------------------------------comment_DeleteSelfComment");
+        //System.out.println("---------------------------------comment_DeleteSelfComment");
         if (bool) {
           successCallback.invoke(bool);
         } else {
           String lastError = dcClass.dc_GetLastErr();
-          System.out.println("---------------------------------comment_DeleteSelfComment: err");
-          System.out.println(lastError);
+          //System.out.println("---------------------------------comment_DeleteSelfComment: err");
+          //System.out.println(lastError);
           errorCallback.invoke(lastError);
         }
       }
@@ -250,16 +250,16 @@ public class CommentModule extends ReactContextBaseJavaModule {
     new Thread(new Runnable() {
       @Override
       public void run() {
-        System.out.println("---------------------------------start comment_GetCommentableObj");
+        //System.out.println("---------------------------------start comment_GetCommentableObj");
         String res = dcClass.comment_GetCommentableObj(objAuthor, Long.parseLong(startBlockheight), Long.parseLong(direction), Long.parseLong(offset),
             seekKey, Long.parseLong(limit));
-        System.out.println("---------------------------------comment_GetCommentableObj");
+        //System.out.println("---------------------------------comment_GetCommentableObj");
         if (res.length() > 0) {
           successCallback.invoke(res);
         } else {
           String lastError = dcClass.dc_GetLastErr();
-          System.out.println("---------------------------------comment_GetCommentableObj: err");
-          System.out.println(lastError);
+          //System.out.println("---------------------------------comment_GetCommentableObj: err");
+          //System.out.println(lastError);
           if(lastError.length() > 0) {
             errorCallback.invoke(lastError);
           } else {
@@ -286,16 +286,16 @@ public class CommentModule extends ReactContextBaseJavaModule {
     new Thread(new Runnable() {
       @Override
       public void run() {
-        System.out.println("---------------------------------start comment_GetThemeComments");
+        //System.out.println("---------------------------------start comment_GetThemeComments");
         String res = dcClass.comment_GetThemeComments(Theme, objAuthor, Long.parseLong(startBlockheight),  Long.parseLong(direction), Long.parseLong(offset),
             seekKey, Long.parseLong(limit));
-        System.out.println("---------------------------------comment_GetThemeComments");
+        //System.out.println("---------------------------------comment_GetThemeComments");
         if (res.length() > 0) {
           successCallback.invoke(res);
         } else {
           String lastError = dcClass.dc_GetLastErr();
-          System.out.println("---------------------------------comment_GetThemeComments: err");
-          System.out.println(lastError);
+          //System.out.println("---------------------------------comment_GetThemeComments: err");
+          //System.out.println(lastError);
           if(lastError.length() > 0) {
             errorCallback.invoke(lastError);
           } else {
@@ -323,16 +323,16 @@ public class CommentModule extends ReactContextBaseJavaModule {
     new Thread(new Runnable() {
       @Override
       public void run() {
-        System.out.println("---------------------------------start comment_GetUserComments");
+        //System.out.println("---------------------------------start comment_GetUserComments");
         String res = dcClass.comment_GetUserComments(userPubkey, Long.parseLong(startBlockheight),  Long.parseLong(direction), Long.parseLong(offset),
             seekKey, Long.parseLong(limit));
-        System.out.println("---------------------------------comment_GetUserComments");
+        //System.out.println("---------------------------------comment_GetUserComments");
         if (res.length() > 0) {
           successCallback.invoke(res);
         } else {
           String lastError = dcClass.dc_GetLastErr();
-          System.out.println("---------------------------------comment_GetUserComments: err");
-          System.out.println(lastError);
+          //System.out.println("---------------------------------comment_GetUserComments: err");
+          //System.out.println(lastError);
           if(lastError.length() > 0) {
             errorCallback.invoke(lastError);
           } else {
@@ -353,15 +353,15 @@ public class CommentModule extends ReactContextBaseJavaModule {
     new Thread(new Runnable() {
       @Override
       public void run() {
-        System.out.println("---------------------------------start comment_SetCacheKey");
+        //System.out.println("---------------------------------start comment_SetCacheKey");
         String res = dcClass.comment_SetCacheKey(value, Long.parseLong(expire));
-        System.out.println("---------------------------------comment_SetCacheKey");
+        //System.out.println("---------------------------------comment_SetCacheKey");
         if (res.length() > 0) {
           successCallback.invoke(res);
         } else {
           String lastError = dcClass.dc_GetLastErr();
-          System.out.println("---------------------------------comment_SetCacheKey: err");
-          System.out.println(lastError);
+          //System.out.println("---------------------------------comment_SetCacheKey: err");
+          //System.out.println(lastError);
           errorCallback.invoke(lastError);
         }
       }
@@ -377,15 +377,15 @@ public class CommentModule extends ReactContextBaseJavaModule {
     new Thread(new Runnable() {
       @Override
       public void run() {
-        System.out.println("---------------------------------start comment_GetCacheValue");
+        //System.out.println("---------------------------------start comment_GetCacheValue");
         String res = dcClass.comment_GetCacheValue(key);
-        System.out.println("---------------------------------comment_GetCacheValue");
+        //System.out.println("---------------------------------comment_GetCacheValue");
         if (res.length() > 0) {
           successCallback.invoke(res);
         } else {
           String lastError = dcClass.dc_GetLastErr();
-          System.out.println("---------------------------------comment_GetCacheValue: err");
-          System.out.println(lastError);
+          //System.out.println("---------------------------------comment_GetCacheValue: err");
+          //System.out.println(lastError);
           if(lastError.length() > 0) {
             errorCallback.invoke(lastError);
           } else {
