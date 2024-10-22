@@ -36,7 +36,7 @@ RCT_EXPORT_MODULE()
 
 // 获取密钥
 RCT_EXPORT_METHOD(dc_GenerateSymmetricKey:(RCTResponseSenderBlock)successCallback) {
-    RCTLogInfo(@"dc_GenerateSymmetricKey");
+    //RCTLogInfo(@"dc_GenerateSymmetricKey");
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         NSString *key = [dcapi dc_GenerateSymmetricKey];
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -47,7 +47,7 @@ RCT_EXPORT_METHOD(dc_GenerateSymmetricKey:(RCTResponseSenderBlock)successCallbac
 
 //密钥加密
 RCT_EXPORT_METHOD(dc_EncryptData:(NSString*)data pin:(NSString*)pin successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
-    RCTLogInfo(@"dc_EncryptData");
+    //RCTLogInfo(@"dc_EncryptData");
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         NSData *byteData = [data dataUsingEncoding:NSUTF8StringEncoding];
         NSData *bytePin = [pin dataUsingEncoding:NSUTF8StringEncoding];
@@ -69,7 +69,7 @@ RCT_EXPORT_METHOD(dc_EncryptData:(NSString*)data pin:(NSString*)pin successCallb
 
 //密钥解密
 RCT_EXPORT_METHOD(dc_DecryptData:(NSString*)baseData pin:(NSString*)pin successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
-    RCTLogInfo(@"dc_DecryptData");
+    //RCTLogInfo(@"dc_DecryptData");
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         NSData *byteData = [[NSData alloc]initWithBase64EncodedString:baseData options:NSDataBase64DecodingIgnoreUnknownCharacters];
         NSData *bytePin = [pin dataUsingEncoding:NSUTF8StringEncoding];
@@ -92,26 +92,26 @@ RCT_EXPORT_METHOD(dc_DecryptData:(NSString*)baseData pin:(NSString*)pin successC
 RCT_EXPORT_METHOD(dc_ApiInit:(NSString*)DCAPPName dir:(NSString*)dir region:(NSString*)region  key:(NSString*)key successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback){
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         NSString *apppath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).firstObject;
-        RCTLogInfo(@"apppath: %d", apppath);
+        //RCTLogInfo(@"apppath: %d", apppath);
         NSString *userpath = [apppath stringByAppendingPathComponent:dir];
-        RCTLogInfo(@"userpath: %d", userpath);
+        //RCTLogInfo(@"userpath: %d", userpath);
         NSError *error = nil;
         BOOL success = YES;
         if (![[NSFileManager defaultManager] fileExistsAtPath:userpath]){
           //withIntermediateDirectories  YES代表覆盖原文件，NO表示不覆盖
           success = [[NSFileManager defaultManager] createDirectoryAtPath:userpath withIntermediateDirectories:(YES) attributes:nil error:&error];
         }
-        RCTLogInfo(@"是否创建成功: %d，%@", success, error);
+        //RCTLogInfo(@"是否创建成功: %d，%@", success, error);
         if(success){
             NSString *webport = [dcapi dc_ApiInit:DCAPPName region:region encryptkey:key apppath:apppath userdir:dir webflag:true debugflag:true];
-            RCTLogInfo(@"返回webport: %@", webport);
+            //RCTLogInfo(@"返回webport: %@", webport);
             if(webport.length > 0){
                 dispatch_async(dispatch_get_main_queue(), ^{
                     successCallback(@[webport]);
                 });
             }else{
                 NSString *lastError = [dcapi dc_GetLastErr];
-                RCTLogInfo(@"返回lastError: %@", lastError);
+                //RCTLogInfo(@"返回lastError: %@", lastError);
                 dispatch_async(dispatch_get_main_queue(), ^{
                     errorCallback(@[lastError]);
                 });
@@ -126,7 +126,7 @@ RCT_EXPORT_METHOD(dc_ApiInit:(NSString*)DCAPPName dir:(NSString*)dir region:(NSS
 
 //加载默认用户信息
 RCT_EXPORT_METHOD(dc_LoadDefaultUserInfo:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
-    RCTLogInfo(@"dc_LoadDefaultUserInfo");
+    //RCTLogInfo(@"dc_LoadDefaultUserInfo");
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         BOOL load = [dcapi dc_LoadDefaultUserInfo];
         if(load){
@@ -144,7 +144,7 @@ RCT_EXPORT_METHOD(dc_LoadDefaultUserInfo:(RCTResponseSenderBlock)successCallback
 
 //设置用户默认数据库上链
 RCT_EXPORT_METHOD(dc_SetUserDefaultDB:(NSString*)threadid rk:(NSString*)rk sk:(NSString*)sk successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
-    RCTLogInfo(@"dc_SetUserDefaultDB");
+    //RCTLogInfo(@"dc_SetUserDefaultDB");
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         BOOL load = [dcapi dc_SetUserDefaultDB:threadid b32Rk:rk b32Sk:sk];
         if(load){
@@ -162,7 +162,7 @@ RCT_EXPORT_METHOD(dc_SetUserDefaultDB:(NSString*)threadid rk:(NSString*)rk sk:(N
 
 //获取当前接入的webport
 RCT_EXPORT_METHOD(dc_GetLocalWebports:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
-    RCTLogInfo(@"dc_SetUserDefaultDB");
+    //RCTLogInfo(@"dc_SetUserDefaultDB");
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         NSString *localWebports = [dcapi dc_GetLocalWebports];
         if(localWebports.length > 0){
@@ -180,7 +180,7 @@ RCT_EXPORT_METHOD(dc_GetLocalWebports:(RCTResponseSenderBlock)successCallback er
 
 //设置默认区块链代理节点
 RCT_EXPORT_METHOD(dc_SetDefaultChainProxy:(NSString*)chainProxyUrl  successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
-    RCTLogInfo(@"dc_SetDefaultChainProxy");
+    //RCTLogInfo(@"dc_SetDefaultChainProxy");
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         BOOL load = [dcapi dc_SetDefaultChainProxy:chainProxyUrl];
         if(load){
@@ -198,7 +198,7 @@ RCT_EXPORT_METHOD(dc_SetDefaultChainProxy:(NSString*)chainProxyUrl  successCallb
 
 //获取默认区块链代理节点
 RCT_EXPORT_METHOD(dc_GetDefaultChainProxy:(RCTResponseSenderBlock)successCallback) {
-    RCTLogInfo(@"dc_GetDefaultChainProxy");
+    //RCTLogInfo(@"dc_GetDefaultChainProxy");
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         NSString *defaultChainProxy = [dcapi dc_GetDefaultChainProxy];
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -209,7 +209,7 @@ RCT_EXPORT_METHOD(dc_GetDefaultChainProxy:(RCTResponseSenderBlock)successCallbac
 
 //获取区块链代理节点列表
 RCT_EXPORT_METHOD(dc_GetChainProxys:(RCTResponseSenderBlock)successCallback) {
-    RCTLogInfo(@"dc_GetChainProxys");
+    //RCTLogInfo(@"dc_GetChainProxys");
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         NSString *chainProxys = [dcapi dc_GetChainProxys];
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -220,7 +220,7 @@ RCT_EXPORT_METHOD(dc_GetChainProxys:(RCTResponseSenderBlock)successCallback) {
 
 //获取在线的存储节点接入地址列表
 RCT_EXPORT_METHOD(dc_GetOnlinePeers:(RCTResponseSenderBlock)successCallback) {
-    RCTLogInfo(@"dc_GetOnlinePeers");
+    //RCTLogInfo(@"dc_GetOnlinePeers");
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         NSString *onlinePeers = [dcapi dc_GetOnlinePeers];
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -231,7 +231,7 @@ RCT_EXPORT_METHOD(dc_GetOnlinePeers:(RCTResponseSenderBlock)successCallback) {
 
 //获取当前存储节点接入地址列表
 RCT_EXPORT_METHOD(dc_GetBootPeers:(RCTResponseSenderBlock)successCallback) {
-    RCTLogInfo(@"dc_GetBootPeers");
+    //RCTLogInfo(@"dc_GetBootPeers");
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         NSString *multiaddrs = [dcapi dc_GetBootPeers];
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -242,7 +242,7 @@ RCT_EXPORT_METHOD(dc_GetBootPeers:(RCTResponseSenderBlock)successCallback) {
 
 //增加接入存储节点记录
 RCT_EXPORT_METHOD(dc_AddBootAddrs:(NSString*)multiaddr  successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
-    RCTLogInfo(@"dc_AddBootAddrs");
+    //RCTLogInfo(@"dc_AddBootAddrs");
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         BOOL load = [dcapi dc_AddBootAddrs:multiaddr];
         if(load){
@@ -260,7 +260,7 @@ RCT_EXPORT_METHOD(dc_AddBootAddrs:(NSString*)multiaddr  successCallback:(RCTResp
 
 //删除指定的接入存储节点记录
 RCT_EXPORT_METHOD(dc_DeleteBootAddrs:(NSString*)multiaddr successCallback:(RCTResponseSenderBlock)successCallback) {
-    RCTLogInfo(@"dc_DeleteBootAddrs");
+    //RCTLogInfo(@"dc_DeleteBootAddrs");
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         BOOL success = [dcapi dc_DeleteBootAddrs:multiaddr];
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -271,7 +271,7 @@ RCT_EXPORT_METHOD(dc_DeleteBootAddrs:(NSString*)multiaddr successCallback:(RCTRe
 
 //切换接入的DC服务节点
 RCT_EXPORT_METHOD(dc_SwitchDcServer:(NSString*)multiaddr  successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
-    RCTLogInfo(@"dc_SwitchDcServer");
+    //RCTLogInfo(@"dc_SwitchDcServer");
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         BOOL load = [dcapi dc_SwitchDcServer:multiaddr];
         if(load){
@@ -289,7 +289,7 @@ RCT_EXPORT_METHOD(dc_SwitchDcServer:(NSString*)multiaddr  successCallback:(RCTRe
 
 //获取当前接入的DC服务节点
 RCT_EXPORT_METHOD(dc_GetConnectedDcNetInfo:(RCTResponseSenderBlock)successCallback) {
-    RCTLogInfo(@"dc_GetConnectedDcNetInfo");
+    //RCTLogInfo(@"dc_GetConnectedDcNetInfo");
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         NSString *dcNetInfo = [dcapi dc_GetConnectedDcNetInfo];
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -300,7 +300,7 @@ RCT_EXPORT_METHOD(dc_GetConnectedDcNetInfo:(RCTResponseSenderBlock)successCallba
 
 //获取当前生效的私钥（返回16进制字符串）
 RCT_EXPORT_METHOD(dc_GetEd25519AppPrivateKey:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
-    RCTLogInfo(@"dc_GetEd25519AppPrivateKey");
+    //RCTLogInfo(@"dc_GetEd25519AppPrivateKey");
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         NSString *privateKey = [dcapi dc_GetEd25519AppPrivateKey];
         if(privateKey.length > 0){
@@ -318,7 +318,7 @@ RCT_EXPORT_METHOD(dc_GetEd25519AppPrivateKey:(RCTResponseSenderBlock)successCall
 
 //获取当前生效key关联的助记词
 RCT_EXPORT_METHOD(dc_GetMnemonic:(RCTResponseSenderBlock)successCallback) {
-    RCTLogInfo(@"dc_GetMnemonic");
+    //RCTLogInfo(@"dc_GetMnemonic");
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         NSString *mnemonic = [dcapi dc_GetMnemonic];
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -329,7 +329,7 @@ RCT_EXPORT_METHOD(dc_GetMnemonic:(RCTResponseSenderBlock)successCallback) {
 
 //导入私钥，privatekey 16进制字符串
 RCT_EXPORT_METHOD(dc_ImportEd25519PrivateKey:(NSString*)privateKey successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
-    RCTLogInfo(@"dc_ImportEd25519PrivateKey");
+    //RCTLogInfo(@"dc_ImportEd25519PrivateKey");
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         BOOL success = [dcapi dc_ImportEd25519PrivateKey:privateKey];
         if(success){
@@ -347,7 +347,7 @@ RCT_EXPORT_METHOD(dc_ImportEd25519PrivateKey:(NSString*)privateKey successCallba
 
 //导入助记词
 RCT_EXPORT_METHOD(dc_ImportMnemonic:(NSString*)mnemonic successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
-    RCTLogInfo(@"dc_ImportMnemonic");
+    //RCTLogInfo(@"dc_ImportMnemonic");
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         BOOL success = [dcapi dc_ImportMnemonic:mnemonic];
         if(success){
@@ -365,7 +365,7 @@ RCT_EXPORT_METHOD(dc_ImportMnemonic:(NSString*)mnemonic successCallback:(RCTResp
 
 //获取用户信息
 RCT_EXPORT_METHOD(dc_GetUserInfo:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
-    RCTLogInfo(@"dc_GetUserInfo");
+    //RCTLogInfo(@"dc_GetUserInfo");
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         NSString *jsonUserInfo = [dcapi dc_GetUserInfo];
         if(jsonUserInfo.length > 0){
@@ -383,7 +383,7 @@ RCT_EXPORT_METHOD(dc_GetUserInfo:(RCTResponseSenderBlock)successCallback errorCa
 
 //应用账号是否已经创建
 RCT_EXPORT_METHOD(dc_IfAppAcountExist:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
-    RCTLogInfo(@"dc_IfAppAcountExist");
+    //RCTLogInfo(@"dc_IfAppAcountExist");
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         BOOL success = [dcapi dc_IfAppAcountExist];
         if(success){
@@ -402,7 +402,7 @@ RCT_EXPORT_METHOD(dc_IfAppAcountExist:(RCTResponseSenderBlock)successCallback er
 //释放资源
 RCT_EXPORT_METHOD(dc_ReleaseDc:(RCTResponseSenderBlock)successCallback) {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        RCTLogInfo(@"dc_ReleaseDc");
+        //RCTLogInfo(@"dc_ReleaseDc");
         [dcapi dc_ReleaseDc];
         dispatch_async(dispatch_get_main_queue(), ^{
             successCallback(@[]);
@@ -412,7 +412,7 @@ RCT_EXPORT_METHOD(dc_ReleaseDc:(RCTResponseSenderBlock)successCallback) {
 
 //删除文件夹
 RCT_EXPORT_METHOD(deleteDir:(NSString*)dir successCallback:(RCTResponseSenderBlock)successCallback) {
-    RCTLogInfo(@"deleteDir");
+    //RCTLogInfo(@"deleteDir");
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         NSString *apppath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).firstObject;
         NSString *userpath = [apppath stringByAppendingPathComponent:dir];
@@ -429,7 +429,7 @@ RCT_EXPORT_METHOD(deleteDir:(NSString*)dir successCallback:(RCTResponseSenderBlo
 
 //添加/生成应用账号
 RCT_EXPORT_METHOD(dc_GenerateAppAccount:(NSString*)appId successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
-    RCTLogInfo(@"dc_GenerateAppAccount");
+    //RCTLogInfo(@"dc_GenerateAppAccount");
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         NSString *basePrivKey = [dcapi dc_GenerateAppAccount:appId];
         if(basePrivKey.length > 0){
@@ -447,7 +447,7 @@ RCT_EXPORT_METHOD(dc_GenerateAppAccount:(NSString*)appId successCallback:(RCTRes
 
 //account转address
 RCT_EXPORT_METHOD(dc_GetEthAddress:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
-    RCTLogInfo(@"dc_GetEthAddress");
+    //RCTLogInfo(@"dc_GetEthAddress");
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         NSString *address = [dcapi dc_GetEthAddress];
         if(address.length > 0){
@@ -465,7 +465,7 @@ RCT_EXPORT_METHOD(dc_GetEthAddress:(RCTResponseSenderBlock)successCallback error
 
 // 重启本地文件网络访问服务
 RCT_EXPORT_METHOD(dc_RestartLocalWebServer:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
-   RCTLogInfo(@"dc_RestartLocalWebServer");
+   //RCTLogInfo(@"dc_RestartLocalWebServer");
    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
        BOOL success = [dcapi dc_RestartLocalWebServer];
        if(success){
@@ -483,7 +483,7 @@ RCT_EXPORT_METHOD(dc_RestartLocalWebServer:(RCTResponseSenderBlock)successCallba
 
 //关闭本地文件网络访问服务
 RCT_EXPORT_METHOD(dc_CloseLocalWebServer:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
-   RCTLogInfo(@"dc_CloseLocalWebServer");
+   //RCTLogInfo(@"dc_CloseLocalWebServer");
    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
        BOOL success = [dcapi dc_CloseLocalWebServer];
        if(success){
@@ -501,7 +501,7 @@ RCT_EXPORT_METHOD(dc_CloseLocalWebServer:(RCTResponseSenderBlock)successCallback
 
 //16进制区块链账号转换为base32公钥
 RCT_EXPORT_METHOD(dc_AccountToPubkey:(NSString*)account successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
-   RCTLogInfo(@"dc_AccountToPubkey");
+   //RCTLogInfo(@"dc_AccountToPubkey");
    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
        NSString *basePubkey = [dcapi dc_AccountToPubkey:account];
        if(basePubkey.length > 0){
@@ -519,7 +519,7 @@ RCT_EXPORT_METHOD(dc_AccountToPubkey:(NSString*)account successCallback:(RCTResp
 
 //base32公钥转换为16进制Account
 RCT_EXPORT_METHOD(dc_PubkeyToHexAccount:(NSString*)basePubkey successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
-   RCTLogInfo(@"dc_PubkeyToHexAccount");
+   //RCTLogInfo(@"dc_PubkeyToHexAccount");
    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
        NSString *account = [dcapi dc_PubkeyToHexAccount:basePubkey];
        if(account.length > 0){
@@ -540,11 +540,11 @@ RCT_EXPORT_METHOD(dc_EnableMessage:(NSString*)model
             successCallback:(RCTResponseSenderBlock)successCallback
             errorCallback:(RCTResponseSenderBlock)errorCallback) {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        RCTLogInfo(@"dc_EnableMessage");
+        //RCTLogInfo(@"dc_EnableMessage");
         P2PHandlerModule *p2pHandler = [P2PHandlerModule alloc] ;
         BOOL success = [dcapi dc_EnableMessage:[model longLongValue] msgHandler:p2pHandler streamHandler:NULL connectOptions:NULL];
         if(success){
-            RCTLogInfo(@"success");
+            //RCTLogInfo(@"success");
             dispatch_async(dispatch_get_main_queue(), ^{
                 successCallback(@[@true]);
             });
@@ -559,7 +559,7 @@ RCT_EXPORT_METHOD(dc_EnableMessage:(NSString*)model
 
 //导出json格式的钱包私钥信息,返回json格式的钱包私钥信息,如果主账号存在，返回主账号的私钥信息，password 导出密码
 RCT_EXPORT_METHOD(dc_EncryptEthPrivKeyToJson:(NSString*)password successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
-   RCTLogInfo(@"dc_EncryptEthPrivKeyToJson");
+   //RCTLogInfo(@"dc_EncryptEthPrivKeyToJson");
    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
        NSString *info = [dcapi dc_EncryptEthPrivKeyToJson:password];
        if(info.length > 0){
@@ -578,7 +578,7 @@ RCT_EXPORT_METHOD(dc_EncryptEthPrivKeyToJson:(NSString*)password successCallback
 //刷新网络
 //ipAddr表示wifi局域网ip地址,如果是移动网络,传空就好,netChangeFlag 在启动时传入false,网络切换时传true
 RCT_EXPORT_METHOD(dc_RefreshNet:(NSString*)ipAddr netChangeFlag:(NSString*)netChangeFlag successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
-   RCTLogInfo(@"dc_RefreshNet");
+   //RCTLogInfo(@"dc_RefreshNet");
    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
        BOOL success = [dcapi dc_RefreshNet:ipAddr netChangeFlag:[netChangeFlag isEqualToString:@"true"]];
        if(success){

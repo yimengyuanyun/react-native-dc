@@ -31,7 +31,7 @@ RCT_EXPORT_MODULE()
 // 配置或增加用户自身的评论空间
 RCT_EXPORT_METHOD(comment_AddUserOffChainSpace:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        RCTLogInfo(@"comment_AddUserOffChainSpace");
+        //RCTLogInfo(@"comment_AddUserOffChainSpace");
         BOOL success = [dcapi comment_AddUserOffChainSpace];
         if(success){
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -50,7 +50,7 @@ RCT_EXPORT_METHOD(comment_AddUserOffChainSpace:(RCTResponseSenderBlock)successCa
 RCT_EXPORT_METHOD(comment_AddThemeObj:(NSString*)Theme openFlag:(NSString*)openFlag commentSpace:(NSString*)commentSpace
         successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        RCTLogInfo(@"comment_AddThemeObj");
+        //RCTLogInfo(@"comment_AddThemeObj");
         long res = [dcapi comment_AddThemeObj:Theme openFlag:[openFlag longLongValue] commentSpace:[commentSpace longLongValue]];
         if(res > -1){
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -69,7 +69,7 @@ RCT_EXPORT_METHOD(comment_AddThemeObj:(NSString*)Theme openFlag:(NSString*)openF
 RCT_EXPORT_METHOD(comment_AddThemeSpace:(NSString*)Theme commentSpace:(NSString*)commentSpace
             successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        RCTLogInfo(@"comment_AddThemeSpace");
+        //RCTLogInfo(@"comment_AddThemeSpace");
         long res = [dcapi comment_AddThemeSpace:Theme addSpace:[commentSpace longLongValue]];
         if(res > -1){
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -87,7 +87,7 @@ RCT_EXPORT_METHOD(comment_AddThemeSpace:(NSString*)Theme commentSpace:(NSString*
 // 关闭指定对象的评论功能（会删除所有针对该对象的评论），返回res-0:成功 1:评论空间没有配置 2:评论空间不足 3:评论数据同步中
 RCT_EXPORT_METHOD(comment_DisableTheme:(NSString*)Theme successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        RCTLogInfo(@"comment_DisableTheme");
+        //RCTLogInfo(@"comment_DisableTheme");
         long res = [dcapi comment_DisableTheme:Theme];
         dispatch_async(dispatch_get_main_queue(), ^{
             successCallback(@[@(res)]);
@@ -99,7 +99,7 @@ RCT_EXPORT_METHOD(comment_DisableTheme:(NSString*)Theme successCallback:(RCTResp
 RCT_EXPORT_METHOD(comment_ReportMaliciousComment:(NSString*)Theme commentBlockheight:(NSString*)commentBlockheight commentCid:(NSString*)commentCid
             successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        RCTLogInfo(@"comment_ReportMaliciousComment");
+        //RCTLogInfo(@"comment_ReportMaliciousComment");
         long res = [dcapi comment_ReportMaliciousComment:Theme commentBlockheight:[commentBlockheight longLongValue] commentCid:commentCid];
         if(res > -1){
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -118,7 +118,7 @@ RCT_EXPORT_METHOD(comment_ReportMaliciousComment:(NSString*)Theme commentBlockhe
 RCT_EXPORT_METHOD(comment_SetObjCommentPublic:(NSString*)Theme commentBlockheight:(NSString*)commentBlockheight commentCid:(NSString*)commentCid
             successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        RCTLogInfo(@"comment_SetObjCommentPublic");
+        //RCTLogInfo(@"comment_SetObjCommentPublic");
         long res = [dcapi comment_SetObjCommentPublic:Theme commentBlockheight:[commentBlockheight longLongValue] commentCid:commentCid];
         if(res > -1){
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -137,7 +137,7 @@ RCT_EXPORT_METHOD(comment_SetObjCommentPublic:(NSString*)Theme commentBlockheigh
 RCT_EXPORT_METHOD(comment_PublishCommentToTheme:(NSString*)Theme objAuthor:(NSString*)objAuthor commentType:(NSString*)commentType comment:(NSString*)comment referCommentkey:(NSString*)referCommentkey openFlag:(NSString*)openFlag
             successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        RCTLogInfo(@"comment_PublishCommentToTheme ");
+        //RCTLogInfo(@"comment_PublishCommentToTheme ");
         NSString *res = [dcapi comment_PublishCommentToTheme:Theme objAuthor:objAuthor commentType:[commentType longLongValue] comment:comment referCommentkey:referCommentkey openFlag:[openFlag longLongValue]];
         if(res.length > 0){
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -156,7 +156,7 @@ RCT_EXPORT_METHOD(comment_PublishCommentToTheme:(NSString*)Theme objAuthor:(NSSt
 RCT_EXPORT_METHOD(comment_DeleteSelfComment:(NSString*)Theme objAuthor:(NSString*)objAuthor commentKey:(NSString*)commentKey 
             successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        RCTLogInfo(@"comment_DeleteSelfComment");
+        //RCTLogInfo(@"comment_DeleteSelfComment");
         BOOL success = [dcapi comment_DeleteSelfComment:Theme objAuthor:objAuthor commentKey:commentKey];
         if(success){
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -177,7 +177,7 @@ RCT_EXPORT_METHOD(comment_GetCommentableObj:(NSString*)objAuthor startBlockheigh
         offset:(NSString*)offset seekKey:(NSString*)seekKey limit:(NSString*)limit
         successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        RCTLogInfo(@"comment_GetCommentableObj");
+        //RCTLogInfo(@"comment_GetCommentableObj");
         NSString *res = [dcapi comment_GetCommentableObj:objAuthor startBlockheight:[startBlockheight longLongValue] direction:[direction longLongValue]
           offset:[offset longLongValue] seekKey:seekKey limit:[limit longLongValue]];
         if(res.length > 0){
@@ -199,7 +199,7 @@ RCT_EXPORT_METHOD(comment_GetThemeComments:Theme objAuthor:(NSString*)objAuthor 
         offset:(NSString*)offset seekKey:(NSString*)seekKey limit:(NSString*)limit
         successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        RCTLogInfo(@"comment_GetThemeComments");
+        //RCTLogInfo(@"comment_GetThemeComments");
         NSString *res = [dcapi comment_GetThemeComments:Theme objAuthor:objAuthor startBlockheight:[startBlockheight longLongValue] direction:[direction longLongValue] offset:[offset longLongValue] seekKey:seekKey limit:[limit longLongValue]];
         if(res.length > 0){
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -221,7 +221,7 @@ RCT_EXPORT_METHOD(comment_GetUserComments:userPubkey startBlockheight:(NSString*
                   offset:(NSString*)offset seekKey:(NSString*)seekKey limit:(NSString*)limit
                   successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        RCTLogInfo(@"comment_GetUserComments");
+        //RCTLogInfo(@"comment_GetUserComments");
         NSString *res = [dcapi comment_GetUserComments:userPubkey startBlockheight:[startBlockheight longLongValue] direction:[direction longLongValue]
           offset:[offset longLongValue] seekKey:seekKey limit:[limit longLongValue]];
         if(res.length > 0){
@@ -241,7 +241,7 @@ RCT_EXPORT_METHOD(comment_GetUserComments:userPubkey startBlockheight:(NSString*
 RCT_EXPORT_METHOD(comment_SetCacheKey:value expire:(NSString*)expire
         successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        RCTLogInfo(@"comment_SetCacheKey");
+        //RCTLogInfo(@"comment_SetCacheKey");
         NSString *res = [dcapi comment_SetCacheKey:value expire:[expire longLongValue]];
         if(res.length > 0){
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -260,7 +260,7 @@ RCT_EXPORT_METHOD(comment_SetCacheKey:value expire:(NSString*)expire
 RCT_EXPORT_METHOD(comment_GetCacheValue:key 
         successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        RCTLogInfo(@"comment_GetCacheValue");
+        //RCTLogInfo(@"comment_GetCacheValue");
         NSString *res = [dcapi comment_GetCacheValue:key];
         if(res.length > 0){
             dispatch_async(dispatch_get_main_queue(), ^{

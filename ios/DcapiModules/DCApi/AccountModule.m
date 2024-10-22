@@ -34,7 +34,7 @@ RCT_EXPORT_MODULE()
 //退出登录
 RCT_EXPORT_METHOD(account_Logout) {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        RCTLogInfo(@"account_Logout");
+        //RCTLogInfo(@"account_Logout");
         [dcapi account_Logout];
     });
 }
@@ -43,7 +43,7 @@ RCT_EXPORT_METHOD(account_Logout) {
 // 99:其他异常
 // 4:还没有建立到存储节点的连接 5:加密数据过程出错 6:区块链相关错误 7:签名错误 8:用户有效期已过
 RCT_EXPORT_METHOD(account_BindNFTAccount:(NSString*)account password:(NSString*)password seccode:(NSString*)seccode  successCallback:(RCTResponseSenderBlock)successCallback) {
-    RCTLogInfo(@"account_BindNFTAccount");
+    //RCTLogInfo(@"account_BindNFTAccount");
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         long sdkStatus = [dcapi account_BindNFTAccount:account password:password seccode:seccode];
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -56,7 +56,7 @@ RCT_EXPORT_METHOD(account_BindNFTAccount:(NSString*)account password:(NSString*)
 // 99:其他异常
 // 4:还没有建立到存储节点的连接 5:加密数据过程出错 6:区块链相关错误 7:签名错误 8:用户有效期已过
 RCT_EXPORT_METHOD(account_BindNFTAccountWithAppBcAccount:(NSString*)account password:(NSString*)password  seccode:(NSString*)seccode  successCallback:(RCTResponseSenderBlock)successCallback) {
-    RCTLogInfo(@"account_BindNFTAccountWithAppBcAccount");
+    //RCTLogInfo(@"account_BindNFTAccountWithAppBcAccount");
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         long sdkStatus = [dcapi account_BindNFTAccountWithAppBcAccount:account password:password seccode:seccode];
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -67,7 +67,7 @@ RCT_EXPORT_METHOD(account_BindNFTAccountWithAppBcAccount:(NSString*)account pass
 
 //账号是否与用户公钥绑定成功
 RCT_EXPORT_METHOD(account_IfNftAccountBindSuccess:(NSString*)account  successCallback:(RCTResponseSenderBlock)successCallback) {
-    RCTLogInfo(@"account_IfNftAccountBindSuccess");
+    //RCTLogInfo(@"account_IfNftAccountBindSuccess");
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         BOOL bindFlag = [dcapi ifNftAccountBindSuccess:account];
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -78,7 +78,7 @@ RCT_EXPORT_METHOD(account_IfNftAccountBindSuccess:(NSString*)account  successCal
 
 //应用账号是否与用户公钥绑定成功
 RCT_EXPORT_METHOD(account_IfAppNftAccountBindSuccess:(NSString*)account  successCallback:(RCTResponseSenderBlock)successCallback) {
-    RCTLogInfo(@"account_IfAppNftAccountBindSuccess");
+    //RCTLogInfo(@"account_IfAppNftAccountBindSuccess");
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         BOOL bindFlag = [dcapi ifAppNftAccountBindSuccess:account];
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -89,7 +89,7 @@ RCT_EXPORT_METHOD(account_IfAppNftAccountBindSuccess:(NSString*)account  success
 
 //获取当前账号的nft账号
 RCT_EXPORT_METHOD(account_GetNFTAccount:(RCTResponseSenderBlock)successCallback) {
-    RCTLogInfo(@"account_GetNFTAccount");
+    //RCTLogInfo(@"account_GetNFTAccount");
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         NSString *nftAccount = [dcapi account_GetNFTAccount];
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -100,7 +100,7 @@ RCT_EXPORT_METHOD(account_GetNFTAccount:(RCTResponseSenderBlock)successCallback)
 
 //NFT账号登录
 RCT_EXPORT_METHOD(account_NFTAccountLogin:(NSString*)account password:(NSString*)password seccode:(NSString*)seccode  successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
-    RCTLogInfo(@"account_NFTAccountLogin");
+    //RCTLogInfo(@"account_NFTAccountLogin");
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         long login = [dcapi account_NFTAccountLogin:account password:password seccode:seccode];
         if(login == 0){
@@ -122,7 +122,7 @@ RCT_EXPORT_METHOD(account_NFTAccountLogin:(NSString*)account password:(NSString*
 
 //NFT账号密码修改
 RCT_EXPORT_METHOD(account_NFTAccountPasswordModify:(NSString*)account password:(NSString*)password  seccode:(NSString*)seccode  successCallback:(RCTResponseSenderBlock)successCallback) {
-    RCTLogInfo(@"account_NFTAccountPasswordModify");
+    //RCTLogInfo(@"account_NFTAccountPasswordModify");
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         long sdkStatus = [dcapi account_NFTAccountPasswordModify:account password:password seccode:seccode];
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -133,7 +133,7 @@ RCT_EXPORT_METHOD(account_NFTAccountPasswordModify:(NSString*)account password:(
 
 //子账号NFT账号密码修改
 RCT_EXPORT_METHOD(account_AppNFTAccountPasswordModify:(NSString*)account password:(NSString*)password  seccode:(NSString*)seccode  successCallback:(RCTResponseSenderBlock)successCallback) {
-    RCTLogInfo(@"account_AppNFTAccountPasswordModify");
+    //RCTLogInfo(@"account_AppNFTAccountPasswordModify");
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         long sdkStatus = [dcapi account_AppNFTAccountPasswordModify:account password:password seccode:seccode];
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -144,7 +144,7 @@ RCT_EXPORT_METHOD(account_AppNFTAccountPasswordModify:(NSString*)account passwor
 
 //NFT账号转让
 RCT_EXPORT_METHOD(account_NFTAccountTransfer:(NSString*)tpubkey   successCallback:(RCTResponseSenderBlock)successCallback) {
-    RCTLogInfo(@"account_NFTAccountTransfer");
+    //RCTLogInfo(@"account_NFTAccountTransfer");
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         long transfer = [dcapi account_NFTAccountTransfer:tpubkey];
         dispatch_async(dispatch_get_main_queue(), ^{

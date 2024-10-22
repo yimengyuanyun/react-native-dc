@@ -49,7 +49,7 @@ RCT_EXPORT_MODULE()
 // 添加文件
 //添加文件AddParams 应该包含是否加密选项，以及密钥
 RCT_EXPORT_METHOD(file_AddFile:(NSString*)readPath enkey:(NSString*)enkey successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
-    RCTLogInfo(@"file_AddFile");
+    //RCTLogInfo(@"file_AddFile");
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         NSString *str = [NSString stringWithFormat:@"%@_%@", readPath, enkey];
         NSString *md5Str = [self md5:str];
@@ -72,7 +72,7 @@ RCT_EXPORT_METHOD(file_AddFile:(NSString*)readPath enkey:(NSString*)enkey succes
 // GetFile returns a reader to a file as identified by its root CID. The file
 // must have been added as a UnixFS DAG (default for IPFS).
 RCT_EXPORT_METHOD(file_GetFile:(NSString*)fid savePath:(NSString*)savePath dkey:(NSString*)dkey successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
-    RCTLogInfo(@"file_GetFile");
+    //RCTLogInfo(@"file_GetFile");
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         FileModuleFile *getfile = [[FileModuleFile alloc] initWithInfo:@"getFile" url:fid md5Str:@""];
         BOOL success = [dcapi file_GetFile:fid savePath:savePath dkey:dkey fileTransmit:getfile];
@@ -91,7 +91,7 @@ RCT_EXPORT_METHOD(file_GetFile:(NSString*)fid savePath:(NSString*)savePath dkey:
 
 // 清理文件缓存文件
 RCT_EXPORT_METHOD(file_CleanFile:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
-    RCTLogInfo(@"file_CleanFile");
+    //RCTLogInfo(@"file_CleanFile");
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         BOOL success = [dcapi file_CleanFile];
         if(success > 0){
@@ -108,7 +108,7 @@ RCT_EXPORT_METHOD(file_CleanFile:(RCTResponseSenderBlock)successCallback errorCa
 }
 // 获取文件信息
 RCT_EXPORT_METHOD(file_GetFileInfo:(NSString*)fid successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
-    RCTLogInfo(@"file_GetFileInfo");
+    //RCTLogInfo(@"file_GetFileInfo");
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         NSString *fileInfo = [dcapi file_GetFileInfo:fid];
         if(fileInfo.length > 0){
@@ -126,7 +126,7 @@ RCT_EXPORT_METHOD(file_GetFileInfo:(NSString*)fid successCallback:(RCTResponseSe
 
 // 删除文件
 RCT_EXPORT_METHOD(file_DeleteFile:(NSString*)fid successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
-    RCTLogInfo(@"file_DeleteFile");
+    //RCTLogInfo(@"file_DeleteFile");
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         BOOL success = [dcapi file_DeleteFile:fid];
         if(success){
@@ -145,7 +145,7 @@ RCT_EXPORT_METHOD(file_DeleteFile:(NSString*)fid successCallback:(RCTResponseSen
 // 将指定的文件添加到当前连接的存储节点上,一个文件最多在网络中备份10份 cid 文件的cid 该cid对应的文件,必须是当前用户已经存储在dc网络的文件
 // 返回值：是否添加成功
 RCT_EXPORT_METHOD(file_AddFileBackUpToPeer:(NSString*)cid successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
-    RCTLogInfo(@"file_AddFileBackUpToPeer");
+    //RCTLogInfo(@"file_AddFileBackUpToPeer");
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         FileModuleFile *addFileBackUpToPeer = [[FileModuleFile alloc] initWithInfo:@"addFileBackUpToPeer" url:cid md5Str:@""];
         BOOL success = [dcapi file_AddFileBackUpToPeer:cid fileTransmit:addFileBackUpToPeer];
