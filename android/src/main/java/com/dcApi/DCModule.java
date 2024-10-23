@@ -188,7 +188,7 @@ public class DCModule extends ReactContextBaseJavaModule {
             public void run() {
                 Boolean bool = dcClass.dc_SetUserDefaultDB(threadid, rk, sk);
                 //System.out.println("---------------------------------setUserDefaultDB: " + bool + "...." + threadid
-                        + ", " + rk + ", " + sk);
+                        // + ", " + rk + ", " + sk);
                 if (!bool) {
                     String lastError = dcClass.dc_GetLastErr();
                     //System.out.println("---------------------------------setUserDefaultDB: err");
