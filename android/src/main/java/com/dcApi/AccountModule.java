@@ -68,12 +68,13 @@ public class AccountModule extends ReactContextBaseJavaModule {
             String account,
             String password,
             String code,
+            String vaccount,
             Callback successCallback) {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 //System.out.println("--------------------------------account_BindNFTAccountWithAppBcAccount" + account + "，" + password);
-                long sdkStatus = dcClass.account_BindNFTAccountWithAppBcAccount(account, password, code);
+                long sdkStatus = dcClass.account_BindNFTAccountWithAppBcAccount(account, password, code, vaccount);
                 //System.out.println("--------------------------------account_BindNFTAccountWithAppBcAccount" + sdkStatus);
                 successCallback.invoke(Long.toString(sdkStatus));
             }

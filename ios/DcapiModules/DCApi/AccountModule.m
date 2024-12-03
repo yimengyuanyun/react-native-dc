@@ -55,10 +55,10 @@ RCT_EXPORT_METHOD(account_BindNFTAccount:(NSString*)account password:(NSString*)
 // 将私钥绑定NFT账号(NFT账号+密码) //0:绑定成功 1:用户已绑定其他nft账号 2:nft账号已经被其他用户绑定 3:区块链账号不存在
 // 99:其他异常
 // 4:还没有建立到存储节点的连接 5:加密数据过程出错 6:区块链相关错误 7:签名错误 8:用户有效期已过
-RCT_EXPORT_METHOD(account_BindNFTAccountWithAppBcAccount:(NSString*)account password:(NSString*)password  seccode:(NSString*)seccode  successCallback:(RCTResponseSenderBlock)successCallback) {
+RCT_EXPORT_METHOD(account_BindNFTAccountWithAppBcAccount:(NSString*)account password:(NSString*)password  seccode:(NSString*)seccode vaccount:(NSString*)vaccount  successCallback:(RCTResponseSenderBlock)successCallback) {
     //RCTLogInfo(@"account_BindNFTAccountWithAppBcAccount");
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        long sdkStatus = [dcapi account_BindNFTAccountWithAppBcAccount:account password:password seccode:seccode];
+        long sdkStatus = [dcapi account_BindNFTAccountWithAppBcAccount:account password:password seccode:seccode vaccount:vaccount];
         dispatch_async(dispatch_get_main_queue(), ^{
             successCallback(@[@(sdkStatus)]);
         });
