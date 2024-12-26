@@ -588,6 +588,33 @@ public class DBModule extends ReactContextBaseJavaModule {
 //         Thread mt1 = new Thread(mt, "hasInstance");
 //         mt1.start();
 //     }
+
+    // 重建指定表的指定字段的索引
+    @ReactMethod
+    public void rebuildIndex(
+            String threadId,
+            String collectionName, // 表名
+            String field, // 字段
+            boolean uniqueFlag, // 重建的是否为unique
+            Callback successCallback,
+            Callback errorCallback){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                System.out.println("---------------------------------db_RebuildIndex: start" );
+                Boolean bool = dcClass.db_RebuildIndex(threadId, collectionName, field, uniqueFlag);
+                System.out.println("---------------------------------db_RebuildIndex: " + bool);
+                if(bool){
+                    successCallback.invoke();
+                }else {
+                    String lastError = dcClass.dc_GetLastErr();
+                    //System.out.println("---------------------------------newCollection: err");
+                    //System.out.println(lastError);
+                    errorCallback.invoke(lastError);
+                }
+            }
+        }).start();
+    }
 }
 
 

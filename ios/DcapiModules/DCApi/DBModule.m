@@ -299,6 +299,23 @@ RCT_EXPORT_METHOD(updateCollection:(NSString*)threadid jsonConfig:(NSString*)jso
     });
 }
 
+// 重建指定表的指定字段的索引
+RCT_EXPORT_METHOD(rebuildIndex:(NSString*)threadId collectionName:(NSString*)collectionName field:(NSString*)field uniqueFlag:(BOOL)uniqueFlag successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
+    //RCTLogInfo(@"rebuildIndex");
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        BOOL success = [dcapi db_RebuildIndex:threadId collectionName:collectionName field:field uniqueFlag:uniqueFlag];
+        if(success){
+            dispatch_async(dispatch_get_main_queue(), ^{
+                successCallback(@[]);
+            });
+        }else {
+            NSString *lastError = [dcapi dc_GetLastErr];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                errorCallback(@[lastError]);
+            });
+        }
+    });
+}
 #pragma mark - 向react-natvie 传递消息
 - (NSArray<NSString *> *)supportedEvents
 {
