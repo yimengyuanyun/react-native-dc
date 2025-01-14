@@ -97,10 +97,28 @@ RCT_EXPORT_METHOD(bc_GetStoragePrices:(RCTResponseSenderBlock)successCallback er
 }
 
 // 订阅存储
-RCT_EXPORT_METHOD(bc_SubscribeStorage:(int)pricetype successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
+RCT_EXPORT_METHOD(bc_SubscribeStorage:(int)packageId successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
     //RCTLogInfo(@"bc_SubscribeStorage");
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        BOOL success = [dcapi bc_SubscribeStorage:pricetype];
+        BOOL success = [dcapi bc_SubscribeStorage:packageId];
+        if(success){
+            dispatch_async(dispatch_get_main_queue(), ^{
+                successCallback(@[@true]);
+            });
+        }else {
+            NSString *lastError = [dcapi dc_GetLastErr];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                errorCallback(@[lastError]);
+            });
+        }
+    });
+}
+
+// 为他人订阅存储
+RCT_EXPORT_METHOD(bc_SubscribeStorageForNFTAccount:(int)packageId nftAccount:(NSString*)nftAccount successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
+    //RCTLogInfo(@"bc_SubscribeStorageForNFTAccount");
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        BOOL success = [dcapi bc_SubscribeStorageForNFTAccount:packageId nftAccount:nftAccount];
         if(success){
             dispatch_async(dispatch_get_main_queue(), ^{
                 successCallback(@[@true]);

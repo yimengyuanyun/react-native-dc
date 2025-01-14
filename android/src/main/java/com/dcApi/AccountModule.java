@@ -203,4 +203,26 @@ public class AccountModule extends ReactContextBaseJavaModule {
         Thread mt1 = new Thread(mt, "nftAcountTransfer");
         mt1.start();
     }
+    // 获取他人用户信息
+    @ReactMethod
+    public void account_GetUserInfoWithNFTAccount(
+            String nftAccount,
+            Callback successCallback,
+            Callback errorCallback) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String jsonUserInfo = dcClass.account_GetUserInfoWithNFTAccount(nftAccount);
+                //System.out.println("--------------------------------account_GetUserInfoWithNFTAccount" + jsonUserInfo);
+                if (jsonUserInfo.equals("")) {
+                    String lastError = dcClass.dc_GetLastErr();
+                    //System.out.println("---------------------------------account_GetUserInfoWithNFTAccount: err");
+                    //System.out.println(lastError);
+                    errorCallback.invoke(lastError);
+                } else {
+                    successCallback.invoke(jsonUserInfo);
+                }
+            }
+        }).start();
+    }
 }

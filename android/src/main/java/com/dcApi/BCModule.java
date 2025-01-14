@@ -117,17 +117,41 @@ public class BCModule extends ReactContextBaseJavaModule {
     // 订阅存储
     @ReactMethod
     public void bc_SubscribeStorage (
-            int pricetype,
+            int packageId,
             Callback successCallback,
             Callback errorCallback) {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                Boolean bool = dcClass.bc_SubscribeStorage(pricetype);
-                //System.out.println("--------------------------------subscribeStorage success：" + pricetype);
+                Boolean bool = dcClass.bc_SubscribeStorage(packageId);
+                //System.out.println("--------------------------------subscribeStorage success：" + packageId);
                 if (!bool) {
                     String lastError = dcClass.dc_GetLastErr();
                     //System.out.println("---------------------------------subscribeStorage: err");
+                    //System.out.println(lastError);
+                    errorCallback.invoke(lastError);
+                } else {
+                    successCallback.invoke();
+                }
+            }
+        }).start();
+    }
+
+    // 为他人订阅存储
+    @ReactMethod
+    public void bc_SubscribeStorageForNFTAccount (
+            int packageId,
+            String nftAccount,
+            Callback successCallback,
+            Callback errorCallback) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Boolean bool = dcClass.bc_SubscribeStorageForNFTAccount(packageId, nftAccount);
+                //System.out.println("--------------------------------bc_SubscribeStorageForNFTAccount success：" + packageId);
+                if (!bool) {
+                    String lastError = dcClass.dc_GetLastErr();
+                    //System.out.println("---------------------------------bc_SubscribeStorageForNFTAccount: err");
                     //System.out.println(lastError);
                     errorCallback.invoke(lastError);
                 } else {

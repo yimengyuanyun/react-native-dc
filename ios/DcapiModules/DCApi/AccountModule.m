@@ -153,6 +153,25 @@ RCT_EXPORT_METHOD(account_NFTAccountTransfer:(NSString*)tpubkey   successCallbac
     });
 }
 
+//获取他人用户信息
+RCT_EXPORT_METHOD(account_GetUserInfoWithNFTAccount:nftAccount  successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
+    //RCTLogInfo(@"account_GetUserInfoWithNFTAccount");
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        NSString *jsonUserInfo = [dcapi account_GetUserInfoWithNFTAccount:nftAccount];
+        if(jsonUserInfo.length > 0){
+            dispatch_async(dispatch_get_main_queue(), ^{
+                successCallback(@[jsonUserInfo]);
+            });
+        }else {
+            NSString *lastError = [dcapi dc_GetLastErr];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                errorCallback(@[lastError]);
+            });
+        }
+    });
+}
+
+
 #pragma mark - 向react-natvie 传递消息
 - (NSArray<NSString *> *)supportedEvents
 {
