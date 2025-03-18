@@ -626,8 +626,8 @@ public class DBModule extends ReactContextBaseJavaModule {
             @Override
             public void run() {
                 System.out.println("---------------------------------Db_GetDBRecordsCount: start" );
-                long count = dcClass.Db_GetDBRecordsCount(threadId);
-                System.out.println("---------------------------------Db_GetDBRecordsCount: " + long);
+                long count = dcClass.db_GetDBRecordsCount(threadId);
+                System.out.println("---------------------------------Db_GetDBRecordsCount: " + count);
                 successCallback.invoke(Long.toString(count));
             }
         }).start();
@@ -645,8 +645,8 @@ public class DBModule extends ReactContextBaseJavaModule {
             @Override
             public void run() {
                 System.out.println("---------------------------------Db_ExportDBToFile: start" );
-                String info = dcClass.Db_ExportDBToFile(threadId, path, bReadKey);
-                System.out.println("---------------------------------Db_ExportDBToFile: " + bool);
+                String info = dcClass.db_ExportDBToFile(threadId, path, bReadKey);
+                System.out.println("---------------------------------Db_ExportDBToFile: " + info);
                 if (info.equals("")) {
                     successCallback.invoke(info);
                 }else {
@@ -671,22 +671,22 @@ public class DBModule extends ReactContextBaseJavaModule {
             String rk,
             String sk,
             boolean block,
-            boolean jsonCollections,
+            String jsonCollections,
             Callback successCallback,
             Callback errorCallback){
         new Thread(new Runnable() {
             @Override
             public void run() {
                 System.out.println("---------------------------------Db_PreloadDBFromDC: start" );
-                String jsonCollections = dcClass.Db_PreloadDBFromDC(threadId, fid, dbName, dbAddr, rk, sk, block, jsonCollections);
+                Boolean bool = dcClass.db_PreloadDBFromDC(threadId, fid, dbName, dbAddr, rk, sk, block, jsonCollections);
                 System.out.println("---------------------------------Db_PreloadDBFromDC: " + bool);
-                if (jsonCollections.equals("")) {
-                    successCallback.invoke(jsonCollections);
-                }else {
+                if (!bool) {
                     String lastError = dcClass.dc_GetLastErr();
                     //System.out.println("---------------------------------newCollection: err");
                     //System.out.println(lastError);
                     errorCallback.invoke(lastError);
+                }else {
+                    successCallback.invoke();
                 }
             }
         }).start();

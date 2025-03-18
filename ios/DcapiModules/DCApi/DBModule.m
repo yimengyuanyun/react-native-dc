@@ -332,7 +332,7 @@ RCT_EXPORT_METHOD(db_GetDBRecordsCount:(NSString*)threadid successCallback:(RCTR
 RCT_EXPORT_METHOD(db_ExportDBToFile:(NSString*)threadid path:(NSString*)path bReadKey:(NSString*)bReadKey successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
     //RCTLogInfo(@"db_ExportDBToFile");
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        NSString *info = [dcapi db_ExportDBToFile:threadid path:path bReadKey:bReadKey uniqueFlag:uniqueFlag];
+        NSString *info = [dcapi db_ExportDBToFile:threadid path:path bReadKey:bReadKey];
         if(info.length > 0){
             dispatch_async(dispatch_get_main_queue(), ^{
                 successCallback(@[info]);
@@ -352,10 +352,10 @@ RCT_EXPORT_METHOD(db_ExportDBToFile:(NSString*)threadid path:(NSString*)path bRe
 RCT_EXPORT_METHOD(db_PreloadDBFromDC:(NSString*)threadid fid:(NSString*)fid dbName:(NSString*)dbName dbAddr:(NSString*)dbAddr rk:(NSString*)rk sk:(NSString*)sk block:(BOOL)block jsonCollections:(NSString*)jsonCollections successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
     //RCTLogInfo(@"db_PreloadDBFromDC");
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        NSString *jsonCollections = [dcapi db_PreloadDBFromDC:threadid fid:fid dbName:dbName dbAddr:dbAddr rk:rk sk:sk block:block jsonCollections:jsonCollections];
-        if(jsonCollections.length > 0){
+        BOOL success = [dcapi db_PreloadDBFromDC:threadid fid:fid dbName:dbName dbAddr:dbAddr rk:rk sk:sk block:block jsonCollections:jsonCollections];
+        if(success){
             dispatch_async(dispatch_get_main_queue(), ^{
-                successCallback(@[jsonCollections]);
+                successCallback(@[]);
             });
         }else {
             NSString *lastError = [dcapi dc_GetLastErr];
