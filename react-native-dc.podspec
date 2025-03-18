@@ -28,8 +28,14 @@ Pod::Spec.new do |s|
   # ...
   # s.dependency "..."
 
+  s.source       = { 
+    :git => "https://codeup.aliyun.com/5efc30990e73ad738218a97c/bn/DcapiPod.git",
+    :branch => "master",
+    :tag => '1.2.0' # 指定版本标签  
+  }
+
   # 内置frameworks路径
-  s.vendored_frameworks = 'Dcapi.xcframework'
+  # s.vendored_frameworks = 'Dcapi.xcframework'
   # s.preserve_path = '${PODS_ROOT}/..'
 
   # 设置framework的查找路径

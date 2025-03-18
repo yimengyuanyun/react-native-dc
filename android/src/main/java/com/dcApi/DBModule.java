@@ -615,6 +615,82 @@ public class DBModule extends ReactContextBaseJavaModule {
             }
         }).start();
     }
+
+
+    // 获取数据库操作记录数
+    @ReactMethod
+    public void db_GetDBRecordsCount(
+            String threadId,
+            Callback successCallback){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                System.out.println("---------------------------------Db_GetDBRecordsCount: start" );
+                long count = dcClass.Db_GetDBRecordsCount(threadId);
+                System.out.println("---------------------------------Db_GetDBRecordsCount: " + long);
+                successCallback.invoke(Long.toString(count));
+            }
+        }).start();
+    }
+
+    // 导出数据库到文件
+    @ReactMethod
+    public void db_ExportDBToFile(
+            String threadId,
+            String path,
+            String bReadKey,
+            Callback successCallback,
+            Callback errorCallback){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                System.out.println("---------------------------------Db_ExportDBToFile: start" );
+                String info = dcClass.Db_ExportDBToFile(threadId, path, bReadKey);
+                System.out.println("---------------------------------Db_ExportDBToFile: " + bool);
+                if (info.equals("")) {
+                    successCallback.invoke(info);
+                }else {
+                    String lastError = dcClass.dc_GetLastErr();
+                    //System.out.println("---------------------------------newCollection: err");
+                    //System.out.println(lastError);
+                    errorCallback.invoke(lastError);
+                }
+            }
+        }).start();
+    }
+
+    // 导出数据库到文件 . 从DC网络的已存储的数据库预加载文件中同步数据库信息到本地
+    //（一般发生在新设备首次登录时同步已经创建的数据库）,jsonCollections 是一个map结构的json字符串，
+    //格式[{"name":"name1","schema":"schema1"},indexs:[{"path":"path1","unique":true},{"path":"path2","unique":false}],{"name":"name2","schema":"schema2"},...]
+    @ReactMethod
+    public void db_PreloadDBFromDC(
+            String threadId,
+            String fid,
+            String dbName,
+            String dbAddr,
+            String rk,
+            String sk,
+            boolean block,
+            boolean jsonCollections,
+            Callback successCallback,
+            Callback errorCallback){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                System.out.println("---------------------------------Db_PreloadDBFromDC: start" );
+                String jsonCollections = dcClass.Db_PreloadDBFromDC(threadId, fid, dbName, dbAddr, rk, sk, block, jsonCollections);
+                System.out.println("---------------------------------Db_PreloadDBFromDC: " + bool);
+                if (jsonCollections.equals("")) {
+                    successCallback.invoke(jsonCollections);
+                }else {
+                    String lastError = dcClass.dc_GetLastErr();
+                    //System.out.println("---------------------------------newCollection: err");
+                    //System.out.println(lastError);
+                    errorCallback.invoke(lastError);
+                }
+            }
+        }).start();
+    }
 }
 
 

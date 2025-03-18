@@ -316,6 +316,56 @@ RCT_EXPORT_METHOD(rebuildIndex:(NSString*)threadId collectionName:(NSString*)col
         }
     });
 }
+
+// 获取数据库操作记录数
+RCT_EXPORT_METHOD(db_GetDBRecordsCount:(NSString*)threadid successCallback:(RCTResponseSenderBlock)successCallback) {
+    //RCTLogInfo(@"db_GetDBRecordsCount");
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        long count = [dcapi db_GetDBRecordsCount:threadid];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            successCallback(@[@(count)]);
+        });
+    });
+}
+
+// 导出数据库到文件
+RCT_EXPORT_METHOD(db_ExportDBToFile:(NSString*)threadid path:(NSString*)path bReadKey:(NSString*)bReadKey successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
+    //RCTLogInfo(@"db_ExportDBToFile");
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        NSString *info = [dcapi db_ExportDBToFile:threadid path:path bReadKey:bReadKey uniqueFlag:uniqueFlag];
+        if(info.length > 0){
+            dispatch_async(dispatch_get_main_queue(), ^{
+                successCallback(@[info]);
+            });
+        }else {
+            NSString *lastError = [dcapi dc_GetLastErr];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                errorCallback(@[lastError]);
+            });
+        }
+    });
+}
+
+// 导出数据库到文件 . 从DC网络的已存储的数据库预加载文件中同步数据库信息到本地
+//（一般发生在新设备首次登录时同步已经创建的数据库）,jsonCollections 是一个map结构的json字符串，
+//格式[{"name":"name1","schema":"schema1"},indexs:[{"path":"path1","unique":true},{"path":"path2","unique":false}],{"name":"name2","schema":"schema2"},...]
+RCT_EXPORT_METHOD(db_PreloadDBFromDC:(NSString*)threadid fid:(NSString*)fid dbName:(NSString*)dbName dbAddr:(NSString*)dbAddr rk:(NSString*)rk sk:(NSString*)sk block:(BOOL)block jsonCollections:(NSString*)jsonCollections successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
+    //RCTLogInfo(@"db_PreloadDBFromDC");
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        NSString *jsonCollections = [dcapi db_PreloadDBFromDC:threadid fid:fid dbName:dbName dbAddr:dbAddr rk:rk sk:sk block:block jsonCollections:jsonCollections];
+        if(jsonCollections.length > 0){
+            dispatch_async(dispatch_get_main_queue(), ^{
+                successCallback(@[jsonCollections]);
+            });
+        }else {
+            NSString *lastError = [dcapi dc_GetLastErr];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                errorCallback(@[lastError]);
+            });
+        }
+    });
+}
+
 #pragma mark - 向react-natvie 传递消息
 - (NSArray<NSString *> *)supportedEvents
 {
