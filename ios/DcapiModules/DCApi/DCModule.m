@@ -143,10 +143,10 @@ RCT_EXPORT_METHOD(dc_LoadDefaultUserInfo:(RCTResponseSenderBlock)successCallback
 }
 
 //设置用户默认数据库上链
-RCT_EXPORT_METHOD(dc_SetUserDefaultDB:(NSString*)threadid rk:(NSString*)rk sk:(NSString*)sk successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
+RCT_EXPORT_METHOD(dc_SetUserDefaultDB:(NSString*)threadid rk:(NSString*)rk sk:(NSString*)sk remark:(NSString*)remark successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseSenderBlock)errorCallback) {
     //RCTLogInfo(@"dc_SetUserDefaultDB");
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        BOOL load = [dcapi dc_SetUserDefaultDB:threadid b32Rk:rk b32Sk:sk];
+        BOOL load = [dcapi dc_SetUserDefaultDB:threadid b32Rk:rk b32Sk:sk remark:remark];
         if(load){
             dispatch_async(dispatch_get_main_queue(), ^{
                 successCallback(@[threadid]);

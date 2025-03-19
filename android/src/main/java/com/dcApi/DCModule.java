@@ -181,12 +181,13 @@ public class DCModule extends ReactContextBaseJavaModule {
             String threadid,
             String rk,
             String sk,
+            String remark,
             Callback successCallback,
             Callback errorCallback) {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                Boolean bool = dcClass.dc_SetUserDefaultDB(threadid, rk, sk);
+                Boolean bool = dcClass.dc_SetUserDefaultDB(threadid, rk, sk, remark);
                 //System.out.println("---------------------------------setUserDefaultDB: " + bool + "...." + threadid
                         // + ", " + rk + ", " + sk);
                 if (!bool) {
