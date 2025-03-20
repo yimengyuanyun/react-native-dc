@@ -6,7 +6,7 @@ package = JSON.parse(File.read(File.join(__dir__, "package.json")))
 
 Pod::Spec.new do |s|
   s.name         = "react-native-dc"
-  s.version      = "0.11.8"
+  s.version      = "0.11.9"
   #package["version"]
   s.summary      = package["description"]
   s.description  = <<-DESC
@@ -32,7 +32,6 @@ Pod::Spec.new do |s|
   s.source       = { 
     :git => "https://codeup.aliyun.com/5efc30990e73ad738218a97c/bn/DcapiPod.git",
     :branch => "master",
-    # :tag => '0.11.8' # 指定版本标签  
   }
 
   # 内置frameworks路径

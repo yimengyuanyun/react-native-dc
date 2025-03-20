@@ -625,9 +625,9 @@ public class DBModule extends ReactContextBaseJavaModule {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                System.out.println("---------------------------------Db_GetDBRecordsCount: start" );
+                // System.out.println("---------------------------------Db_GetDBRecordsCount: start" + threadId);
                 long count = dcClass.db_GetDBRecordsCount(threadId);
-                System.out.println("---------------------------------Db_GetDBRecordsCount: " + count);
+                // System.out.println("---------------------------------Db_GetDBRecordsCount: " + count);
                 successCallback.invoke(Long.toString(count));
             }
         }).start();
@@ -644,16 +644,19 @@ public class DBModule extends ReactContextBaseJavaModule {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                System.out.println("---------------------------------Db_ExportDBToFile: start" );
+                // System.out.println("---------------------------------Db_ExportDBToFile: start " );
+                // System.out.println("---------------------------------Db_ExportDBToFile: threadId " + threadId );
+                // System.out.println("---------------------------------Db_ExportDBToFile: start " + path);
+                // System.out.println("---------------------------------Db_ExportDBToFile: start " + bReadKey);
                 String info = dcClass.db_ExportDBToFile(threadId, path, bReadKey);
-                System.out.println("---------------------------------Db_ExportDBToFile: " + info);
+                // System.out.println("---------------------------------Db_ExportDBToFile: " + info);
                 if (info.equals("")) {
-                    successCallback.invoke(info);
-                }else {
                     String lastError = dcClass.dc_GetLastErr();
                     //System.out.println("---------------------------------newCollection: err");
                     //System.out.println(lastError);
                     errorCallback.invoke(lastError);
+                }else {
+                    successCallback.invoke(info);
                 }
             }
         }).start();
@@ -677,9 +680,9 @@ public class DBModule extends ReactContextBaseJavaModule {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                System.out.println("---------------------------------Db_PreloadDBFromDC: start" );
+                // System.out.println("---------------------------------Db_PreloadDBFromDC: start" );
                 Boolean bool = dcClass.db_PreloadDBFromDC(threadId, fid, dbName, dbAddr, rk, sk, block, jsonCollections);
-                System.out.println("---------------------------------Db_PreloadDBFromDC: " + bool);
+                // System.out.println("---------------------------------Db_PreloadDBFromDC: " + bool);
                 if (!bool) {
                     String lastError = dcClass.dc_GetLastErr();
                     //System.out.println("---------------------------------newCollection: err");
