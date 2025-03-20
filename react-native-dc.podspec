@@ -6,7 +6,7 @@ package = JSON.parse(File.read(File.join(__dir__, "package.json")))
 
 Pod::Spec.new do |s|
   s.name         = "react-native-dc"
-  s.version      = "0.11.9"
+  s.version      = "0.11.10"
   #package["version"]
   s.summary      = package["description"]
   s.description  = <<-DESC
