@@ -38,7 +38,7 @@ RCT_EXPORT_METHOD(bc_GetBlockHeight:(RCTResponseSenderBlock)successCallback erro
         long blockHeight = [dcapi bc_GetBlockHeight];
         if(blockHeight > 0){
             dispatch_async(dispatch_get_main_queue(), ^{
-                successCallback(@[@true]);
+                successCallback(@[@(blockHeight)]);
             });
         }else {
             NSString *lastError = [dcapi dc_GetLastErr];
